@@ -1,0 +1,68 @@
+﻿@model RegisterViewModel
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h1 class="card-title text-center mb-4">Register Form</h1>
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-success">@TempData["ErrorMessage"]</div>
+            }
+            
+            <form asp-action="Register" method="post">
+                <div class="form-group">
+                    <label for="Name">Name</label>
+                    <input asp-for="Name" class="form-control" id="Name" placeholder="Enter your name">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label for="Username">Username</label>
+                    <input asp-for="Username" class="form-control" id="Username" placeholder="Enter your username">
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label for="Email">Email</label>
+                    <input asp-for="Email" class="form-control" id="Email" placeholder="Enter your email">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label for="Password">Password</label>
+                    <input asp-for="Password" class="form-control" id="Password" placeholder="Enter your password">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label for="ConfirmPassword">Confirm Password</label>
+                    <input asp-for="ConfirmPassword" class="form-control" id="ConfirmPassword" placeholder="Confirm your password">
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label for="Department">Department</label>
+                    <select asp-for="Departement" class="form-control" id="Departement">
+                        <option value="">Choose your departement</option>
+                        <option value="WH">Warehouse</option>
+                        <option value="CS_PP">CS_PP</option>
+                        <option value="Procurement">Procurement</option>
+                    </select>
+                    <span asp-validation-for="Departement" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label for="role">Role</label>
+                    <div class="form-check">
+                        <input asp-for="IsAdmin" type="checkbox" name="role" id="admin" class="form-check-input" value="true">
+                        <label for="admin" class="form-check-label">Admin</label>
+                    </div>
+                    <div class="form-check">
+                        <input asp-for="IsAdmin" type="checkbox" name="role" id="member" class="form-check-input" value="false">
+                        <label for="member" class="form-check-label">Member</label>
+                    </div>
+                </div>
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary btn-block">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

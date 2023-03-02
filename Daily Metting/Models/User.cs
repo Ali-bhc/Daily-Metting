@@ -1,17 +1,21 @@
-﻿namespace Daily_Metting.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace Daily_Metting.Models
 {
-    public class User
+
+    public class User : IdentityUser
     {
-        public int UserID { get; set; }
+        //public int UserID { get; set; }
         public string Name { get; set; }
-        public string Email { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public string Type { get; set; }
+        //public string Email { get; set; }
+        //public string UserName { get; set; }
+        //public string Password { get; set; }
+        public bool IsAdmin { get; set; }
         public string Departement { get; set; }
-        public DateTime Created { get; set; } = DateTime.Now;
-        public DateTime LastUpdated { get; set; }
-        public ICollection<Submission> Submissions { get; set; }
+        //public DateTime Created { get; set; } = DateTime.Now;
+        //public DateTime LastUpdated { get; set; }
+        public List<Submission>? Submissions { get; set; }
+        public List<Absence>? Absences { get; set; }
 
 
 

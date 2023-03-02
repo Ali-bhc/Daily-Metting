@@ -4,15 +4,12 @@
     {
         public int PointID { get; set; }
         public string Point_Name { get; set; }
+        public bool WH_Acces { get; set; }
+        public bool CS_PP_Acces { get; set; }
+        public bool Procurement_Acces { get; set; }
+        public bool HasMultipleValues { get; set; }
         public Category Category{ get; set;}
-        public ICollection<Value> Values { get; set; }
+        public List<Value> Values { get; set; }
 
-        public Point(int pointID, string point_Name, Category category, ICollection<Value> values)
-        {
-            PointID = pointID;
-            Point_Name = point_Name;
-            Category = category;
-            Values = values;
-        }
     }
 }
