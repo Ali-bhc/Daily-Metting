@@ -34,6 +34,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 builder.Services.AddScoped<IPointRepository, PointRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ISubmissionRepository, SubmissionRepository>();
 
 
 
