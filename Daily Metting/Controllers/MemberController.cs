@@ -11,14 +11,16 @@ namespace Daily_Metting.Controllers
     [Authorize(Policy = "MemberPolicy")]
     public class MemberController : Controller
     {
+        private readonly IValueRepository _valueRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IPointRepository _pointRepository;
         private readonly ISubmissionRepository _submissionRepository;
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
 
-        public MemberController(ICategoryRepository categoryRepository, IPointRepository pointRepository , ISubmissionRepository submissionRepository ,SignInManager<User> signInManager, UserManager<User> userManager)
+        public MemberController(IValueRepository valueRepositoryy,ICategoryRepository categoryRepository, IPointRepository pointRepository , ISubmissionRepository submissionRepository ,SignInManager<User> signInManager, UserManager<User> userManager)
         {
+            _valueRepository = valueRepositoryy;
             _categoryRepository = categoryRepository;
             _pointRepository = pointRepository;
             _submissionRepository=submissionRepository;
@@ -35,34 +37,50 @@ namespace Daily_Metting.Controllers
             var user = await _userManager.GetUserAsync(User);
             IEnumerable<Point> points;
             IEnumerable<Category> categories;
-            IEnumerable<Point> Safety_points;
             Dictionary<string, IEnumerable<Point> > PointCategoryList = new Dictionary<string, IEnumerable<Point>>();
             categories = _categoryRepository.AllCategories;
             foreach (var category in categories)
             {
                 PointCategoryList.Add(category.Category_Name, _pointRepository.GetPointsByDepartement_Category(user.Departement, category.Category_Name));
             }
-            //points = _pointRepository.AllPoints;
-            //points = _pointRepository.GetPointsByCategory(category_name);
-            ViewData["pointsofcategories"] = PointCategoryList;
+            ViewBag.MyData = PointCategoryList;
+            //List<Value> values= new List<Value>() { new Value { Value_point="12", description="aaaaaa",comment="Agrren", Point= PointCategoryList.FirstOrDefault().Value.FirstOrDefault() } };
+            SubmissionViewModel _submissionViewModel = new SubmissionViewModel();
 
 
-            return View(PointCategoryList);
+            return View(_submissionViewModel);
         }
         [HttpPost]
         public async Task<IActionResult> AddSubmission(SubmissionViewModel _submissionViewModel)
         {
             var user = await _userManager.GetUserAsync(User);
+            IEnumerable<Point> points;
+            IEnumerable<Category> categories;
+            Dictionary<string, IEnumerable<Point>> PointCategoryList = new Dictionary<string, IEnumerable<Point>>();
+            categories = _categoryRepository.AllCategories;
+            foreach (var category in categories)
+            {
+                PointCategoryList.Add(category.Category_Name, _pointRepository.GetPointsByDepartement_Category(user.Departement, category.Category_Name));
+            }
+            ViewBag.MyData = PointCategoryList;
+
+            //Step1:Add Submission First
             var submission = new Submission
             {
                 User = user, // Set the user property here
                 submission_time = DateTime.Now, // Set the date property here
-                Values = new List<Value>()
             };
-   
-            _submissionRepository.AddSubmission(submission,_submissionViewModel.Values);
+            _submissionRepository.AddSubmission(submission);
 
-            return RedirectToAction(nameof(MemberController.Index), "Member");
+            //Step2:A
+            foreach (var val in _submissionViewModel.Values)
+            {
+                var pt = _pointRepository.GetByID(val.PointID);
+                _valueRepository.AddSubmissionValue(new Value { Value_point = val.Value_point, description = val.description, comment = val.comment, Point = pt ,Submission=submission});
+            }
+
+           // return RedirectToAction(nameof(MemberController.Index), "Member");
+           return View(_submissionViewModel);
         }
 
 

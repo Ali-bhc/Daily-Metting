@@ -35,6 +35,9 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddScoped<IPointRepository, PointRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ISubmissionRepository, SubmissionRepository>();
+builder.Services.AddScoped<IAbsencesRepository, AbsenceRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IValueRepository, ValueRepository>();
 
 
 
@@ -49,58 +52,58 @@ builder.Services.AddScoped<ISubmissionRepository, SubmissionRepository>();
 
 builder.Services.AddControllersWithViews();
 
-//Add Admin
-var roleManager = builder.Services.BuildServiceProvider().GetRequiredService<RoleManager<IdentityRole>>();
-var userManager = builder.Services.BuildServiceProvider().GetRequiredService<UserManager<User>>();
+////Add Admin
+//var roleManager = builder.Services.BuildServiceProvider().GetRequiredService<RoleManager<IdentityRole>>();
+//var userManager = builder.Services.BuildServiceProvider().GetRequiredService<UserManager<User>>();
 
-if (!await roleManager.RoleExistsAsync("Admin"))
-{
-    await roleManager.CreateAsync(new IdentityRole("Admin"));
-}
-
-
-if (await userManager.FindByNameAsync("admin") == null)
-{
-    var user = new User
-    {
-        UserName = "admin",
-        Email = "admin@example.com",
-        IsAdmin = true,
-        Departement = "Admin Service",
-        Name = "admin test"
-    };
-
-    var result = await userManager.CreateAsync(user, "Admin123!");
-    if (result.Succeeded)
-    {
-        await userManager.AddToRoleAsync(user, "Admin");
-    }
-}
-
-//Add A member
-if (!await roleManager.RoleExistsAsync("Member"))
-{
-    await roleManager.CreateAsync(new IdentityRole("Member"));
-}
+//if (!await roleManager.RoleExistsAsync("Admin"))
+//{
+//    await roleManager.CreateAsync(new IdentityRole("Admin"));
+//}
 
 
-if (await userManager.FindByNameAsync("WHuser") == null)
-{
-    var user = new User
-    {
-        UserName = "WHuser",
-        Email = "WHuser@example.com",
-        IsAdmin = false,
-        Departement = "WH",
-        Name = "Ware House User"
-    };
+//if (await userManager.FindByNameAsync("admin") == null)
+//{
+//    var user = new User
+//    {
+//        UserName = "admin",
+//        Email = "admin@example.com",
+//        IsAdmin = true,
+//        Departement = "Admin Service",
+//        Name = "admin test"
+//    };
 
-    var result = await userManager.CreateAsync(user, "WHuser123!");
-    if (result.Succeeded)
-    {
-        await userManager.AddToRoleAsync(user, "Member");
-    }
-}
+//    var result = await userManager.CreateAsync(user, "Admin123!");
+//    if (result.Succeeded)
+//    {
+//        await userManager.AddToRoleAsync(user, "Admin");
+//    }
+//}
+
+////Add A member
+//if (!await roleManager.RoleExistsAsync("Member"))
+//{
+//    await roleManager.CreateAsync(new IdentityRole("Member"));
+//}
+
+
+//if (await userManager.FindByNameAsync("WHuser") == null)
+//{
+//    var user = new User
+//    {
+//        UserName = "WHuser",
+//        Email = "WHuser@example.com",
+//        IsAdmin = false,
+//        Departement = "WH",
+//        Name = "Ware House User"
+//    };
+
+//    var result = await userManager.CreateAsync(user, "WHuser123!");
+//    if (result.Succeeded)
+//    {
+//        await userManager.AddToRoleAsync(user, "Member");
+//    }
+//}
 
 builder.Services.AddAuthorization(options =>
 {

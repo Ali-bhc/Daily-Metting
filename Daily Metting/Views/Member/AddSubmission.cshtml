@@ -1,216 +1,229 @@
 @model SubmissionViewModel
-@{
-    var PointCategoryList = ViewData["pointsofcategories"] as Dictionary<string, IEnumerable<Point>>;
-    int counter = 0;
-}
-@*//Dictionary<string, IEnumerable<Point> >
-*@@{
-}
-@*
+@{int counter = 0;}
 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="~/css/AddSubmissionStyle.css">
-</head>
-<body>*@
-    <div class="container">
-        <form asp-controller="Account" asp-action="AddSubmission" method="post">
-        <div class="wrapper">
-            <div class="tabs-wrapper">
-                <span class="left scroller-btn"><</span>
-                <ul id="scroller" class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#home">Safety</a></li>
-                    <li><a data-toggle="tab" href="#menu1">People</a></li>
-                    <li><a data-toggle="tab" href="#menu2">Quality</a></li>
-                    <li><a data-toggle="tab" href="#menu3">Delivery</a></li>
-                    <li><a data-toggle="tab" href="#menu4">cost</a></li>
-                </ul>
-                <span id="right" class="right scroller-btn">></span>
-            </div>
-            <div class="tab-content">
-                <div id="home" class="tab-pane fade in active">
-                @if (!PointCategoryList["Safety"].Any())
-                {
-                    <p> You have not the ability for submit this Category</p>
-
-                }
-                else
-                {
-                    @foreach (var point in PointCategoryList["Safety"])
-                    {
-
-                        <div class="form-group">
-                            <label for="safety-pt1">@point.Point_Name</label>
-                            <input asp-for="Values[counter].Value_point" type="number" class="form-control" id="safety-pt1" name="safety-pt1">
-                            <textarea asp-for="Values[counter].description" class="form-control" id="safety-pt1-desc" name="safety-pt1-desc" placeholder="Description"></textarea>
-                            <textarea asp-for="Values[counter].comment" class="form-control" id="safety-pt1-comment" name="safety-pt1-comment" placeholder="Comment"></textarea>
-                        </div>
-                        @Model.Values[counter].Point.Equals(point);
-                        @(counter++;)
-
-                                                    
-                    }
-                }
-                </div>
-
-                <div id="menu1" class="tab-pane fade">
-                @if (!PointCategoryList["People"].Any())
-                {
-                    <p> You have not the ability for submit this Category</p>
-
-                }
-                else
-                {
-                    @foreach (var point in PointCategoryList["People"])
-                    {
-                        <div class="form-group">
-                            <label for="safety-pt1">@point.Point_Name</label>
-                            <input asp-for="Values[counter].Value_point" type="number" class="form-control" id="safety-pt1" name="safety-pt1">
-                            <textarea asp-for="Values[counter].description" class="form-control" id="safety-pt1-desc" name="safety-pt1-desc" placeholder="Description"></textarea>
-                            <textarea asp-for="Values[counter].comment" class="form-control" id="safety-pt1-comment" name="safety-pt1-comment" placeholder="Comment"></textarea>
-                        </div>
-                        @Model.Values[counter].Point.Equals(point);
-                        @(counter++; )
-
-                    }
-                }
-                </div>
-                <div id="menu2" class="tab-pane fade">
-                    @if (!PointCategoryList["Quality"].Any())
-                    {
-                        <p> You have not the ability for submit this Category</p>
-                    }
-                    else
-                    {
-
-                        @foreach (var point in PointCategoryList["Quality"])
-                        {
-                            @if (point.HasMultipleValues)
-                            {
-                                <div class="form-group">
-                                    <div class="row">
-                                        <label for="safety-pt1" class="col-sm-5 col-form-label">@point.Point_Name</label>
-                                        <div class="col-sm-7">
-                                            <button class="btn btn-primary" id="add-field">Add Field</button>
-                                            <button class="btn btn-danger" id="remove-field" style="display:none;">Remove Field</button>
-                                        </div>
-                                    </div>
-                                    <input asp-for="Values[counter].Value_point" type="text" class="form-control" id="safety-pt1" name="safety-pt1">
-                                    <textarea asp-for="Values[counter].description" class="form-control" id="safety-pt1-desc" name="safety-pt1-desc" placeholder="Description"></textarea>
-                                    <textarea asp-for="Values[counter].comment" class="form-control" id="safety-pt1-comment" name="safety-pt1-comment" placeholder="Comment"></textarea>
-                                    @Model.Values[counter].Point.Equals(point);
-                                    @( counter++;)
-                                </div>
-                                <div id="new-fields">
-                                    <!-- Input fields will be dynamically added here -->
-                                </div>
-
-                            }
-                            else
-                            {
-                                <div class="form-group">
-                                    <label for="safety-pt1">@point.Point_Name</label>
-                                    <input asp-for ="Values[counter].Value_point" type="number" class="form-control" id="safety-pt1" name="safety-pt1">
-                                    <textarea asp-for="Values[counter].description" class="form-control" id="safety-pt1-desc" name="safety-pt1-desc" placeholder="Description"></textarea>
-                                    <textarea asp-for="Values[counter].comment" class="form-control" id="safety-pt1-comment" name="safety-pt1-comment" placeholder="Comment"></textarea>
-                                    @Model.Values[counter].Point.Equals(point);
-                                    @(counter++; )
-                                </div>
-
-                            }
-
-
-                        }
-                    }
-                </div>
-                <div id="menu3" class="tab-pane fade">
-                @if (!PointCategoryList["Delivery"].Any())
-                    {
-                        <p> You have not the ability for submit this Category</p>
-                    }
-                    else
-                    {
-
-                    @foreach (var point in PointCategoryList["Delivery"])
-                        {         
-                        @if (point.HasMultipleValues)
-                         {
-                            <div class="form-group">
-                                   <div class="row">
-                                        <label for="safety-pt1" class="col-sm-5 col-form-label">@point.Point_Name</label>
-                                        <div class="col-sm-7">
-                                            <button class="btn btn-primary" id="add-field">Add Field</button>
-                                            <button class="btn btn-danger" id="remove-field" style="display:none;">Remove Field</button>
-                                        </div>
-                                    </div>
-                                <input asp-for="Values[counter].Value_point" type="text" class="form-control" id="safety-pt1" name="safety-pt1">
-                                <textarea asp-for="Values[counter].description" class="form-control" id="safety-pt1-desc" name="safety-pt1-desc" placeholder="Description"></textarea>
-                                <textarea asp-for="Values[counter].comment" class="form-control" id="safety-pt1-comment" name="safety-pt1-comment" placeholder="Comment"></textarea>
-                                    @Model.Values[counter].Point.Equals(point);
-                                    @(counter++; )
-                            </div>
-                            <div id="new-fields">
-                                <!-- Input fields will be dynamically added here -->
-
-                            </div>
-
-                        }
-                        else
-                        {
-                            <div class="form-group">
-                                <label for="safety-pt1">@point.Point_Name</label>
-                                <input asp-for="Values[counter].Value_point" type="number" class="form-control" id="safety-pt1" name="safety-pt1">
-                                <textarea asp-for="Values[counter].description" class="form-control" id="safety-pt1-desc" name="safety-pt1-desc" placeholder="Description"></textarea>
-                                <textarea asp-for ="Values[counter].comment" class="form-control" id="safety-pt1-comment" name="safety-pt1-comment" placeholder="Comment"></textarea>
-                                    @Model.Values[counter].Point.Equals(point);
-                                    @(counter++; )
-                            </div>
-                            
-                        }
-
-
-                }
-                    }
-                </div>
-                <div id="menu4" class="tab-pane fade">
-                    @if (!PointCategoryList["Cost"].Any())
-                    {
-                        <p> You have not the ability for submit this Category</p>
-
-                    }
-                    else
-                    {
-                        @foreach (var point in PointCategoryList["Cost"])
-                        {
-
-                            <div class="form-group">
-                                <label for="safety-pt1">@point.Point_Name</label>
-                                <input asp-for="Values[counter].Value_point" type="number" class="form-control" id="safety-pt1" name="safety-pt1">
-                                <textarea asp-for="Values[counter].description" class="form-control" id="safety-pt1-desc" name="safety-pt1-desc" placeholder="Description"></textarea>
-                                <textarea asp-for="Values[counter].comment" class="form-control" id="safety-pt1-comment" name="safety-pt1-comment" placeholder="Comment"></textarea>
-                            </div>
-                            @Model.Values[counter].Point.Equals(point);
-                            @( counter++; )
-
-                        }
-                    }
-
-                </div>
-
-            </div>
-        </div>
-    </form>
+<div class="container">
+<form asp-controller="Member" asp-action="AddSubmission" method="post">
+<div class="wrapper">
+    <div class="tabs-wrapper">
+        <span class="left scroller-btn"><</span>
+        <ul id="scroller" class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#home">Safety</a></li>
+            <li><a data-toggle="tab" href="#menu1">People</a></li>
+            <li><a data-toggle="tab" href="#menu2">Quality</a></li>
+            <li><a data-toggle="tab" href="#menu3">Delivery</a></li>
+            <li><a data-toggle="tab" href="#menu4">cost</a></li>
+        </ul>
+        <span id="right" class="right scroller-btn">></span>
     </div>
-    @*<!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <div class="tab-content">
+        <div id="home" class="tab-pane fade in active">
+            @if (ViewBag.MyData["Safety"] == null)
+        {
+            <p> You have not the ability for submit this Category</p>
 
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script src="~/js/AddSubmissionScript.js"></script>
-</body>
-</html>*@
+        }
+        else
+        {
+            @foreach (var point in ViewBag.MyData["Safety"])
+            {
+
+                <div class="form-group">
+                    <label for="safety-pt1">@point.Point_Name </label>
+                    <input asp-for=@Model.Values[counter].Value_point type="text" class="form-control" id="safety-pt1" >
+                    <textarea asp-for=@Model.Values[counter].description class="form-control" id="safety-pt1-desc"  placeholder="Description"></textarea>
+                    <textarea asp-for=@Model.Values[counter].comment class="form-control" id="safety-pt1-comment"  placeholder="Comment"></textarea>
+                    <input asp-for=@Model.Values[counter].PointID type="hidden" value=@point.PointID class="form-control" id="safety-pt1">
+                </div>
+                            @*@if (Model.Values != null)
+                                Model.Values[counter].Point = point;
+*@
+                    counter++;
+            }
+        }
+        </div>
+
+        <div id="menu1" class="tab-pane fade">
+        @if (ViewBag.MyData["People"] == null)
+        {
+            <p> You have not the ability for submit this Category</p>
+
+        }
+        else
+        {
+            @foreach (var point in ViewBag.MyData["People"])
+            {
+
+                <div class="form-group">
+                    <label for="safety-pt1">@point.Point_Name</label>
+                        <input asp-for=@Model.Values[counter].Value_point type="number" class="form-control" id="safety-pt1" >
+                        <textarea asp-for=@Model.Values[counter].description class="form-control" id="safety-pt1-desc"  placeholder="Description"></textarea>
+                        <textarea asp-for=@Model.Values[counter].comment class="form-control" id="safety-pt1-comment"  placeholder="Comment"></textarea>
+                        <input asp-for=@Model.Values[counter].PointID type="hidden" value=@point.PointID class="form-control" id="safety-pt1">
+
+                                @*@if (Model.Values != null)
+                                    Model.Values[counter].Point = point;
+                                *@
+                    </div>
+
+
+                            counter++;
+
+            }
+        }
+        </div>
+        <div id="menu2" class="tab-pane fade">
+            @if (ViewBag.MyData["Quality"] == null)
+            {
+                <p> You have not the ability for submit this Category</p>
+            }
+            else
+            {
+
+                @foreach (var point in ViewBag.MyData["Quality"])
+                {
+
+                    @if (point.HasMultipleValues)
+                    {
+                        <div class="form-group">
+                            <div class="row">
+                                <label for="safety-pt1" class="col-sm-5 col-form-label">@point.Point_Name</label>
+                                <div class="col-sm-7">
+                                    <a class="btn btn-primary" id="add-field">Add Field</a>
+                                    <a class="btn btn-danger" id="remove-field" style="display:none;">Remove Field</a>
+                                </div>
+                            </div>
+                            <input asp-for=@Model.Values[counter].Value_point type="text" class="form-control" id="safety-pt1" >
+                            <textarea asp-for=@Model.Values[counter].description c lass="form-control" id="safety-pt1-desc"  placeholder="Description"></textarea>
+                            <textarea asp-for=@Model.Values[counter].comment class="form-control" id="safety-pt1-comment"  placeholder="Comment"></textarea>
+                            <input asp-for=@Model.Values[counter].PointID type="hidden" value=@point.PointID class="form-control" id="safety-pt1">
+
+                                   @* @if (Model.Values != null)
+                                    {
+                                        Model.Values[counter].Point = point;
+                                    }*@
+                        </div>
+                                                            counter++;
+
+                        <div id="new-fields">
+                            <!-- Input fields will be dynamically added here -->
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div class="form-group">
+                            <label for="safety-pt1">@point.Point_Name</label>
+                            <input asp-for=@Model.Values[counter].Value_point type="number" class="form-control" id="safety-pt1" >
+                            <textarea asp-for=@Model.Values[counter].description class="form-control" id="safety-pt1-desc"  placeholder="Description"></textarea>
+                            <textarea asp-for=@Model.Values[counter].comment class="form-control" id="safety-pt1-comment"  placeholder="Comment"></textarea>
+                            <input asp-for=@Model.Values[counter].PointID type="hidden" value=@point.PointID class="form-control" id="safety-pt1">
+
+                                   @* @if (Model.Values != null)
+                                    {
+                                        Model.Values[counter].Point = point;
+                                    }*@
+
+                                </div>
+                        counter++;
+
+                    }
+
+
+                }
+            }
+        </div>
+       @* <div id="menu3" class="tab-pane fade">
+        @if (ViewBag.MyData["Delivery"]==null)
+            {
+                <p> You have not the ability for submit this Category</p>
+            }
+            else
+            {
+
+            @foreach (var point in ViewBag.MyData["Delivery"])
+                {
+
+                @if (point.HasMultipleValues)
+                    {
+                    <div class="form-group">
+                            <div class="row">
+                                <label for="safety-pt1" class="col-sm-5 col-form-label">@point.Point_Name</label>
+                                <div class="col-sm-7">
+                                    <a class="btn btn-primary" id="add-field">Add Field</a>
+                                    <a class="btn btn-danger" id="remove-field" style="display:none;">Remove Field</a>
+                                </div>
+                            </div>
+                            <input asp-for=@Model.Values[counter].Value_point type="text" class="form-control" id="safety-pt1" >
+                            <textarea asp-for=@Model.Values[counter].description class="form-control" id="safety-pt1-desc"  placeholder="Description"></textarea>
+                            <textarea asp-for=@Model.Values[counter].comment class="form-control" id="safety-pt1-comment"  placeholder="Comment"></textarea>
+                                    @if (Model.Values != null)
+                                    {
+                                        Model.Values[counter].Point = point;
+                                    }
+                    </div>
+                                counter++;
+
+                    <div id="new-fields">
+                        <!-- Input fields will be dynamically added here -->
+
+                    </div>
+
+                }
+                else
+                {
+                    <div class="form-group">
+                        <label for="safety-pt1">@point.Point_Name</label>
+                            <input asp-for=@Model.Values[counter].Value_point type="number" class="form-control" id="safety-pt1" >
+                            <textarea asp-for=@Model.Values[counter].description class="form-control" id="safety-pt1-desc"  placeholder="Description"></textarea>
+                            <textarea asp-for=@Model.Values[counter].comment class="form-control" id="safety-pt1-comment"  placeholder="Comment"></textarea>
+                                    @if (Model.Values != null)
+                                    {
+                                        Model.Values[counter].Point = point;
+                                    }
+                    </div>
+                                counter++;
+
+                            
+                }
+
+
+        }
+            }
+        </div>*@
+        <div id="menu4" class="tab-pane fade">
+            @if (ViewBag.MyData["Cost"]==null)
+            {
+                <p> You have not the ability for submit this Category</p>
+
+            }
+            else
+            {
+                @foreach (var point in ViewBag.MyData["Cost"])
+                {
+
+                    <div class="form-group">
+                        <label for="safety-pt1">@point.Point_Name</label>
+                        <input asp-for=@Model.Values[counter].Value_point type="number" class="form-control" id="safety-pt1" >
+                        <textarea asp-for=@Model.Values[counter].Value_point class="form-control" id="safety-pt1-desc"  placeholder="Description"></textarea>
+                        <textarea asp-for=@Model.Values[counter].comment class="form-control" id="safety-pt1-comment"  placeholder="Comment"></textarea>
+                        <input asp-for=@Model.Values[counter].PointID type="hidden" value=@point.PointID class="form-control" id="safety-pt1">
+
+                               @* @if (Model.Values != null)
+                                {
+                                    Model.Values[counter].Point = point;
+                                }*@
+                    </div>
+                                         
+                            counter++;
+
+
+                }
+            }
+            <button type="submit">submit</button>
+
+        </div>
+
+    </div>
+</div>
+</form>
+</div>

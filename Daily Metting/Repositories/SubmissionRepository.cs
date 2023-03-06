@@ -9,33 +9,43 @@ namespace Daily_Metting.Repositories
     public class SubmissionRepository : ISubmissionRepository
     {
         private readonly DailyMeetingDbContext _dailyMeetingDbContext;
+        public SubmissionRepository(DailyMeetingDbContext dailyMeetingDbContext)
+        {
+            _dailyMeetingDbContext = dailyMeetingDbContext;
+        }
 
         public IEnumerable<Submission> AllSubmission => _dailyMeetingDbContext.Submissions.OrderBy(p=> p.submission_time);
 
-        public void AddSubmission(Submission submission,List<Value> values)
-        {
+        //public void AddSubmission(Submission submission,List<Value> values)
+        //{
 
-            foreach (var valueModel in values)
-            {
-                var value = new Value
-                {
-                    Value_point = valueModel.Value_point,
-                    description = valueModel.description,
-                    comment = valueModel.comment,
-                    Point = valueModel.Point,
-                    Submission = submission
-                };
+        //    foreach (var valueModel in values)
+        //    {
+        //        var value = new Value
+        //        {
+        //            Value_point = valueModel.Value_point,
+        //            description = valueModel.description,
+        //            comment = valueModel.comment,
+        //            Point = valueModel.Point,
+        //            Submission = submission
+        //        };
 
-                submission.Values.Add(value);
-            }
-            //List<ShoppingCartItem>? shoppingCartItems = _shoppingCart.ShoppingCartItems;
-            //order.OrderTotal = _shoppingCart.GetShoppingCartTotal();
+        //        submission.Values.Add(value);
+        //    }
+        //    //List<ShoppingCartItem>? shoppingCartItems = _shoppingCart.ShoppingCartItems;
+        //    //order.OrderTotal = _shoppingCart.GetShoppingCartTotal();
 
-            //order.OrderDetails = new List<OrderDetail>();
+        //    //order.OrderDetails = new List<OrderDetail>();
 
-            _dailyMeetingDbContext.Submissions.Add(submission);
-            _dailyMeetingDbContext.SaveChanges();
+        //    _dailyMeetingDbContext.Submissions.Add(submission);
+        //    _dailyMeetingDbContext.SaveChanges();
             
+        //}
+
+        public void AddSubmission(Submission submission)
+        {
+            _dailyMeetingDbContext.Submissions.Add(submission);
+            _dailyMeetingDbContext.SaveChanges();       
         }
     }
 }

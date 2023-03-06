@@ -13,6 +13,10 @@ namespace Daily_Metting.Repositories
         }
 
         public IEnumerable<Point> AllPoints => _dailyMeetingDbContext.Points.OrderBy(p => p.Point_Name);
+        
+        public Point GetByID(int pointID) {
+            return _dailyMeetingDbContext.Points.Where(p => p.PointID == pointID).FirstOrDefault();
+        }
 
         public IEnumerable<Point> GetPointsByDepartement_Category(string Departement,string category_name)
         {

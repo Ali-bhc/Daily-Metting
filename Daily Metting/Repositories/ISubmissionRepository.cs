@@ -5,6 +5,7 @@ namespace Daily_Metting.Repositories
     public interface ISubmissionRepository
     {
         IEnumerable<Submission> AllSubmission { get; }
-        void AddSubmission(Submission submission,List<Value> ValuesList);
+        //void AddSubmission(Submission submission,List<Value> ValuesList);  
+        void AddSubmission(Submission submission);
     }
 }
