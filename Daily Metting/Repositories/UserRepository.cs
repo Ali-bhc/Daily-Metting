@@ -13,9 +13,15 @@ namespace Daily_Metting.Repositories
         }
         public IEnumerable<User> AllUsers => _dailyMeetingDbContext.Users.ToList().OrderBy(p => p.Name);
 
+
         public User? GetByUsername(string username)
         {
           return  _dailyMeetingDbContext.Users.Where(p => p.UserName== username).FirstOrDefault();
+        }
+
+        public List<User> GetMembers(User user)
+        {
+            return _dailyMeetingDbContext.Users.Where(u=>u.UserName != user.UserName && u.IsAdmin==false).ToList();
         }
     }
 }

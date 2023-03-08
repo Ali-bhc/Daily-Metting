@@ -4,14 +4,13 @@ using Daily_Metting.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Daily_Metting.Repositories;
 
 namespace Daily_Metting.Controllers
 {
     [Authorize(Policy = "AdminPolicy")]
     public class AdminController : Controller
     {
-        private readonly SignInManager<User> _signInManager;
+        private readonly SignInManager<User>? _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly IUserRepository _userRepository;
         private readonly IAbsencesRepository _absencesRepository;
@@ -73,20 +72,26 @@ namespace Daily_Metting.Controllers
 
 
 
-        public IActionResult Attendance()
+        public async Task<IActionResult> Attendance()
         {
-            IEnumerable<User> Users;
-
-            Users = _userRepository.AllUsers;
-            ViewBag.MyUsers = Users;
-
-            //string abs = "";
-            //User user= new User();
-            //AbsenceViewModel absenceViewModel = new AbsenceViewModel(abs,user.UserName);
-            //List<AbsenceViewModel> absenceViewModels= new List<AbsenceViewModel>();
-
-            //AttendanceViewModel attendanceViewModel = new AttendanceViewModel();
-            return View(new AttendanceViewModel());
+            Absence abs = _absencesRepository.GetAbsence(DateTime.Today);
+            AttendanceViewModel _attendanceViewModel = new AttendanceViewModel();
+            if (abs != null)
+            {
+                ViewBag.Message = "the attendance sheet";
+                var user = await _userManager.GetUserAsync(User);
+                List<User> Users;
+                Users = _userRepository.GetMembers(user);
+                //ViewBag.MyUsers = Users;
+                _attendanceViewModel.IsActive= true;
+                _attendanceViewModel.Users = Users;
+            }
+            else 
+            {
+                ViewBag.Message = "You have already did it";
+                _attendanceViewModel.IsActive=false;
+            }
+            return View(_attendanceViewModel);
         }
 
 
@@ -97,11 +102,15 @@ namespace Daily_Metting.Controllers
             foreach(var absent in attendanceViewModel.AttendanceStatus)
             {
                 var user = _userRepository.GetByUsername(absent.username);
-                _absencesRepository.AddAbsence(new Absence { Status = absent.status, User = user, date = DateTime.Now });
+                _absencesRepository.AddAbsence(new Absence { Status = absent.status, User = user, date = DateTime.Today });
             }
 
             return RedirectToAction(nameof(AdminController.Index), "Admin");
         }
+
+       
+
+
 
     }
 }

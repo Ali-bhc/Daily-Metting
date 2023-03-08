@@ -4,22 +4,11 @@
 }
 
 <div class="container">
-    <h3>
-    </h3>
-    <h3>@ViewBag.Message</h3>
-
-    @if(Model.IsSubmited)
-    {
-    <a asp-controller="member" asp-action="UpdateSubmission" class="my-4">Update your Submission </a>
-    }
-    else
-    {
-
-    <form asp-controller="Member" asp-action="AddSubmission" method="post">
+<form asp-controller="Member" asp-action="AddSubmission" method="post">
 
 <div class="wrapper">
     <div class="tabs-wrapper">
-        <span class="left scroller-btn">hi</span>
+        <span class="left scroller-btn"><</span>
         <ul id="scroller" class="nav nav-tabs">
     @foreach (var cat in Model.PointCategoryList.Keys)
     {
@@ -42,9 +31,9 @@
                         <div class="form-group">
                             <label for="safety-pt1">@point.Point_Name</label>
                             <input asp-for=@Model.Values[counter].Value_point type="number" class="form-control" id="safety-pt1">
-                            <textarea asp-for=@Model.Values[counter].description class="form-control" id="safety-pt1-desc" placeholder="Description"></textarea>
-                            <textarea asp-for=@Model.Values[counter].comment class="form-control" id="safety-pt1-comment" placeholder="Comment"></textarea>
-                            <input asp-for=@Model.Values[counter].PointID type="hidden" value=@point.PointID class="form-control" id="safety-pt1">
+                                    <textarea asp-for=@Model.Values[counter].description class="form-control" id="safety-pt1-desc" placeholder="Description"></textarea>
+                                    <textarea asp-for=@Model.Values[counter].comment class="form-control" id="safety-pt1-comment" placeholder="Comment"></textarea>
+                                    <input asp-for=@Model.Values[counter].PointID type="hidden" value=@point.PointID class="form-control" id="safety-pt1">
 
                         </div>
                         counter++;
@@ -73,7 +62,7 @@
                                 
                                 <label for="safety-pt1" class="col-sm-5 col-form-label">@point.Point_Name</label>
                                 <div class="col-sm-7">
-                                    <a class="btn btn-primary" id="add-field" data-value1=@Model.total_number data-value2=@point.PointID.ToString() >Add Field</a>
+                                <a class="btn btn-primary" id="add-field" data-value2=@point.PointID.ToString()>Add Field</a>
                                     <a class="btn btn-danger" id="remove-field" style="display:none;">Remove Field</a>
                                 </div>
 
@@ -123,6 +112,4 @@
 
 </div>
 </form>
-}
 </div>
-<script src="~/js/AddSubmissionScript.js"></script>

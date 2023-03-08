@@ -18,14 +18,10 @@ namespace Daily_Metting.Repositories
             _dailyMeetingDbContext.Absences.Add(absence);
             _dailyMeetingDbContext.SaveChanges();
         }
-        //public void AddDayAbsence(List<Absence> absences)
-        //{
-        //    foreach (Absence absence in absences)
-        //    {
-        //        _dailyMeetingDbContext.Absences.Add(absence);
-        //    }
-            
-        //    _dailyMeetingDbContext.SaveChanges();
-        //}
+
+        public Absence GetAbsence(DateTime date)
+        {
+           return _dailyMeetingDbContext.Absences.Where(a=>a.date == date).FirstOrDefault();
+        }
     }
 }

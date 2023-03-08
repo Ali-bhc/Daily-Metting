@@ -7,5 +7,6 @@ namespace Daily_Metting.Repositories
         IEnumerable<Category> AllCategories { get; }
 
 
+
     }
 }

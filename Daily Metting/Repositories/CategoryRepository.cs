@@ -13,5 +13,7 @@ namespace Daily_Metting.Repositories
         }
 
         public IEnumerable<Category> AllCategories => _dailyMeetingDbContext.Categories.OrderBy(p => p.Category_Name);
+
+        
     }
 }

@@ -1,0 +1,26 @@
+﻿@using Microsoft.AspNetCore.Components
+@using System.Threading.Tasks
+
+<div>
+    <button @onclick="updateValues">Add Field</button>
+    @if (ShowGroupForm)
+    {
+        <div>
+            <!-- Insert group form code here -->
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public int Counter { get; set; }
+
+    bool ShowGroupForm { get; set; }
+
+    async Task updateValues()
+    {
+        Counter++;
+        ShowGroupForm = true;
+        await Task.CompletedTask;
+    }
+}

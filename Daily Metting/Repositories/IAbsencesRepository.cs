@@ -6,5 +6,6 @@ namespace Daily_Metting.Repositories
     {
         IEnumerable<Absence> AllAbsences { get; }
         void AddAbsence(Absence submission);
+        Absence GetAbsence(DateTime date);
     }
 }

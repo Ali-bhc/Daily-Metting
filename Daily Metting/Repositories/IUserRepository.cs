@@ -7,6 +7,7 @@ namespace Daily_Metting.Repositories
 
         IEnumerable<User> AllUsers { get; }
         User? GetByUsername(string username);
+        List<User> GetMembers(User user);
 
     }
 }

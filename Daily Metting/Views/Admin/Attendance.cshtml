@@ -10,49 +10,60 @@
 
 <div class="container">
     <h1>Attendance Table</h1>
-    <h2>Style 1</h2>
+    <h4>@ViewBag.Message</h4>
     <div class="row">
-        <div class="col-md-12">
-            <form asp-controller="Admin" asp-action="Attendance" method="post">
-                
-            <table class="table">
-                <tr class="table-header" >
-                    <th class="cell">Username</th>
-                    <th class="cell">Name</th>
-                    <th class="cell">Departement</th>
-                    <th class="cell">Attendance</th>
-                </tr>
-                    @foreach (var user in ViewBag.MyUsers)
-                    {
-                    <tr>
-                        <td>@user.ToString()</td>
-                        <td>@user.Name</td>
-                            <td>@user.Departement</td>
-                        <td>
-                            <div class="form-check form-check-inline">
-                                <input asp-for=@Model.AttendanceStatus[counter].status class="form-check-input" type="radio" id="absent"  value="absent">
-                                <label class="form-check-label" for="absent">Absent</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                    <input asp-for=@Model.AttendanceStatus[counter].status class="form-check-input" type="radio" id="late" value="late">
-                                <label class="form-check-label" for="late">Late</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                    <input asp-for=@Model.AttendanceStatus[counter].status class="form-check-input" type="radio" id="present" value="present">
-                                <label class="form-check-label" for="present">Present</label>
-                            </div>
-                                <input asp-for=@Model.AttendanceStatus[counter].username class="form-check-input" type="hidden" value=@user.UserName>
-@*                                @Model.AttendanceStatus[counter].username=@user.UserName
-*@
-                        </td>
+        @if (Model.IsActive)
+        {
+            <div class="col-md-12">
+                <form asp-controller="Admin" asp-action="Attendance" method="post">
+
+                    <table class="table">
+                        <tr class="table-header" >
+                            <th class="cell">Username</th>
+                            <th class="cell">Name</th>
+                            <th class="cell">Departement</th>
+                            <th class="cell">Attendance</th>
                         </tr>
-                        counter++;
-                    }
-             </table>
+                        @foreach (var user in Model.Users)
+                        {
+                            <tr>
+                                <td>@user.ToString()</td>
+                                <td>@user.Name</td>
+                                <td>@user.Departement</td>
+                                <td>
+                                    <div class="form-check form-check-inline">
+                                        <input asp-for=@Model.AttendanceStatus[counter].status class="form-check-input" type="radio" id="absent"  value="absent">
+                                        <label class="form-check-label" for="absent">Absent</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input asp-for=@Model.AttendanceStatus[counter].status class="form-check-input" type="radio" id="late" value="late">
+                                        <label class="form-check-label" for="late">Late</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input asp-for=@Model.AttendanceStatus[counter].status class="form-check-input" type="radio" id="present" value="present">
+                                        <label class="form-check-label" for="present">Present</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input asp-for=@Model.AttendanceStatus[counter].status class="form-check-input" type="radio" id="delegated" value="delegated">
+                                        <label class="form-check-label" for="delegated">Delegated</label>
+                                    </div>
+                                    <input asp-for=@Model.AttendanceStatus[counter].username class="form-check-input" type="hidden" value=@user.UserName>
+
+                                </td>
+                            </tr>
+                            counter++;
+                        }
+                    </table>
                 <div class="form-group text-center">
                     <button type="submit" class="btn btn-primary btn-block">Submit</button>
                 </div>
             </form>
-        </div>
+            </div>
+        }
+        else
+        {
+            <a asp-controller="Admin" asp-action="Index" class="my-4">Update Attendance </a>
+
+        }
     </div>
 </div>

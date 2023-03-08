@@ -115,6 +115,7 @@ builder.Services.AddAuthorization(options =>
 });
 
 
+builder.Services.AddServerSideBlazor();
 
 
 var app = builder.Build();
@@ -138,6 +139,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}");
+app.MapBlazorHub();
 
 DBInitializer.Seed(app);
 
