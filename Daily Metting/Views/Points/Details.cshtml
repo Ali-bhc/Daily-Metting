@@ -1,0 +1,48 @@
+﻿@model Daily_Metting.Models.Point
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Point</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Point_Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Point_Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WH_Acces)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WH_Acces)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CS_PP_Acces)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CS_PP_Acces)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Procurement_Acces)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Procurement_Acces)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HasMultipleValues)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HasMultipleValues)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.PointID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

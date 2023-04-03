@@ -5,10 +5,25 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Daily_Metting.Migrations
 {
-    public partial class migration1 : Migration
+    public partial class ModifyAttainement1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "APUs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    APU_Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Attainement_min = table.Column<int>(type: "int", nullable: false),
+                    Attainement_Max = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_APUs", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -32,6 +47,7 @@ namespace Daily_Metting.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsAdmin = table.Column<bool>(type: "bit", nullable: true),
                     Departement = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MissedSubmissions = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -63,6 +79,32 @@ namespace Daily_Metting.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.CategoryID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Attainements",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Project_name = table.Column<double>(type: "float", nullable: false),
+                    Attainement_OTIF = table.Column<double>(type: "float", nullable: false),
+                    Attainement_Mix = table.Column<double>(type: "float", nullable: false),
+                    Productivity = table.Column<double>(type: "float", nullable: false),
+                    Downtime = table.Column<double>(type: "float", nullable: false),
+                    Scrap = table.Column<double>(type: "float", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    APUId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Attainements", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Attainements_APUs_APUId",
+                        column: x => x.APUId,
+                        principalTable: "APUs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -198,7 +240,8 @@ namespace Daily_Metting.Migrations
                     SubmissionID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     submission_time = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    status = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -240,11 +283,11 @@ namespace Daily_Metting.Migrations
                 {
                     ValueID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Value_point = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Value_point = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PointID = table.Column<int>(type: "int", nullable: false),
-                    SubmissionID = table.Column<int>(type: "int", nullable: false)
+                    SubmissionID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -259,8 +302,7 @@ namespace Daily_Metting.Migrations
                         name: "FK_Values_Submissions_SubmissionID",
                         column: x => x.SubmissionID,
                         principalTable: "Submissions",
-                        principalColumn: "SubmissionID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "SubmissionID");
                 });
 
             migrationBuilder.CreateIndex(
@@ -308,6 +350,11 @@ namespace Daily_Metting.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Attainements_APUId",
+                table: "Attainements",
+                column: "APUId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Points_CategoryID",
                 table: "Points",
                 column: "CategoryID");
@@ -349,10 +396,16 @@ namespace Daily_Metting.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Attainements");
+
+            migrationBuilder.DropTable(
                 name: "Values");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "APUs");
 
             migrationBuilder.DropTable(
                 name: "Points");

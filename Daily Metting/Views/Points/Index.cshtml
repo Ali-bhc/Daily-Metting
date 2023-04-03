@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Daily_Metting.Models.Point>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Point_Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WH_Acces)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CS_PP_Acces)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Procurement_Acces)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HasMultipleValues)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Point_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WH_Acces)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CS_PP_Acces)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Procurement_Acces)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HasMultipleValues)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.Category_Name)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.PointID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.PointID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.PointID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -7,7 +7,9 @@ namespace Daily_Metting.Repositories
 
         IEnumerable<User> AllUsers { get; }
         User? GetByUsername(string username);
-        List<User> GetMembers(User user);
-
+        List<User> GetMembers();
+        int GetDepartementUsersCount(string dep);
+        void updateUserMissedsubmission(Dictionary<string, List<Submission>> users_submissions);
+        int GetUsersMissedSubmissions(User user);
     }
 }

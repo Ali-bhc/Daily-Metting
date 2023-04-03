@@ -117,6 +117,50 @@
         "js/bootstrap.min.js",
         "js/bootstrap.min.js.map"
       ]
+    },
+    {
+      "library": "Chart.js@4.2.1",
+      "destination": "wwwroot/js/Chart.js/",
+      "files": [
+        "chart.cjs.map",
+        "chart.js",
+        "chart.js.map",
+        "chart.min.js",
+        "chart.umd.js",
+        "chart.umd.js.map",
+        "chart.umd.min.js",
+        "helpers.cjs.map",
+        "helpers.js",
+        "helpers.js.map",
+        "helpers.min.js",
+        "index.d.ts",
+        "index.umd.d.ts",
+        "types.d.ts"
+      ]
+    },
+    {
+      "library": "dom-to-image@2.6.0",
+      "destination": "wwwroot/dom-to-image/"
+    },
+    {
+      "library": "html2canvas@1.4.1",
+      "destination": "wwwroot/html2canvas/"
+    },
+    {
+      "library": "countdown@2.6.0",
+      "destination": "wwwroot/js/countdown/"
+    },
+    {
+      "library": "html2pdf.js@0.10.1",
+      "destination": "wwwroot/html2pdf.js/"
+    },
+    {
+      "library": "jspdf@2.5.1",
+      "destination": "wwwroot/jspdf/"
+    },
+    {
+      "library": "pdfmake@0.2.7",
+      "destination": "wwwroot/pdfmake/"
     }
   ]
 }

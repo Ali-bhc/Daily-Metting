@@ -10,8 +10,8 @@
             @foreach (var sub in Model.Submissions)
             {
                 <tr>
-                    <td>@sub.submission_time.ToString("dd/MM/yyyy")</td>
-                <td>details</td>
+                    <td>@sub.submission_time</td>
+                <td><a href="SubmissionDetails?id=@sub.SubmissionID">details</a></td>
                    
                 </tr>
             } 

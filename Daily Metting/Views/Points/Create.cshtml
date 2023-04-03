@@ -1,0 +1,69 @@
+﻿@model PointViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Point</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Point_Name" class="control-label"></label>
+                <input asp-for="Point_Name" class="form-control" />
+                <span asp-validation-for="Point_Name" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="WH_Acces" /> @Html.DisplayNameFor(model => model.WH_Acces)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="CS_PP_Acces" /> @Html.DisplayNameFor(model => model.CS_PP_Acces)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Procurement_Acces" /> @Html.DisplayNameFor(model => model.Procurement_Acces)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="HasMultipleValues" /> @Html.DisplayNameFor(model => model.HasMultipleValues)
+                </label>
+            </div>
+
+            @*<div>
+                @Html.LabelFor(model => model.Category.Category_Name)
+                @Html.DropDownListFor(model => model.Category, new SelectList(ViewBag.Categories.Category_Name), "-- Select category --")
+            </div>*@
+            <div class="form-group">
+                    <label for="Category">Category</label>
+                    <select asp-for=@Model.CategoryID class="form-control" id="Category">
+                        <option value="">Choose a Category</option>
+                        @foreach(var cat in Model.categories)
+                        {
+                        <option value=@cat.CategoryID>@cat.Category_Name </option>
+                        }
+                </select>
+                <span asp-validation-for="@Model.CategoryID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -30,5 +30,11 @@ namespace Daily_Metting.ViewModels
         {
             IsActive = isActive;
         }
+
+        public AttendanceViewModel(List<AbsenceViewModel>? attendanceStatus, List<User>? users, bool isActive) : this(attendanceStatus)
+        {
+            Users = users;
+            IsActive = isActive;
+        }
     }
 }

@@ -6,11 +6,12 @@ namespace Daily_Metting.ViewModels
     public class LoginViewModel
     {
         [Required]
-        [EmailAddress]
+        [DataType(DataType.EmailAddress)]
+        [EmailAddress(ErrorMessage = "Invalid email address")]
         public string Email { get; set; }
         //[Required]
         //public string Username { get; set; }
-
+            
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }

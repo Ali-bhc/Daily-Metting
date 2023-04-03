@@ -1,0 +1,118 @@
+﻿@model SubmissionViewModel
+@{
+    //int counter = 0;
+    int Id_counter = 1;
+
+}
+
+<div class="container">
+        <form asp-controller="Member" asp-action="UpdateSubmission" method="post">
+
+        <div class="wrapper">
+            <div class="tabs-wrapper">
+                <span class="left scroller-btn">hi</span>
+                <ul id="scroller" class="nav nav-tabs">
+                    @foreach (var cat in Model.PointCategoryList.Keys)
+                    {
+                        <li><a data-toggle="tab" href=#@cat>@cat</a></li>
+                    }
+                </ul>
+                <span id="right" class="right scroller-btn">></span>
+            </div>
+            <div class="tab-content">
+
+                @foreach (var cat in Model.PointCategoryList.Keys)
+                {
+                    @if (cat.Equals("Safety"))
+                    {
+                        <div id="Safety" class="tab-pane fade in active">
+
+                            @foreach (var point in Model.PointCategoryList[cat])
+                            {
+                                var value = new ValueViewModel();
+                                <div class="form-group">
+                                    <label for="safety-pt1">@point.Point_Name</label>
+                                    <input asp-for=@Model.Values[point.Point_Name].Value_point type="number" class="form-control" id="safety-pt1">
+                                    <textarea asp-for=@Model.Values[point.Point_Name].description class="form-control" id="safety-pt1-desc" placeholder="Description"></textarea>
+                                    <textarea asp-for=@Model.Values[point.Point_Name].comment class="form-control" id="safety-pt1-comment" placeholder="Comment"></textarea>
+                                    <input asp-for=@Model.Values[point.Point_Name].PointID type="hidden" value=@point.PointID class="form-control" id="safety-pt1">
+
+                                </div>
+                                //counter++;
+
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div id=@cat class="tab-pane fade">
+
+                            @if (Model.PointCategoryList[cat].Count() == 0)
+                            {
+                                <p> You have not the ability for submit this Category</p>
+
+                            }
+                            else
+                            {
+                                @foreach (var point in Model.PointCategoryList[cat])
+                                {
+
+                                    @if (point.HasMultipleValues)
+                                    {
+                                        <div class="form-group">
+                                            <div class="row">
+
+                                                <label for="safety-pt1" class="col-sm-5 col-form-label">@point.Point_Name</label>
+                                                <div class="col-sm-7">
+                                                    <a class="btn btn-primary add-field1" data-value="@point.Point_Name" data-value1="@(Id_counter)" data-value2=@point.PointID>Add Field</a>
+                                                    <a class="btn btn-danger" id="remove-field" style="display:none;">Remove Field</a>
+                                                </div>
+
+                                            </div>
+                                            <input asp-for=@Model.Values[point.Point_Name].Value_point type="text" class="form-control" id="safety-pt1">
+                                            <textarea asp-for=@Model.Values[point.Point_Name].description class="form-control" id="safety-pt1-desc" placeholder="Description"></textarea>
+                                            <textarea asp-for=@Model.Values[point.Point_Name].comment class="form-control" id="safety-pt1-comment" placeholder="Comment"></textarea>
+                                            <input asp-for=@Model.Values[point.Point_Name].PointID type="hidden" value=@point.PointID class="form-control" id="safety-pt1">
+
+                                        </div>
+                                        //counter ++;
+
+                                        <div id="@point.PointID-new-fields">
+                                            <!-- Input fields will be dynamically added here -->
+                                        </div>
+
+                                    }
+                                    else
+                                    {
+                                        <div class="form-group">
+                                            <label for="safety-pt1">@point.Point_Name</label>
+                                            <input asp-for=@Model.Values[point.Point_Name].Value_point type="number" class="form-control" id="safety-pt1">
+                                            <textarea asp-for=@Model.Values[point.Point_Name].description class="form-control" id="safety-pt1-desc" placeholder="Description"></textarea>
+                                            <textarea asp-for=@Model.Values[point.Point_Name].comment class="form-control" id="safety-pt1-comment" placeholder="Comment"></textarea>
+                                            <input asp-for=@Model.Values[point.Point_Name].PointID type="hidden" value=@point.PointID class="form-control" id="safety-pt1">
+
+                                        </div>
+                                        //counter++;
+
+
+                                    }
+
+                                }
+                            }
+
+                            @if (cat == Model.PointCategoryList.Keys.Last())
+                            {
+                                <div class="form-group text-center">
+                                    <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                                </div>
+                            }
+                        </div>
+                    }
+
+                }
+            </div>
+
+        </div>
+        </form>
+</div>
+<script src="~/js/AddSubmissionScript.js"></script>

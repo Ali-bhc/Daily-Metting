@@ -1,0 +1,105 @@
+﻿/*#fixed-div {
+    position: fixed;
+    top: 60px;*/ /* Change this value to match the height of your navbar */
+    /*width: 100%;
+    background-color: #ffffff;*/ /* Change this to your preferred background color */
+    /*z-index: 999;*/ /* Make sure the z-index is higher than the navbar */
+/*}*/
+
+#fixed-div {
+    overflow-y: auto; /* Make the first div scrollable */
+}
+
+.table-container {
+    height: 600px; /* Set a height for the second div */
+    overflow-y: scroll; /* Make the second div scrollable */
+}
+.logoPrettl {
+    display: inline-block;
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin-left: 15px;
+    margin-right: 211px;
+    width: 100%;
+    vertical-align: middle;
+    height: 70px;
+}
+
+/*#timer {
+    font-size: 36px;
+    color: #fff;
+    background-color: #000;
+    padding: 10px;
+    border-radius: 5px;
+}
+*/
+
+#counter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.timer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(to right, #ee8787, #ac2929);
+    padding: 5px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+    .timer h1 {
+        font-size: 30px;
+        margin: 0;
+        color: #333;
+        text-align: center;
+        line-height: 1;
+        font-weight: bold;
+    }
+
+    .timer span {
+        font-size: 20px;
+        margin-top: 10px;
+        color: #333;
+        text-align: center;
+    }
+/*
+.buttons {
+    margin-top: 20px;
+}*/
+
+/*.buttons button {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin-right: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.buttons button:hover {
+    background-color: #3e8e41;
+}*/
+
+.btn-demo {
+/*    padding: 0.5rem 2rem !important;
+*/    border-radius: 30rem !important;
+    background: rgba(255, 255, 255, 0.3);
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold !important;
+}
+
+.btn-demo:hover, .btn-demo:focus {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.5);
+}
+    

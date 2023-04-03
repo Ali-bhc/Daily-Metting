@@ -1,0 +1,31 @@
+﻿@model UploadSubmissionViewModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="body-container-wrapper">
+    <div class="body-container">
+        <div class="page-center">
+<h3>@ViewBag.Message</h3>
+
+            @if (Model.IsSubmitted)
+            {
+            <a asp-controller="member" asp-action="UpdateSubmissionByUpload" class="my-4">Update your Submission </a>
+            }
+            else
+            { 
+            <i class="fa fa-cloud" aria-hidden="true"></i>
+            <h1>Upload Your <strong>Files</strong></h1>
+            <form enctype="multipart/form-data" asp-controller="Member" asp-action="UploadSubmission" method="post">
+                <div id="drop">
+                    <input type="file" asp-for=@Model.File class="upload" id="file-input" accept=".xlsx, .xls">
+                    <span asp-validation-for="@Model.File" class="text-danger"></span>
+                </div>
+                    <button type="submit" id="UploadBtn" class="btn btn-outline-primary" data-value="@Model.User">Upload</button>
+            </form>
+            <span class="text-danger">@Model.ValidationMessage</span>
+            }
+        </div>
+    </div>
+</div>

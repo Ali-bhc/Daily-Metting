@@ -15,6 +15,8 @@ namespace Daily_Metting.DAO
         public DbSet<Value> Values { get; set; }
         public DbSet<Submission> Submissions { get; set; }
         public DbSet<Absence> Absences { get; set; }
+        public DbSet<APU> APUs { get; set; }
+        public DbSet<Attainement> Attainements { get; set; }
 
     }
 }

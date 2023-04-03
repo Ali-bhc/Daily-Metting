@@ -4,7 +4,7 @@ namespace Daily_Metting.ViewModels
 {
     public class ValueViewModel
     {
-        public string? Value_point { get; set; }
+        public int? Value_point { get; set; }
         public string? description { get; set; }
         public string? comment { get; set; }
         public int PointID { get; set; }

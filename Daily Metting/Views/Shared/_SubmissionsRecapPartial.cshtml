@@ -1,0 +1,93 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+<table class="table table-striped table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>Points</th>
+            <th>Values</th>
+            <th colspan="3">Description</th>
+            <th colspan="3">Comment</th>
+        </tr>
+    </thead>
+
+    @foreach (var cat in Model.pointCategoryList.Keys)
+    {
+        <tbody id="TableTest">
+
+            @if (Model.pointCategoryList[cat].Count > 0)
+            {
+                <tr>
+                    <td id="@cat" class="text-center" colspan="11"><img style="width:30px;" src="~/img/Icons/@cat Icon.svg" id="Icon">@cat</td>
+                </tr>
+                @foreach (var point in Model.pointCategoryList[cat])
+                {
+                    <tr>
+                        <td rowspan=1>@point.Point_Name</td>
+                        <td rowspan=1>@Model.ListOfSumOfValuesOfPoints[point.Point_Name]</td>
+                        <td colspan=3>@Html.Raw(Model.CommentsConcatenation[point.Point_Name][0].Replace("\n", "<br />"))</td>
+                        <td colspan=3>@Html.Raw(Model.DescriptionssConcatenation[point.Point_Name][0].Replace("\n", "<br />"))</td>
+                    </tr>
+                    @*}*@
+
+
+                }
+
+            }
+        </tbody>
+        @if (Model.ListofAttainementAverages != null && cat == "Delivery")
+        {
+            <tbody id="AttainementTable">
+                <tr class="thead-dark">
+                    <th colspan="11" class="text-center">Attainement</th>
+                </tr>
+                @foreach (var apu in Model.ListofAttainementAverages.Keys)
+                {
+                    @if (Model.ListofAttainementAverages[apu].Count > 0)
+                    {
+                        <tr>
+                            <td class="text-center" rowspan=@(Model.ListofAttainementAverages[apu].Count+1)>@apu</td>
+                            <td>Project Name</td>
+                            <td>Attainements OTIF</td>
+                            <td>Attainements MIX</td>
+                            <td>Productivity</td>
+                            <td>Downtime</td>
+                            <td>Scrap</td>
+                            <td>Comments</td>
+                        </tr>
+
+
+                        @foreach (var attainement in Model.ListofAttainementAverages[apu])
+                        {
+                            <tr>
+                                <td>
+                                    @attainement.Project_name %
+                                </td>
+                                <td>@attainement.Attainement_OTIF %</td>
+                                <td>@attainement.Attainement_Mix %</td>
+                                <td>@attainement.Productivity %</td>
+                                <td>@attainement.Downtime %</td>
+                                <td>@attainement.Scrap %</td>
+                                <td class="small">@Html.Raw(attainement.Comment.Replace("\n", "<br />"))</td>
+                            </tr>
+                        }
+
+                    }
+
+                }
+
+            </tbody>
+        }
+
+
+    }
+
+</table>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script src="~/js/HomeAdmin.js"></script>

@@ -6,6 +6,8 @@ namespace Daily_Metting.Repositories
     {
         IEnumerable<Absence> AllAbsences { get; }
         void AddAbsence(Absence submission);
-        Absence GetAbsence(DateTime date);
+        List<Absence> GetAbsences(DateTime date);
+        int GetAbcencesCountByStatus_User(string Status, User user);
+        void UpdateAbsences(User user , DateTime date , string status);
     }
 }

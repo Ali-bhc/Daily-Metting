@@ -4,45 +4,58 @@ namespace Daily_Metting.ViewModels
 {
     public class SubmissionViewModel
     {
-        public List<ValueViewModel>? Values { get; set; }
+       // public List<ValueViewModel>? UpdateValueslist { get; set; }
+        public Dictionary <string, ValueViewModel>? Values { get; set; }
         public Dictionary<string, IEnumerable<Point>> PointCategoryList = new Dictionary<string, IEnumerable<Point>>();
-        public int total_number { get; set; }
         public bool IsSubmited { get; set; }
+        public bool Is_CS_PP { get; set; }
+        //public IFormFile file { get; set; }
+        //public List<Attainement> Attainements { get; set; }
+        public Dictionary<string, List<string>> ProjectList { get; set; }
+        public Dictionary<string, AttainementsViewModel> AttainamentsList { get; set; }
 
-        public SubmissionViewModel(Dictionary<string, IEnumerable<Point>> pointCategoryList)
-        {
-            PointCategoryList = pointCategoryList;
-        }
 
         public SubmissionViewModel()
         {
         }
 
-        public SubmissionViewModel(List<ValueViewModel>? values, Dictionary<string, IEnumerable<Point>> pointCategoryList)
-        {
-            Values = values;
-            PointCategoryList = pointCategoryList;
-        }
-
-        public SubmissionViewModel(Dictionary<string, IEnumerable<Point>> pointCategoryList, int total_number) : this(pointCategoryList)
-        {
-            this.total_number = total_number;
-        }
-
-        public SubmissionViewModel(List<ValueViewModel>? values)
-        {
-            Values = values;
-        }
+       
 
         public SubmissionViewModel(bool isSubmited)
         {
             IsSubmited = isSubmited;
         }
 
-        public SubmissionViewModel(Dictionary<string, IEnumerable<Point>> pointCategoryList, int total_number, bool isSubmited) : this(pointCategoryList, total_number)
+        public SubmissionViewModel(Dictionary<string, IEnumerable<Point>> pointCategoryList, bool isSubmited, bool is_CS_PP) 
         {
+            PointCategoryList = pointCategoryList;
             IsSubmited = isSubmited;
+            Is_CS_PP = is_CS_PP;
         }
 
+        public SubmissionViewModel(Dictionary<string, IEnumerable<Point>> pointCategoryList, Dictionary<string, List<string>> projectList , bool isSubmited , bool is_CS_PP)
+        {
+            this.PointCategoryList = pointCategoryList;
+            this.ProjectList = projectList;
+            this.IsSubmited= isSubmited;
+            this.Is_CS_PP= is_CS_PP;
+        }
+
+
+        public SubmissionViewModel(Dictionary<string, ValueViewModel>? values, Dictionary<string, IEnumerable<Point>> pointCategoryList, Dictionary<string, AttainementsViewModel> attainamentsList,Dictionary<string,List<string>> projectList , bool is_CS_PP)
+        {
+            this.Values = values;
+            AttainamentsList = attainamentsList;
+            this.PointCategoryList = pointCategoryList;
+            ProjectList = projectList;
+            Is_CS_PP = is_CS_PP;
+        }
+
+        public SubmissionViewModel(Dictionary<string, ValueViewModel>? values, Dictionary<string, IEnumerable<Point>> pointCategoryList, bool is_CS_PP)
+        {
+            Values = values;
+            PointCategoryList = pointCategoryList;
+            Is_CS_PP = is_CS_PP;
+        }
     }
 }

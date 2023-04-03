@@ -1,11 +1,9 @@
 @model SubmissionViewModel
-@{
-    int counter = 0;
-}
+
 
 <div class="container">
-    <h3>
-    </h3>
+
+   
     <h3>@ViewBag.Message</h3>
 
     @if(Model.IsSubmited)
@@ -14,8 +12,7 @@
     }
     else
     {
-
-    <form asp-controller="Member" asp-action="AddSubmission" method="post">
+        <form enctype="multipart/form-data" asp-controller="Member" asp-action="AddSubmission" method="post">
 
 <div class="wrapper">
     <div class="tabs-wrapper">
@@ -23,8 +20,14 @@
         <ul id="scroller" class="nav nav-tabs">
     @foreach (var cat in Model.PointCategoryList.Keys)
     {
-        <li><a data-toggle="tab" href=#@cat>@cat</a></li>
+        <li><a data-toggle="tab" href=#@(cat+"-tab")>@cat</a></li>
     }
+
+    @if (Model.Is_CS_PP)
+    {
+        <li><a data-toggle="tab" href="#Attainement">Attainement</a></li>
+    }
+        
         </ul>
         <span id="right" class="right scroller-btn">></span>
     </div>
@@ -34,27 +37,25 @@
         {
             @if (cat.Equals("Safety"))
             {
-              <div id="Safety" class="tab-pane fade in active">
+              <div id="Safety-tab" class="tab-pane fade in active">
 
                 @foreach (var point in Model.PointCategoryList[cat])
                 {
-                    
+                     var value = new ValueViewModel();
                         <div class="form-group">
                             <label for="safety-pt1">@point.Point_Name</label>
-                            <input asp-for=@Model.Values[counter].Value_point type="number" class="form-control" id="safety-pt1">
-                            <textarea asp-for=@Model.Values[counter].description class="form-control" id="safety-pt1-desc" placeholder="Description"></textarea>
-                            <textarea asp-for=@Model.Values[counter].comment class="form-control" id="safety-pt1-comment" placeholder="Comment"></textarea>
-                            <input asp-for=@Model.Values[counter].PointID type="hidden" value=@point.PointID class="form-control" id="safety-pt1">
-
+                            <input asp-for=@Model.Values[point.Point_Name].Value_point type="number" class="form-control" id="safety-pt1">
+                            <textarea asp-for=@Model.Values[point.Point_Name].description class="form-control" id="safety-pt1-desc" placeholder="Description"></textarea>
+                            <textarea asp-for=@Model.Values[point.Point_Name].comment class="form-control" id="safety-pt1-comment" placeholder="Comment"></textarea>
+                            <input asp-for=@Model.Values[point.Point_Name].PointID type="hidden" value=@point.PointID class="form-control" id="safety-pt1">     
                         </div>
-                        counter++;
-                    
-                            }
+                        //counter++;
+                }
               </div>
             }
             else
             {
-                <div id=@cat class="tab-pane fade">    
+                <div id=@(cat+"-tab") class="tab-pane fade">    
             
             @if (Model.PointCategoryList[cat].Count() == 0)
             {
@@ -66,50 +67,19 @@
                 @foreach (var point in Model.PointCategoryList[cat])
                 {
 
-                    @if (point.HasMultipleValues)
-                    {
-                        <div class="form-group">
-                            <div class="row">
-                                
-                                <label for="safety-pt1" class="col-sm-5 col-form-label">@point.Point_Name</label>
-                                <div class="col-sm-7">
-                                    <a class="btn btn-primary" id="add-field" data-value1=@Model.total_number data-value2=@point.PointID.ToString() >Add Field</a>
-                                    <a class="btn btn-danger" id="remove-field" style="display:none;">Remove Field</a>
-                                </div>
+                    <div class="form-group">
+                        <label for="safety-pt1">@point.Point_Name</label>
+                        <input asp-for=@Model.Values[point.Point_Name].Value_point type="number" class="form-control" id="safety-pt1">
+                        <textarea asp-for=@Model.Values[point.Point_Name].description class="form-control" id="safety-pt1-desc" placeholder="Description"></textarea>
+                        <textarea asp-for=@Model.Values[point.Point_Name].comment class="form-control" id="safety-pt1-comment" placeholder="Comment"></textarea>
+                        <input asp-for=@Model.Values[point.Point_Name].PointID type="hidden" value=@point.PointID class="form-control" id="safety-pt1">
 
-                            </div>
-                            <input asp-for=@Model.Values[counter].Value_point type="text" class="form-control" id="safety-pt1">
-                            <textarea asp-for=@Model.Values[counter].description class="form-control" id="safety-pt1-desc" placeholder="Description"></textarea>
-                            <textarea asp-for=@Model.Values[counter].comment class="form-control" id="safety-pt1-comment" placeholder="Comment"></textarea>
-                            <input asp-for=@Model.Values[counter].PointID type="hidden" value=@point.PointID class="form-control" id="safety-pt1">
-
-                        </div>
-                        counter ++;
-
-                        <div id="new-fields">
-                            <!-- Input fields will be dynamically added here -->
-                        </div>
-
-                    }
-                    else
-                    {
-                        <div class="form-group">
-                            <label for="safety-pt1">@point.Point_Name</label>
-                            <input asp-for=@Model.Values[counter].Value_point type="number" class="form-control" id="safety-pt1">
-                            <textarea asp-for=@Model.Values[counter].description class="form-control" id="safety-pt1-desc" placeholder="Description"></textarea>
-                            <textarea asp-for=@Model.Values[counter].comment class="form-control" id="safety-pt1-comment" placeholder="Comment"></textarea>
-                            <input asp-for=@Model.Values[counter].PointID type="hidden" value=@point.PointID class="form-control" id="safety-pt1">
-
-                        </div>
-                        counter++;
-
-
-                    }
+                    </div>
 
                 }
             }
              
-            @if (cat == Model.PointCategoryList.Keys.Last())
+            @if (cat == Model.PointCategoryList.Keys.Last() && Model.Is_CS_PP==false)
             {
                 <div class="form-group text-center">
                     <button type="submit" class="btn btn-primary btn-block">Submit</button>
@@ -119,10 +89,37 @@
         }
 
         }
+       
+        @if (Model.Is_CS_PP)
+        {
+            <div id="Attainement" class="tab-pane fade">  
+                    @foreach (var apu in Model.ProjectList.Keys)
+                    {
+                        <h4>@apu</h4>
+                        @foreach (var project in Model.ProjectList[apu])
+                        {
+                        <div class="form-group">
+                            <label for="safety-pt1">@project </label>
+                            <input asp-for=@Model.AttainamentsList[project].Attainement_OTIF type="number" step="0.01" min="0" max="200" class="form-control" id="safety-pt1" placeholder="Attainement_OTIF">
+                            <input asp-for=@Model.AttainamentsList[project].Attainement_Mix type="number" step="0.01" min="0" max="200" class="form-control" id="safety-pt1" placeholder="Attainement_MIX">
+                            <input asp-for=@Model.AttainamentsList[project].Productivity type="number" step="0.01" min="0" max="200" class="form-control" id="safety-pt1" placeholder="Productivity">
+                            <input asp-for=@Model.AttainamentsList[project].Downtime type="number" step="0.01" min="0" max="200" class="form-control" id="safety-pt1" placeholder="Downtime">
+                            <input asp-for=@Model.AttainamentsList[project].Scrap type="number" step="0.01" min="0" max="200" class="form-control" id="safety-pt1" placeholder="Scrap">                           
+                            <textarea asp-for=@Model.AttainamentsList[project].Comment class="form-control" id="safety-pt1-comment" placeholder="Comment"></textarea>
+                            <input asp-for=@Model.AttainamentsList[project].Project_name type="hidden" value=@project class="form-control" id="safety-pt1">
+                    </div>
+                    }
+                        
+                    }
+                    <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            </div>
+        }
     </div>
+    
+
 
 </div>
+
 </form>
-}
+    }
 </div>
-<script src="~/js/AddSubmissionScript.js"></script>

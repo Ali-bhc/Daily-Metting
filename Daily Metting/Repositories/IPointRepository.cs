@@ -7,8 +7,10 @@ namespace Daily_Metting.Repositories
         IEnumerable<Point> AllPoints { get; }
         IEnumerable<Point> GetPointsByDepartement_Category(string Departement, string category_name);
         public Point GetByID(int pointID);
+        public Point GetByName(string pointName);
 
-        //IEnumerable<Point> GetPointsByCategory(string Departement,string category_name);
+        List<Point> GetPointsByCategory(int category_id);
+        List<Point> GetPointsByDepartement(string dep);
 
 
 

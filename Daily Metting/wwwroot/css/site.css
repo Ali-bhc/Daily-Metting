@@ -16,3 +16,11 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.fixed-textarea-container {
+    position: fixed;
+    top: 60px; /* Change this value to match the height of your navbar */
+    width: 100%;
+    background-color: #ffffff; /* Change this to your preferred background color */
+    z-index: 999; /* Make sure the z-index is higher than the navbar */
+}

@@ -1,9 +1,9 @@
 ﻿/*Table Style One*/
 .table .table-header {
-    background: #078bfe;
+    background: #FF2E2E;
     color: #333;
 }
 
-    .table .table-header .cell {
-        padding: 20px;
-    }
+.table .table-header .cell {
+   padding: 20px;
+}

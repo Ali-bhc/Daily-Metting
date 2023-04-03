@@ -27,39 +27,36 @@ namespace Daily_Metting.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            if (ModelState.IsValid)
-            {
-                var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
-                if (result.Succeeded)
-                {
-                    if(user.IsAdmin)
-                        return RedirectToAction(nameof(AdminController.Index), "Admin");
-                    else
-                        return RedirectToAction(nameof(MemberController.Index), "Member");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                }
-            }
-
-            return View(model);
-            //var user = await _userManager.FindByEmailAsync(model.Email);
-
-            //if (user != null)
+            //try
             //{
-            //    var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, model.RememberMe);
-
-            //    if (result.Succeeded)
-            //    {
-            //        await _signInManager.SignInAsync(user, model.RememberMe);
-            //    }
-
-            //    return result;
-            //}
-
-            //return SignInResult.Failed;
+            
+                if (ModelState.IsValid)
+                {
+                    var user = await _userManager.FindByEmailAsync(model.Email);
+                    if (user != null)
+                    {
+                        var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
+                        if (result.Succeeded)
+                        {
+                            if (user.IsAdmin)
+                                return RedirectToAction(nameof(AdminController.Index), "Admin");
+                            else
+                                return RedirectToAction(nameof(MemberController.Index), "Member");
+                        }
+                        else
+                        {
+                            ViewBag.Error = "invalid incredentials";
+                        }
+                    }
+                    else
+                    {
+                        ViewBag.Error = "invalid incredentials";
+                    }
+                }
+         
+            
+            return View(model);
+            
         }
 
         //[HttpPost]
@@ -67,18 +64,7 @@ namespace Daily_Metting.Controllers
         {
             await _signInManager.SignOutAsync();
 
-            //var user = await _userManager.GetUserAsync(HttpContext.User);
-            //if (user != null)
-            //{ 
-            //    if(user.IsAdmin)
-            //    {
-            //        return RedirectToAction(nameof(AdminController.Index), "Admin");
-            //    }
-            //    else
-            //        return RedirectToAction(nameof(MemberController.Index), "Member");
-
-            //}
-            //else
+            
                 return RedirectToAction(nameof(AccountController.Login), "Account");
         }
 

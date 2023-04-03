@@ -1,5 +1,73 @@
-﻿@*
+﻿@model HomeViewModel
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
 }
+<div id="counter">
+    <div class="timer">
+        <h1>Meeting Timer</h1>
+        <span id="timer"></span>
+        <div>
+            <!-- Call to actions -->
+            <ul class="list-inline">
+                <li class="list-inline-item pt-2">
+                    <button id="reset-btn" type="button" class="btn btn-demo"><i class="glyphicon glyphicon-repeat"></i>Reset</button>
+                </li>
+                <li class="list-inline-item pt-2">
+                    <button id="pause-btn" type="button" class="btn btn-demo"><i class="glyphicon glyphicon-repeat"></i>Pause</button>
+                </li>
+                <li class="list-inline-item pt-2">
+                    <button id="start-btn" type="button" class="btn btn-demo"><i class="glyphicon glyphicon-repeat"></i>Start</button>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <label for="date-input">Select a Date:</label>
+            <div class="input-group date" id="date-picker" data-target-input="nearest">
+                <input type="date" class="form-control datetimepicker-input" id="date" data-target="#date-picker" />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<form method="post" asp-controller="Admin" asp-action="GeneratePDF">
+<div id="fixed-div">
+    
+ <!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <a asp-controller="Admin" asp-action="IndexDetails" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        <i class="fas fa-sm text-white-50"></i> More Details</a>
+    <input type="hidden" name="ExportData" id="ExportData" />
+    <input type="submit" id="btnSubmit" value="Generate Report" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" />
+</div>
+
+   <!--Escallations and Notes-->
+    <div class="form-group">
+        <textarea name="Escalation" class="form-control" id="escalation" placeholder="Escalation"></textarea>
+        <span name="Escalation" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <textarea name="Escallation-comment" class="form-control" id="escalation-comment" placeholder="Comments"></textarea>
+            <span name="Escallation-comment" class="text-danger"></span>
+    </div>
+
+</div>
+</form>
+<div class="container table-container">
+    <div id="MyTable">
+        <partial name="_SubmissionsRecapPartial" />
+    </div>
+</div>
+
+

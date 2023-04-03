@@ -47,6 +47,74 @@ namespace Daily_Metting.Migrations
                     b.ToTable("Absences");
                 });
 
+            modelBuilder.Entity("Daily_Metting.Models.APU", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("APU_Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Attainement_Max")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Attainement_min")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("APUs");
+                });
+
+            modelBuilder.Entity("Daily_Metting.Models.Attainement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("APUId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Attainement_Mix")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Attainement_OTIF")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Downtime")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Productivity")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Project_name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Scrap")
+                        .HasColumnType("float");
+
+                    b.Property<int>("SubmissionID")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("APUId");
+
+                    b.HasIndex("SubmissionID");
+
+                    b.ToTable("Attainements");
+                });
+
             modelBuilder.Entity("Daily_Metting.Models.Category", b =>
                 {
                     b.Property<int>("CategoryID")
@@ -109,6 +177,10 @@ namespace Daily_Metting.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("submission_time")
                         .HasColumnType("datetime2");
 
@@ -130,19 +202,16 @@ namespace Daily_Metting.Migrations
                     b.Property<int>("PointID")
                         .HasColumnType("int");
 
-                    b.Property<int>("SubmissionID")
+                    b.Property<int?>("SubmissionID")
                         .HasColumnType("int");
 
-                    b.Property<string>("Value_point")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("Value_point")
+                        .HasColumnType("int");
 
                     b.Property<string>("comment")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ValueID");
@@ -369,6 +438,9 @@ namespace Daily_Metting.Migrations
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("bit");
 
+                    b.Property<int>("MissedSubmissions")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -383,6 +455,25 @@ namespace Daily_Metting.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Daily_Metting.Models.Attainement", b =>
+                {
+                    b.HasOne("Daily_Metting.Models.APU", "APU")
+                        .WithMany("Attainement")
+                        .HasForeignKey("APUId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Daily_Metting.Models.Submission", "Submission")
+                        .WithMany("Attainements")
+                        .HasForeignKey("SubmissionID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("APU");
+
+                    b.Navigation("Submission");
                 });
 
             modelBuilder.Entity("Daily_Metting.Models.Point", b =>
@@ -415,9 +506,7 @@ namespace Daily_Metting.Migrations
 
                     b.HasOne("Daily_Metting.Models.Submission", "Submission")
                         .WithMany("Values")
-                        .HasForeignKey("SubmissionID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SubmissionID");
 
                     b.Navigation("Point");
 
@@ -475,6 +564,11 @@ namespace Daily_Metting.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Daily_Metting.Models.APU", b =>
+                {
+                    b.Navigation("Attainement");
+                });
+
             modelBuilder.Entity("Daily_Metting.Models.Category", b =>
                 {
                     b.Navigation("Points");
@@ -487,6 +581,8 @@ namespace Daily_Metting.Migrations
 
             modelBuilder.Entity("Daily_Metting.Models.Submission", b =>
                 {
+                    b.Navigation("Attainements");
+
                     b.Navigation("Values");
                 });
 

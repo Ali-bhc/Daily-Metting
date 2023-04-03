@@ -1,0 +1,53 @@
+﻿@model ListSubmissionViewModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div id="container">
+    <div id="submissions-container">
+
+        <table class="table">
+            <thead>
+            <tr class="table-header">
+                <th class="cell">Submission Date</th>
+                <th class="cell">details</th>
+                
+            </tr>
+        </thead>
+            <partial name="_SubmissionsTable" />
+            
+        </table>
+
+        <div class="pagination">
+                @if (Model.page > 1)
+                {
+                    <a href="#" class="page-link" data-page=@Model.page-1>Previous</a>
+                }
+
+                @for (int i = 1; i <= Model.totalPages; i++)
+                {
+                    if (i == Model.page)
+                    {
+                        <span class="page-link current">@i</span>
+                    }
+                    else
+                    {
+                        <a href="#" class="page-link" data-page=@i>@i</a>
+                    }
+                }
+
+                @if (Model.page <= Model.totalPages)
+                {
+                <a href="#" class="page-link" data-page=@(Model.page+1)>Next</a>
+            }
+        </div>
+
+
+        
+        
+
+    </div>
+</div>
+
+    

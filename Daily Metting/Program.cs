@@ -8,6 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using Microsoft.AspNetCore.Authorization;
 using Daily_Metting.Repositories;
+using Microsoft.AspNetCore.Mvc.Razor;
+using Daily_Metting.Services;
+using Microsoft.AspNetCore.Http.Features;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +21,14 @@ builder.Services.AddDbContext<DailyMeetingDbContext>(op => {
     "Trusted_Connection=True;MultipleActiveResultSets=true";
     op.UseSqlServer(ConnexionString);
     });
+
+////Background services
+//builder.Services.AddScoped<SampleService>();
+//builder.Services.AddSingleton<PeriodicHostedService>();
+//builder.Services.AddHostedService(provider => provider.GetRequiredService<PeriodicHostedService>());
+
+builder.Services.AddHostedService<DailyMissedSubmissionService>();
+
 
 
 //Authentification
@@ -38,6 +49,8 @@ builder.Services.AddScoped<ISubmissionRepository, SubmissionRepository>();
 builder.Services.AddScoped<IAbsencesRepository, AbsenceRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IValueRepository, ValueRepository>();
+builder.Services.AddScoped<IAttainementRepository, AttaienementRepository>();
+builder.Services.AddScoped<IAPURepository, APURepository>();
 
 
 
@@ -52,58 +65,58 @@ builder.Services.AddScoped<IValueRepository, ValueRepository>();
 
 builder.Services.AddControllersWithViews();
 
-////Add Admin
-//var roleManager = builder.Services.BuildServiceProvider().GetRequiredService<RoleManager<IdentityRole>>();
-//var userManager = builder.Services.BuildServiceProvider().GetRequiredService<UserManager<User>>();
+//Add Admin
+var roleManager = builder.Services.BuildServiceProvider().GetRequiredService<RoleManager<IdentityRole>>();
+var userManager = builder.Services.BuildServiceProvider().GetRequiredService<UserManager<User>>();
 
-//if (!await roleManager.RoleExistsAsync("Admin"))
-//{
-//    await roleManager.CreateAsync(new IdentityRole("Admin"));
-//}
-
-
-//if (await userManager.FindByNameAsync("admin") == null)
-//{
-//    var user = new User
-//    {
-//        UserName = "admin",
-//        Email = "admin@example.com",
-//        IsAdmin = true,
-//        Departement = "Admin Service",
-//        Name = "admin test"
-//    };
-
-//    var result = await userManager.CreateAsync(user, "Admin123!");
-//    if (result.Succeeded)
-//    {
-//        await userManager.AddToRoleAsync(user, "Admin");
-//    }
-//}
-
-////Add A member
-//if (!await roleManager.RoleExistsAsync("Member"))
-//{
-//    await roleManager.CreateAsync(new IdentityRole("Member"));
-//}
+if (!await roleManager.RoleExistsAsync("Admin"))
+{
+    await roleManager.CreateAsync(new IdentityRole("Admin"));
+}
 
 
-//if (await userManager.FindByNameAsync("WHuser") == null)
-//{
-//    var user = new User
-//    {
-//        UserName = "WHuser",
-//        Email = "WHuser@example.com",
-//        IsAdmin = false,
-//        Departement = "WH",
-//        Name = "Ware House User"
-//    };
+if (await userManager.FindByNameAsync("admin") == null)
+{
+    var user = new User
+    {
+        UserName = "admin",
+        Email = "admin@example.com",
+        IsAdmin = true,
+        Departement = "Admin Service",
+        Name = "admin test"
+    };
 
-//    var result = await userManager.CreateAsync(user, "WHuser123!");
-//    if (result.Succeeded)
-//    {
-//        await userManager.AddToRoleAsync(user, "Member");
-//    }
-//}
+    var result = await userManager.CreateAsync(user, "Admin123!");
+    if (result.Succeeded)
+    {
+        await userManager.AddToRoleAsync(user, "Admin");
+    }
+}
+
+//Add A member
+if (!await roleManager.RoleExistsAsync("Member"))
+{
+    await roleManager.CreateAsync(new IdentityRole("Member"));
+}
+
+
+if (await userManager.FindByNameAsync("WHuser") == null)
+{
+    var user = new User
+    {
+        UserName = "WHuser",
+        Email = "WHuser@example.com",
+        IsAdmin = false,
+        Departement = "WH",
+        Name = "Ware House User"
+    };
+
+    var result = await userManager.CreateAsync(user, "WHuser123!");
+    if (result.Succeeded)
+    {
+        await userManager.AddToRoleAsync(user, "Member");
+    }
+}
 
 builder.Services.AddAuthorization(options =>
 {
@@ -114,8 +127,17 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("MemberPolicy", policy => policy.RequireRole("Member"));
 });
 
-
-builder.Services.AddServerSideBlazor();
+//Upload
+builder.Services.Configure<IISServerOptions>(options =>
+{
+    options.MaxRequestBodySize = int.MaxValue;
+});
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.ValueLengthLimit = int.MaxValue;
+    options.MultipartBodyLengthLimit = int.MaxValue;
+    options.MemoryBufferThreshold = int.MaxValue;
+});
 
 
 var app = builder.Build();
@@ -139,7 +161,8 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}");
-app.MapBlazorHub();
+
+
 
 DBInitializer.Seed(app);
 

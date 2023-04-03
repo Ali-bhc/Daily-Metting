@@ -14,6 +14,7 @@ namespace Daily_Metting.Models
         public string Departement { get; set; }
         //public DateTime Created { get; set; } = DateTime.Now;
         //public DateTime LastUpdated { get; set; }
+        public int MissedSubmissions { get; set; } = 0;
         public List<Submission>? Submissions { get; set; }
         public List<Absence>? Absences { get; set; }
 

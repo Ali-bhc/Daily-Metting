@@ -1,6 +1,99 @@
-﻿@*
+﻿@model SubmissionDetailsViewModel
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
 }
-<h1>Hiiiiiiiiii</h1>
+
+    <div class="container">
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Points</th>
+                <th>Values</th>
+                <th colspan="3">Description</th>
+                <th colspan="3">Comment</th>
+            </tr>
+        </thead>
+
+        @foreach (var cat in Model.PointCategoryList.Keys)
+        {
+            <tbody>
+                
+                @if (Model.PointCategoryList[cat].Count() > 0)
+                {
+                    <tr>
+                        <td id="@cat" class="text-center" colspan="11"><img style="width:30px;" id="Icon" src="~/img/Icons/@cat Icon.svg">@cat</td>
+                    </tr>
+                   
+                    @foreach (var point in Model.PointCategoryList[cat])
+                    {
+
+                        @if (Model.PointValues[point.Point_Name] == null)
+                        {
+                            <tr>
+                                <td rowspan=1>@point.Point_Name</td>
+                                <td>0</td>
+                                <td colspan="3">null</td>
+                                <td colspan="3">null</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>@point.Point_Name</td>
+                                <td>@Model.PointValues[point.Point_Name].Value_point</td>
+                                <td colspan="3">@Model.PointValues[point.Point_Name].comment</td>
+                                <td colspan="3">@Model.PointValues[point.Point_Name].description</td>
+                            </tr>
+
+                        }
+                    }
+                }
+            </tbody>
+            @if (Model.ListofAttainement != null && cat == "Delivery")
+            {
+                <tbody id="AttainementTable">
+                    <tr class="thead-dark">
+                        <th colspan="11" class="text-center">Attainement</th>
+                    </tr>
+
+                    @foreach (var apu in Model.ListofAttainement.Keys)
+                    {
+                        @if (Model.ListofAttainement[apu].Count() > 0)
+                        {
+                            <tr>
+                                <td class="align-middle text-center" rowspan=@(Model.ListofAttainement[apu].Count()+1)>@apu</td>
+                                <td>Project Name</td>
+                                <td>Attainements OTIF</td>
+                                <td>Attainements MIX</td>
+                                <td>Productivity</td>
+                                <td>Downtime</td>
+                                <td>Scrap</td>
+                                <td>Comments</td>
+                            </tr>
+                            @foreach (var attainement in Model.ListofAttainement[apu])
+                            {
+                                <tr>
+                                    <td rowspan=1>
+                                        @attainement.Project_name %
+
+                                    </td>
+                                    <td rowspan=1>@attainement.Attainement_OTIF %</td>
+                                    <td rowspan=1>@attainement.Attainement_Mix %</td>
+                                    <td rowspan=1>@attainement.Productivity %</td>
+                                    <td rowspan=1>@attainement.Downtime %</td>
+                                    <td rowspan=1>@attainement.Scrap %</td>
+                                    <td rowspan=1 class="small">@Html.Raw(attainement.Comment.Replace("\n", "<br />"))</td>
+                                </tr>
+                            }
+                        }
+
+                    }
+                </tbody>
+            }
+
+        }
+
+    </table>
+    </div>
