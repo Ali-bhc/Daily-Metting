@@ -12,6 +12,7 @@
             <th>Values</th>
             <th colspan="3">Description</th>
             <th colspan="3">Comment</th>
+            <th colspan="1">Status</th>
         </tr>
     </thead>
 
@@ -22,18 +23,30 @@
             @if (Model.pointCategoryList[cat].Count > 0)
             {
                 <tr>
-                    <td id="@cat" class="text-center" colspan="11"><img style="width:30px;" src="~/img/Icons/@cat Icon.svg" id="Icon">@cat</td>
+                    <td id="@cat" class="text-center" colspan="10"><img style="width:30px;" src="~/img/Icons/@cat Icon.svg" id="Icon">@cat</td>
                 </tr>
                 @foreach (var point in Model.pointCategoryList[cat])
                 {
                     <tr>
                         <td rowspan=1>@point.Point_Name</td>
                         <td rowspan=1>@Model.ListOfSumOfValuesOfPoints[point.Point_Name]</td>
-                        <td colspan=3>@Html.Raw(Model.CommentsConcatenation[point.Point_Name][0].Replace("\n", "<br />"))</td>
                         <td colspan=3>@Html.Raw(Model.DescriptionssConcatenation[point.Point_Name][0].Replace("\n", "<br />"))</td>
+                        <td colspan=3>@Html.Raw(Model.CommentsConcatenation[point.Point_Name][0].Replace("\n", "<br />"))</td>
+                        @if (Model.AugmentationStatus[point.Point_Name] == "Up")
+                        {
+                            <td style="text-align:center;background-color:#ff6666; width:50px" rowspan=1>
+                            <i class="fa fa-arrow-up" style="font-size:18px"></i>
+                        </td>
+                        }
+                        else if (Model.AugmentationStatus[point.Point_Name] == "Down")
+                        {
+                            <td style="text-align:center;background-color:#9fff80; width:50px" rowspan=1><i class="fa fa-arrow-up" style="font-size:18px"></i> </td>
+                        }
+                        else
+                        {
+                            <td style="text-align:center;background-color:#ffff99; width:50px" rowspan=1><i class="fa fa-arrow-right" style="font-size:18px"></i> </td>
+                        }
                     </tr>
-                    @*}*@
-
 
                 }
 
@@ -43,7 +56,7 @@
         {
             <tbody id="AttainementTable">
                 <tr class="thead-dark">
-                    <th colspan="11" class="text-center">Attainement</th>
+                    <th colspan="10" class="text-center">Attainement</th>
                 </tr>
                 @foreach (var apu in Model.ListofAttainementAverages.Keys)
                 {
@@ -57,7 +70,7 @@
                             <td>Productivity</td>
                             <td>Downtime</td>
                             <td>Scrap</td>
-                            <td>Comments</td>
+                            <td colspan="3">Comments</td>
                         </tr>
 
 
@@ -72,7 +85,7 @@
                                 <td>@attainement.Productivity %</td>
                                 <td>@attainement.Downtime %</td>
                                 <td>@attainement.Scrap %</td>
-                                <td class="small">@Html.Raw(attainement.Comment.Replace("\n", "<br />"))</td>
+                                <td colspan="3" class="small">@Html.Raw(attainement.Comment.Replace("\n", "<br />"))</td>
                             </tr>
                         }
 

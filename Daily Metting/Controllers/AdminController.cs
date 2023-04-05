@@ -370,7 +370,7 @@ namespace Daily_Metting.Controllers
 
 
         [HttpPost]
-        public IActionResult GeneratePDF(string ExportData) {
+        public IActionResult GeneratePDF(string ExportData,DateTime pdfDate) {
             if (string.IsNullOrEmpty(ExportData))
             {
                 return BadRequest("HTML content cannot be null or empty.");
@@ -401,7 +401,8 @@ namespace Daily_Metting.Controllers
                 pdfDoc.Close();
                 pdfBytes = memoryStream.ToArray();
             }
-            return File(pdfBytes, "application/pdf", "result.pdf");
+            return File(pdfBytes, "application/pdf", "Meeting Report ("+pdfDate.ToString("M")+").pdf");
+           // return File(pdfBytes, "application/pdf", "Meeting Report ("+DateTime.Today.Date.ToString("M")+").pdf");
 
         }
 
@@ -420,6 +421,8 @@ namespace Daily_Metting.Controllers
             //get attainement Average
             var ListofAttainementAPUAverages = new Dictionary<string, List<Attainement>>();
 
+            var augmentation_Status = new Dictionary<string, string>();
+
             categories = _categoryRepository.AllCategories.Reverse();
             foreach (var category in categories)
             {
@@ -430,6 +433,18 @@ namespace Daily_Metting.Controllers
                     ListOfSumOfValuesOfPoints.Add(item.Point_Name, _valueRepository.GetSumOfValuesByPoints_SubmissionDate(item.PointID, date));
                     CommentsConcatenation.Add(item.Point_Name, _valueRepository.GetCommentsConcatenations(item, date));
                     DescriptionsConcatenation.Add(item.Point_Name, _valueRepository.GetDescriptionsConcatenations(item, date));
+                    if (_valueRepository.GetSumOfValuesByPoints_SubmissionDate(item.PointID, date) > _valueRepository.GetSumOfValuesByPoints_SubmissionDate(item.PointID, date.AddDays(-1)))
+                    {
+                        augmentation_Status.Add(item.Point_Name, "Up");
+                    }
+                    else if (_valueRepository.GetSumOfValuesByPoints_SubmissionDate(item.PointID, date) == _valueRepository.GetSumOfValuesByPoints_SubmissionDate(item.PointID, date.AddDays(-1)))
+                    {
+                        augmentation_Status.Add(item.Point_Name, "Same");
+                    }
+                    else 
+                    {
+                        augmentation_Status.Add(item.Point_Name, "Down");
+                    }
                 }
 
             }
@@ -446,12 +461,12 @@ namespace Daily_Metting.Controllers
                     ListofAttainementAPUAverages.Add(ap.APU_Name, AttainementListAverage);
                 }
 
-                homeViewModel = new HomeViewModel(pointCategoryList, ListOfSumOfValuesOfPoints, CommentsConcatenation, DescriptionsConcatenation, ListofAttainementAPUAverages);
+                homeViewModel = new HomeViewModel(pointCategoryList, ListOfSumOfValuesOfPoints, CommentsConcatenation, DescriptionsConcatenation, ListofAttainementAPUAverages, augmentation_Status);
                 //return View(homeViewModel);
             }
             else
             {
-                homeViewModel = new HomeViewModel(pointCategoryList, ListOfSumOfValuesOfPoints, CommentsConcatenation, DescriptionsConcatenation);
+                homeViewModel = new HomeViewModel(pointCategoryList, ListOfSumOfValuesOfPoints, CommentsConcatenation, DescriptionsConcatenation, augmentation_Status);
                 //return View(homeViewModel);
             }
 

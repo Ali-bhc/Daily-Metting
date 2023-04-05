@@ -93,30 +93,30 @@ if (await userManager.FindByNameAsync("admin") == null)
     }
 }
 
-//Add A member
-if (!await roleManager.RoleExistsAsync("Member"))
-{
-    await roleManager.CreateAsync(new IdentityRole("Member"));
-}
+////Add A member
+//if (!await roleManager.RoleExistsAsync("Member"))
+//{
+//    await roleManager.CreateAsync(new IdentityRole("Member"));
+//}
 
 
-if (await userManager.FindByNameAsync("WHuser") == null)
-{
-    var user = new User
-    {
-        UserName = "WHuser",
-        Email = "WHuser@example.com",
-        IsAdmin = false,
-        Departement = "WH",
-        Name = "Ware House User"
-    };
+//if (await userManager.FindByNameAsync("WHuser") == null)
+//{
+//    var user = new User
+//    {
+//        UserName = "WHuser",
+//        Email = "WHuser@example.com",
+//        IsAdmin = false,
+//        Departement = "WH",
+//        Name = "Ware House User"
+//    };
 
-    var result = await userManager.CreateAsync(user, "WHuser123!");
-    if (result.Succeeded)
-    {
-        await userManager.AddToRoleAsync(user, "Member");
-    }
-}
+//    var result = await userManager.CreateAsync(user, "WHuser123!");
+//    if (result.Succeeded)
+//    {
+//        await userManager.AddToRoleAsync(user, "Member");
+//    }
+//}
 
 builder.Services.AddAuthorization(options =>
 {

@@ -100,13 +100,7 @@ namespace Daily_Metting.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit([Bind("PointID,Point_Name,WH_Acces,CS_PP_Acces,Procurement_Acces,HasMultipleValues")] Point point)
         {
-            //if (id != point.PointID)
-            //{
-            //    return NotFound();
-            //}
-
-            //if (ModelState.IsValid)
-            //{
+           
                 try
                 {
                     _context.Update(point);
@@ -124,8 +118,7 @@ namespace Daily_Metting.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            //}
-            //return View(point);
+            
         }
 
         // GET: Points/Delete/5

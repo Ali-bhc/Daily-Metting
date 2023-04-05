@@ -15,29 +15,39 @@
     const Cost = document.getElementById("Cost");
     if (Cost != null) { Cost.style.backgroundColor = "#008000"; }
 
-    $('#date').change(function () {
-        var selectedDate = $('#date').val();
 
-        // Validate the selected date
-        var today = new Date();
-        var selected = new Date(selectedDate);
-        if (selected > today) {
-            alert('Please select a date that is not greater than today.');
-            return;
-        }
-        console.log(selected);
-        $.ajax({
-            url: '/Admin/Index',
-            type: 'Get',
-            data: { date: selectedDate },
-            success: function (result) {
-                $('#MyTable').html(result);
-            },
-            error: function () {
-                alert('An error occurred while fetching the filtered data.');
-            }
-        });
-    });
+    // Set the value of the hidden input to today's date
+    var today = new Date();
+    var year = today.getFullYear();
+    var month = ('0' + (today.getMonth() + 1)).slice(-2);
+    var day = ('0' + today.getDate()).slice(-2);
+    //document.getElementById('pdfDate').value = day + '/' + month + '/' + year;
+
+
+    //$('#date').change(function () {
+    //    //var selectedDate = $('#date').val();
+
+    //    //// Validate the selected date
+    //    //var today = new Date();
+    //    //var selected = new Date(selectedDate);
+    //    //if (selected > today) {
+    //    //    alert('Please select a date that is not greater than today.');
+    //    //    return;
+    //    //}
+    //    //console.log(selected);
+    //    //$.ajax({
+    //    //    url: '/Admin/Index',
+    //    //    type: 'Get',
+    //    //    data: { date: selectedDate },
+    //    //    success: function (result) {
+    //    //        $('#MyTable').html(result);
+    //    //    },
+    //    //    error: function () {
+    //    //        alert('An error occurred while fetching the filtered data.');
+    //    //    }
+    //    //});
+    //  //  document.getElementById('pdfDate').value = selectedDate;
+    //});
 
     const table = document.getElementById('AttainementTable');
     if (table != null) {

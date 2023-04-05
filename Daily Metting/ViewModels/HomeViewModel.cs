@@ -11,24 +11,31 @@ namespace Daily_Metting.ViewModels
         public Dictionary<string, List<string>> CommentsConcatenation { get; set; }
         public Dictionary<string, List<string>> DescriptionssConcatenation { get; set; }
         public Dictionary<string, List<Attainement>> ListofAttainementAverages { get;set;}
+        public Dictionary<string, string> AugmentationStatus { get; set; }
         //public string Escalation { get; set; }
         //public string comments { get; set; }
 
-        public HomeViewModel(Dictionary<string, List<Point>> pointCategoryList, Dictionary<string, int> listOfSumOfValuesOfPoints, Dictionary<string, List<string>> commentsConcatenation, Dictionary<string, List<string>> descriptionssConcatenation, Dictionary<string, List<Attainement>> listofAttainementAverages)
+        public HomeViewModel(Dictionary<string, List<Point>> pointCategoryList, Dictionary<string, int> listOfSumOfValuesOfPoints, 
+            Dictionary<string, List<string>> commentsConcatenation, Dictionary<string, List<string>> descriptionssConcatenation, 
+            Dictionary<string, List<Attainement>> listofAttainementAverages, Dictionary<string, string>  augmentationStatus)
         {
             this.pointCategoryList = pointCategoryList;
             ListOfSumOfValuesOfPoints = listOfSumOfValuesOfPoints;
             CommentsConcatenation = commentsConcatenation;
             DescriptionssConcatenation = descriptionssConcatenation;
             ListofAttainementAverages = listofAttainementAverages;
+            AugmentationStatus = augmentationStatus;
         }
 
-        public HomeViewModel(Dictionary<string, List<Point>> pointCategoryList, Dictionary<string, int> listOfSumOfValuesOfPoints, Dictionary<string, List<string>> commentsConcatenation, Dictionary<string, List<string>> descriptionssConcatenation)
+        public HomeViewModel(Dictionary<string, List<Point>> pointCategoryList, Dictionary<string, int> listOfSumOfValuesOfPoints, 
+            Dictionary<string, List<string>> commentsConcatenation, Dictionary<string, List<string>> descriptionssConcatenation,
+            Dictionary<string, string> augmentationStatus)
         {
             this.pointCategoryList = pointCategoryList;
             ListOfSumOfValuesOfPoints = listOfSumOfValuesOfPoints;
             CommentsConcatenation = commentsConcatenation;
             DescriptionssConcatenation = descriptionssConcatenation;
+            AugmentationStatus = augmentationStatus;
         }
 
         public HomeViewModel()
