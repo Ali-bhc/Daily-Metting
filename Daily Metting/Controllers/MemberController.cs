@@ -855,7 +855,7 @@ namespace Daily_Metting.Controllers
             //chack the existance of Attendance in absence table
             var abs = _absencesRepository.GetAbsences(DateTime.Today);
             AttendanceViewModel _attendanceViewModel = new AttendanceViewModel();
-            if (abs == null)
+            if (abs.Count() != 0)
             {
                 ViewBag.Message = "the attendance sheet";
                 List<User> Users;
