@@ -17,7 +17,7 @@ namespace Daily_Metting.ViewModels
 
         [Required(ErrorMessage = "Password is required")]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-        [RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$", ErrorMessage = "The password must be at least 6 characters long and contain at least one letter and one number.")]
+        //[RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$", ErrorMessage = "The password must be at least 6 characters long and contain at least one letter and one number.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 

@@ -34,11 +34,12 @@ $("#UploadBtn").click(function () {
                 break;
             case "CS_PP":
                 IsValid = fileName.includes("DailyMeetingCS_PP_File");
+                break;
             case "Procurement":
                 IsValid = fileName.includes("DailyMeetingProcurementFile");
                 break;
         }
-        console.log(fileName.includes("DailyMeetingWareHouseFile"));
+        console.log(IsValid);
         if (IsValid) {
             return true;
         }

@@ -13,10 +13,6 @@ namespace Daily_Metting.Controllers
         private readonly UserManager<User> _userManager;
 
 
-        //public HomeController(ILogger<HomeController> logger)
-        //{
-        //    _logger = logger;
-        //}
 
         public HomeController(ILogger<HomeController> logger ,SignInManager<User> signInManager, UserManager<User> userManager)
         {

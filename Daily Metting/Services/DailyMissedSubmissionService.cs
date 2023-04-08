@@ -45,26 +45,28 @@ namespace Daily_Metting.Services
 
         private void DoWork(object state)
         {
-
-            using var scope = _serviceScopeFactory.CreateScope();
-            var dbContext = scope.ServiceProvider.GetRequiredService<DailyMeetingDbContext>();
-            ISubmissionRepository _submissionRepository = new SubmissionRepository(dbContext);
-            IUserRepository _userRepository = new UserRepository(dbContext);
-
-            //var yesterday = DateTime.Today.AddDays(-1);
-            var submissions = _submissionRepository.GetYesterdaySubmissions();
-            var userSubmissions = submissions.GroupBy(s => s.User.Id).ToDictionary(g => g.Key, g => g.ToList());
-            //_userRepository.updateUserMissedsubmission(userSubmissions);
-            foreach (var user in _userRepository.GetMembers())
+            if (DateTime.Today.DayOfWeek != DayOfWeek.Saturday && DateTime.Today.DayOfWeek != DayOfWeek.Sunday)
             {
-                if (!userSubmissions.ContainsKey(user.Id))
-                {
-                    user.MissedSubmissions = user.MissedSubmissions + 1;
-                }
-            }
+                using var scope = _serviceScopeFactory.CreateScope();
+                var dbContext = scope.ServiceProvider.GetRequiredService<DailyMeetingDbContext>();
+                ISubmissionRepository _submissionRepository = new SubmissionRepository(dbContext);
+                IUserRepository _userRepository = new UserRepository(dbContext);
 
-            // Save changes to the database
-            dbContext.SaveChanges();
+                //var yesterday = DateTime.Today.AddDays(-1);
+                var submissions = _submissionRepository.GetYesterdaySubmissions();
+                var userSubmissions = submissions.GroupBy(s => s.User.Id).ToDictionary(g => g.Key, g => g.ToList());
+                //_userRepository.updateUserMissedsubmission(userSubmissions);
+                foreach (var user in _userRepository.GetMembers())
+                {
+                    if (!userSubmissions.ContainsKey(user.Id))
+                    {
+                        user.MissedSubmissions = user.MissedSubmissions + 1;
+                    }
+                }
+
+                // Save changes to the database
+                dbContext.SaveChanges();
+            }
         }
 
         private TimeSpan GetInitialDelay()
