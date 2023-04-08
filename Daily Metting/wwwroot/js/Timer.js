@@ -42,7 +42,7 @@ function startTimer() {
 
 // function to pause the timer
 function pauseTimer() {
-    console.log("test");
+    //Console.log("test");
     // clear the timer interval
     clearInterval(timerInterval);
 

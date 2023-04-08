@@ -34,7 +34,7 @@
     //    //    alert('Please select a date that is not greater than today.');
     //    //    return;
     //    //}
-    //    //console.log(selected);
+    //    ////Console.log(selected);
     //    //$.ajax({
     //    //    url: '/Admin/Index',
     //    //    type: 'Get',

@@ -19,10 +19,10 @@
 //        // Add the new field group to the fields container
 //        $("#new-fields").append(newFieldGroup);
 //        button.attr("data-value1", ++intValue);
-//        console.log(cnt)
+//        //Console.log(cnt)
 //        // Increment the cnt for the next input field group
 //        cnt++;
-//        console.log('Button clicked!');
+//        //Console.log('Button clicked!');
 //    });
 //});
 
@@ -33,7 +33,7 @@ $(".add-field1").click(function () {
     // get cnt value 
 
     var pointName = this.getAttribute("data-value");
-    console.log(pointName);
+    ////Console.log(pointName);
     var intValue = parseInt(this.getAttribute("data-value1"));
     var pointID = parseInt(this.getAttribute("data-value2"));
 
@@ -41,7 +41,7 @@ $(".add-field1").click(function () {
     //// Create a new input field group
     //for (let i = 0; i < intValue ; i++)
     //{
-    //    console.log("heeere");
+    //    //Console.log("heeere");
     //let newFieldGroup =
     //    `<div class="form-group">
     //                        <label for="safety-pt1">test</label>
@@ -67,10 +67,10 @@ $(".add-field1").click(function () {
         </div>`;
     // Add the new field group to the fields container
     var newFields = '#'+pointID+'-new-fields';
-    console.log(newFields);
+    ////Console.log(newFields);
     $(newFields).append(newFieldGroup);
     this.setAttribute("data-value1", ++intValue);
-    //console.log(cnt);
+    ////Console.log(cnt);
     // Increment the cnt for the next input field group
     counter++;
     // Show the Remove Field button
@@ -90,7 +90,7 @@ $(".remove-field1").click(function () {
 
     var pointID = parseInt(this.getAttribute("data-value"));
     var newFields = '#' + pointID + '-new-fields';
-    console.log(newFields);
+    ////Console.log(newFields);
 
     // Remove the last input field group
     $(newFields+" .form-group:last-child").remove();
@@ -106,7 +106,7 @@ $(".remove-field1").click(function () {
 
 function incrementDataValue(dataValue) {
     dataValue++;
-    console.log("Incremented data value: " + dataValue);
+    ////Console.log("Incremented data value: " + dataValue);
 
     // Send new value back to server using AJAX
     $.ajax({
@@ -114,11 +114,11 @@ function incrementDataValue(dataValue) {
         type: "POST",
         data: { newValue: dataValue },
         success: function (response) {
-            console.log("Updated value on server");
+            //Console.log("Updated value on server");
             $("#dataValue").text(response.newValue);
         },
         error: function () {
-            console.log("Failed to update value on server");
+            //Console.log("Failed to update value on server");
         }
     });
 }

@@ -23,7 +23,7 @@ jQuery(document).ready(function($) {
 
 				$('.right').on('click', function(){
           $('.nav-tabs').animate({scrollLeft: '+=200px'}, 300);
-          console.log($("#scroller").scrollLeft() + " px");
+          //Console.log($("#scroller").scrollLeft() + " px");
 				});
 				
 				$('.left').on('click', function(){

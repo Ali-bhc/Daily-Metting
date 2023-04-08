@@ -2573,7 +2573,7 @@ ScatterController: ScatterController
    * @example
    * Chart._adapters._date.override<{myAdapterOption: string}>({
    *   init() {
-   *     console.log(this.options.myAdapterOption);
+   *     //Console.log(this.options.myAdapterOption);
    *   }
    * })
    */ static override(members) {

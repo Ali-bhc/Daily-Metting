@@ -7,10 +7,10 @@
 //function validateForm() {
 $("#UploadBtn").click(function () {
     var user = this.getAttribute("data-value");
-    console.log(user+"    User");
+    //Console.log(user+"    User");
 
     var fileInput = document.getElementById('file-input');
-    console.log(fileInput.innerText)
+    //Console.log(fileInput.innerText)
 
     if (fileInput.value == '') {
         alert('Please select an Excel a file to upload.');
@@ -18,7 +18,7 @@ $("#UploadBtn").click(function () {
     }
     else {
         const fileName = fileInput.value.split('\\').pop();
-        console.log(fileName);
+        //Console.log(fileName);
         //let isvalid = FileNameValidation();
 
         //if (fileName.includes(user)) {
@@ -29,7 +29,7 @@ $("#UploadBtn").click(function () {
         let IsValid = false;
         switch (user) {
             case "WH":
-                console.log(user + "WH");
+                //Console.log(user + "WH");
                 IsValid = fileName.includes("DailyMeetingWareHouseFile");
                 break;
             case "CS_PP":
@@ -39,7 +39,7 @@ $("#UploadBtn").click(function () {
                 IsValid = fileName.includes("DailyMeetingProcurementFile");
                 break;
         }
-        console.log(IsValid);
+        //Console.log(IsValid);
         if (IsValid) {
             return true;
         }

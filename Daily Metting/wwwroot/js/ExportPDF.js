@@ -14,7 +14,7 @@ var datepdf = new Date();
 
 let year = datepdf.getFullYear();
 let month = monthNames[datepdf.getMonth()];
-console.log(month);
+//Console.log(month);
 let day = datepdf.getDate();
 var currentDate = "" + month + " " + day + ", " + year;
 
@@ -24,17 +24,17 @@ document.getElementById('pdfDate').value = day + '/' + month + '/' + year;
 //pdfdate.value = "" + month + " " + day + ", " + year;
 $('#date').change(function () {
 	var selectedDate = $('#date').val();
-	console.log("selected date : " + selectedDate);
+	//Console.log("selected date : " + selectedDate);
 	pdfdate.value = selectedDate;
 	var date = new Date(pdfdate.value);
 
 	year = date.getFullYear();
 	month = monthNames[date.getMonth()];
-	console.log(month);
+	//Console.log(month);
 	day = date.getDate();
 
 	document.getElementById('pdfDate').value = day + '/' + month + '/' + year;
-	console.log(document.getElementById('pdfDate').value);
+	//Console.log(document.getElementById('pdfDate').value);
 	currentDate = "" + month + " " + day + ", " + year;
 
 
@@ -45,7 +45,7 @@ $('#date').change(function () {
 		alert('Please select a date that is not greater than today.');
 		return;
 	}
-	console.log(selected);
+	//Console.log(selected);
 	$.ajax({
 		url: '/Admin/Index',
 		type: 'Get',
@@ -64,7 +64,7 @@ $('#date').change(function () {
 
 
 let Title = "Daily meeting Report of " + currentDate;
-console.log(currentDate);
+//Console.log(currentDate);
 
 
 $("#btnSubmit").click(function () {
