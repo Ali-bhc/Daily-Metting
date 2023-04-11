@@ -632,6 +632,7 @@ namespace Daily_Metting.Controllers
 
                 if (counter1 > 0)
                 {
+                    //Console.WriteLine(reader.GetString(1));
                     //Map Excel data to database model
                     var value = new Value()
                     {
