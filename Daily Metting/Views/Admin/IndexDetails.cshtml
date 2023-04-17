@@ -45,8 +45,8 @@
                                 <tr>
                                     <td rowspan=@Model.ValuesPoint[point.Point_Name].Count()>@point.Point_Name</td>
                                     <td>@Model.ValuesPoint[point.Point_Name].ElementAt(0).Value_point</td>
-                                    <td colspan="3">@Model.ValuesPoint[point.Point_Name].ElementAt(0).comment</td>
                                     <td colspan="3">@Model.ValuesPoint[point.Point_Name].ElementAt(0).description</td>
+                                    <td colspan="3">@Model.ValuesPoint[point.Point_Name].ElementAt(0).comment</td>
                                     <td>@Model.ValuesPoint[point.Point_Name].ElementAt(0).Submission.User.ToString()</td>
                                 </tr>
 
@@ -54,8 +54,8 @@
                                 {
                                     <tr>
                                         <td>@Model.ValuesPoint[point.Point_Name].ElementAt(i).Value_point</td>
-                                        <td colspan="3">@Model.ValuesPoint[point.Point_Name].ElementAt(i).comment</td>
                                         <td colspan="3">@Model.ValuesPoint[point.Point_Name].ElementAt(i).description</td>
+                                        <td colspan="3">@Model.ValuesPoint[point.Point_Name].ElementAt(i).comment</td>
                                         <td>@Model.ValuesPoint[point.Point_Name].ElementAt(i).Submission.User.ToString()</td>
                                     </tr>
 

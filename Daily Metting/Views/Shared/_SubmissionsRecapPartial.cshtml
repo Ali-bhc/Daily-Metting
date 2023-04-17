@@ -28,8 +28,8 @@
                 @foreach (var point in Model.pointCategoryList[cat])
                 {
                     <tr>
-                        <td rowspan=1>@point.Point_Name</td>
-                        <td rowspan=1>@Model.ListOfSumOfValuesOfPoints[point.Point_Name]</td>
+                        <td>@point.Point_Name</td>
+                        <td>@Model.ListOfSumOfValuesOfPoints[point.Point_Name]</td>
                         <td colspan=3>@Html.Raw(Model.DescriptionssConcatenation[point.Point_Name][0].Replace("\n", "<br />"))</td>
                         <td colspan=3>@Html.Raw(Model.CommentsConcatenation[point.Point_Name][0].Replace("\n", "<br />"))</td>
                         @if (Model.AugmentationStatus[point.Point_Name] == "Up")

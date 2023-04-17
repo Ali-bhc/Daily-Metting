@@ -1,6 +1,8 @@
 ﻿using Daily_Metting.DAO;
 using Daily_Metting.Models;
+using Daily_Metting.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Daily_Metting.Repositories
 {
@@ -23,7 +25,7 @@ namespace Daily_Metting.Repositories
 
         public List<User> GetMembers()
         {
-            return _dailyMeetingDbContext.Users.Where(u => u.IsAdmin == false).ToList();
+            return _dailyMeetingDbContext.Users.Where(u => u.IsAdmin == false && u.IsActive == true).ToList();
         }
 
         public int GetDepartementUsersCount(string dep)
@@ -48,5 +50,26 @@ namespace Daily_Metting.Repositories
         {
             return _dailyMeetingDbContext.Users.Where(u => u.Id == user.Id).Select(u => u.MissedSubmissions).FirstOrDefault();
         }
+
+        public async void UpdateUser(UpdateUserViewModel updateUserViewModel)
+        {
+            var user = _dailyMeetingDbContext.Users.Where(u=>u.Id == updateUserViewModel.Id).FirstOrDefault();
+            if (user != null)
+            {
+                user.Name= updateUserViewModel.Name;
+                user.UserName = updateUserViewModel.Username;
+                user.Departement = updateUserViewModel.Departement;
+                user.Email = updateUserViewModel.Email;
+                user.IsActive= updateUserViewModel.IsActive;
+            }
+            _dailyMeetingDbContext.Users.Update(user);
+            _dailyMeetingDbContext.SaveChanges();
+        }
+
+        public List<User> GetTeamMembers()
+        {
+            return _dailyMeetingDbContext.Users.Where(u => u.IsAdmin == false).ToList();
+        }
+
     }
 }

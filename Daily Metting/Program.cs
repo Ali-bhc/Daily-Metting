@@ -17,7 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<DailyMeetingDbContext>(op => {
-    string ConnexionString = "Server=(localdb)\\mssqllocaldb;Database=DailyMeetingDB;" +
+    string ConnexionString = "Server=(localdb)\\mssqllocaldb;Database=DailyMeetingDB100;" +
     "Trusted_Connection=True;MultipleActiveResultSets=true";
     op.UseSqlServer(ConnexionString);
     });
@@ -93,7 +93,8 @@ if (await userManager.FindByNameAsync("Anas-Ziat") == null)
         Email = "Anas.Ziat@prettl.com",
         IsAdmin = true,
         Departement = "Admin Service",
-        Name = "Anas Ziat"
+        Name = "Anas Ziat",
+        IsActive = true
     };
 
     var result = await userManager.CreateAsync(user, "AnasZiat123!");
@@ -120,6 +121,7 @@ if (await userManager.FindByNameAsync("Omar-Bouhcain") == null)
         Email = "Omar.Bouhcain@prettl.com",
         IsAdmin = false,
         Departement = "Procurement",
+        IsActive = true,
         Name = "Omar Bouhcain"
     };
 
@@ -139,6 +141,7 @@ if (await userManager.FindByNameAsync("Fatima-Nouhou") == null)
         Email = "Fatima.Nouhou@prettl.com",
         IsAdmin = false,
         Departement = "Procurement",
+        IsActive = true,
         Name = "Fatima Nouhou"
     };
 
@@ -158,6 +161,7 @@ if (await userManager.FindByNameAsync("Mohamed-Abakouy") == null)
         Email = "Mohamed.Abakouy@prettl.com",
         IsAdmin = false,
         Departement = "Procurement",
+        IsActive = true,
         Name = "Mohamed Abakouy"
     };
 
@@ -177,6 +181,7 @@ if (await userManager.FindByNameAsync("Ikram-Zeroual") == null)
         Email = "Ikram.Zeroual@prettl.com",
         IsAdmin = false,
         Departement = "CS_PP",
+        IsActive = true,
         Name = "Ikram Zeroual"
     };
 
@@ -196,6 +201,7 @@ if (await userManager.FindByNameAsync("Ayoub-Elyemlahi") == null)
         Email = "Ayoub.Elyemlahi@prettl.com",
         IsAdmin = false,
         Departement = "CS_PP",
+        IsActive = true,
         Name = "Ayoub Elyemlahi"
     };
 
@@ -215,6 +221,7 @@ if (await userManager.FindByNameAsync("Ghizlane-Benhdech") == null)
         Email = "Ghizlane.Benhdech@prettl.com",
         IsAdmin = false,
         Departement = "CS_PP",
+        IsActive = true,
         Name = "Ghizlane Benhdech"
     };
 
@@ -234,6 +241,7 @@ if (await userManager.FindByNameAsync("Saloua-Guenoun") == null)
         Email = "Saloua.Guenoun@prettl.com",
         IsAdmin = false,
         Departement = "CS_PP",
+        IsActive = true,
         Name = "Saloua Guenoun"
     };
 
@@ -253,6 +261,7 @@ if (await userManager.FindByNameAsync("Mohamed-Senouni") == null)
         Email = "Mohamed.Senouni@prettl.com",
         IsAdmin = false,
         Departement = "WH",
+        IsActive = true,
         Name = "Mohamed Senouni"
     };
 
@@ -273,6 +282,7 @@ if (await userManager.FindByNameAsync("Bouchta-Rharaiba") == null)
         Email = "Bouchta.Rharaiba@prettl.com",
         IsAdmin = false,
         Departement = "WH",
+        IsActive = true,
         Name = "Bouchta Rharaiba"
     };
 
@@ -292,6 +302,7 @@ if (await userManager.FindByNameAsync("Khalid-Elhermich") == null)
         Email = "Khalid.Elhermich@prettl.com",
         IsAdmin = false,
         Departement = "WH",
+        IsActive = true,
         Name = "Khalid Elhermich"
     };
 

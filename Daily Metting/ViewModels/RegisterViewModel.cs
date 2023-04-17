@@ -27,7 +27,7 @@ namespace Daily_Metting.ViewModels
         public string ConfirmPassword { get; set; }
 
         [Required(ErrorMessage = "choose User type !")]
-        public bool IsAdmin { get; set; } = false;
+        public bool IsAdmin { get; set; }
 
         [Required(ErrorMessage = "choose departement !")]
         public string Departement { get; set; }

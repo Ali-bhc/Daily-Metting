@@ -21,6 +21,7 @@ using iText.Kernel.Font;
 using iText.IO.Image;
 using Microsoft.AspNetCore.Http;
 using System.Globalization;
+using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
 
 namespace Daily_Metting.Controllers
 {
@@ -489,6 +490,83 @@ namespace Daily_Metting.Controllers
 
             return homeViewModel;
         }
+
+        public IActionResult TeamMembers()
+        {
+            var users = _userRepository.GetTeamMembers();
+            return View(users);
+        }
+
+
+        public async Task<IActionResult> Profile()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            return View(user);
+        }
+
+        [HttpGet] 
+        public async Task<IActionResult> Update_User(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user != null)
+            {
+                var userToUpdate = new UpdateUserViewModel {Id=user.Id , Name = user.UserName, Username = user.UserName , Departement = user.Departement ,Email = user.Email};
+                return View(userToUpdate);
+            }
+            return RedirectToAction(nameof(AdminController.TeamMembers), "Admin");
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> Update_User(UpdateUserViewModel updateuserVM)
+        {
+            var user = await _userManager.FindByIdAsync(updateuserVM.Id);
+
+            //var user = _userRepository.GetByUsername(updateuserVM.Username);
+            if (user != null)
+            {
+                _userRepository.UpdateUser(updateuserVM);
+            }
+            return RedirectToAction(nameof(AdminController.TeamMembers), "Admin");
+
+        }
+
+
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+
+                return View(model);
+            }
+
+            await _signInManager.RefreshSignInAsync(user);
+            return RedirectToAction(nameof(Index));
+        }
+
+
 
     }
 }

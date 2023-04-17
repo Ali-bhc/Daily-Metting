@@ -84,9 +84,9 @@ namespace Daily_Metting.Repositories
         public int GetSumOfValuesByPoints_SubmissionDate(int pointId, DateTime submission_time) 
         {
             int sumOfValues = 0;
-            var valuesList = _dailyMeetingDbContext.Values
+            var valuesList = (int)_dailyMeetingDbContext.Values
                 .Where(v => v.Point.PointID == pointId && EF.Functions.DateDiffDay(v.Submission.submission_time, submission_time) == 0)
-                .Include(v => v.Submission).OrderBy(v => v.Submission.User).Select(v => v.Value_point).Count();
+                .Include(v => v.Submission).OrderBy(v => v.Submission.User).Select(v => v.Value_point).Sum();
             //foreach (var val in valuesList)
             //{
             //    sumOfValues += (int)val;
@@ -115,7 +115,7 @@ namespace Daily_Metting.Repositories
 
             var PointsDescriptions = _dailyMeetingDbContext.Values
                 .Where(v => v.Point.PointID == point.PointID && v.Submission.submission_time.Date == submission_time)
-                .Select(v => v.comment).ToList();
+                .Select(v => v.description).ToList();
             string Comments = string.Join(Environment.NewLine, PointsDescriptions);
             descriptionspointList.Add(Comments);
 
