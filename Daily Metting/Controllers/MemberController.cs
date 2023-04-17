@@ -10,6 +10,7 @@ using iText.Layout;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Build.ObjectModelRemoting;
 using Point = Daily_Metting.Models.Point;
 
 
@@ -111,18 +112,48 @@ namespace Daily_Metting.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
             bool IsSubmitted=false;
+            bool IsMissed=false;
             // First we should check if the user already submit
             var sub = _submissionRepository.GetSubmissionByUser_Date(DateTime.Now.Date, user);
-            if (sub == null)
+
+            string submission_status;
+            DateTime currentTime = DateTime.Now;
+
+            // Get the time today at 10:45 AM
+            DateTime targetTime = new DateTime(currentTime.Year, currentTime.Month, currentTime.Day, 11, 15, 0);
+            DateTime MissingTime = new DateTime(currentTime.Year, currentTime.Month, currentTime.Day, 14, 00, 0);
+
+
+            // Compare the current time with the target time
+            if (currentTime >= targetTime && currentTime < MissingTime)
             {
-                ViewBag.Message = "Hello " + user.ToString() + " DO your submission for " + DateTime.Today.Date + ":)";
+                submission_status = "Late";
             }
-            else 
+            else if (currentTime < targetTime)
+            {
+                submission_status = "On time";
+            }
+            else
+            {
+                submission_status = "Missed";
+                IsMissed=true;
+            }
+
+
+            if (sub == null && submission_status != "Missed")
+            {
+                ViewBag.Message = "Hello " + user.ToString() + " DO your submission for " + DateTime.Today.Date.ToString("M") + ":";
+            }
+            else if (sub != null && submission_status != "Missed")
             {
                 ViewBag.Message = "Hello " + user.ToString() + " you have already submit for today! \n ";
                 IsSubmitted= true;
             }
-            UploadSubmissionViewModel uploadSubmissionViewModel = new UploadSubmissionViewModel(IsSubmitted,user.Departement);
+            else
+            {
+                ViewBag.Message = "Hello " + user.ToString() + " you can not Add or Update Today's submission , try tomorrow! ";
+            }
+            UploadSubmissionViewModel uploadSubmissionViewModel = new UploadSubmissionViewModel(IsSubmitted,user.Departement,IsMissed);
             return View(uploadSubmissionViewModel);
         }
 
@@ -139,18 +170,22 @@ namespace Daily_Metting.Controllers
                 try
                 {
                     var submission = GetCurrentSubmission(user);
-                    using (var stream = file.File.OpenReadStream())
+                    if (submission != null)
                     {
-                        using (var reader = ExcelReaderFactory.CreateReader(stream))
+                        using (var stream = file.File.OpenReadStream())
                         {
-                            UploadValuesFile(reader, submission);
-                            if (Is_CS_PP_User)
+                            using (var reader = ExcelReaderFactory.CreateReader(stream))
                             {
-                                reader.NextResult();
-                                UploadAttainementFile(reader, submission);
+                                UploadValuesFile(reader, submission);
+                                if (Is_CS_PP_User)
+                                {
+                                    reader.NextResult();
+                                    UploadAttainementFile(reader, submission);
+                                }
                             }
                         }
                     }
+                    
                 }
                 catch (Exception ex)
                 {
@@ -175,10 +210,30 @@ namespace Daily_Metting.Controllers
             Dictionary<string, IEnumerable<Point>> PointCategoryList = new Dictionary<string, IEnumerable<Point>>();
             // First we should check if the user already submit
             var sub = _submissionRepository.GetSubmissionByUser_Date(DateTime.Now.Date, user);
-            
-            if (sub == null)
+
+            string submission_status;
+            DateTime currentTime = DateTime.Now;
+
+            // Get the time today at 10:45 AM
+            DateTime targetTime = new DateTime(currentTime.Year, currentTime.Month, currentTime.Day, 11, 15, 0);
+            DateTime MissingTime = new DateTime(currentTime.Year, currentTime.Month, currentTime.Day, 14, 00, 0);
+
+
+            // Compare the current time with the target time
+            if (currentTime >= targetTime && currentTime < MissingTime)
             {
-                ViewBag.Message = "Hello " + user.ToString() + " DO your submission for " + DateTime.Today + ":)";
+                submission_status = "Late";
+            }
+            else if (currentTime < targetTime)
+            {
+                submission_status = "On time";
+            }
+            else
+                submission_status = "Missed";
+
+            if (sub == null && submission_status != "Missed")
+            {
+                ViewBag.Message = "Hello " + user.ToString() + " DO your submission for " + DateTime.Today.Date.ToString("M") + ":";
                 categories = _categoryRepository.AllCategories.Reverse();
                 foreach (var category in categories)
                 {
@@ -210,10 +265,16 @@ namespace Daily_Metting.Controllers
                 //SubmissionViewModel _submissionViewModel = new SubmissionViewModel(PointCategoryList, total, false);
                 //return View(_submissionViewModel);
             }
-            else
+            else if(sub != null && submission_status != "Missed")
             {
                 ViewBag.Message = "Hello " + user.ToString() + " you have already submit for today! \nGo check it ";
-                SubmissionViewModel _submissionViewModel = new SubmissionViewModel(true);
+                SubmissionViewModel _submissionViewModel = new SubmissionViewModel(true,false);
+                return View(_submissionViewModel);
+            }
+            else
+            {
+                ViewBag.Message = "Hello " + user.ToString() + " you can not Add or Update Today's submission , try tomorrow! ";
+                SubmissionViewModel _submissionViewModel = new SubmissionViewModel(false,true);
                 return View(_submissionViewModel);
             }
         }
@@ -294,11 +355,12 @@ namespace Daily_Metting.Controllers
             // First we should check if the user already submit
             var sub = _submissionRepository.GetSubmissionByUser_Date(DateTime.Now.Date, user);
             //var values = _valueRepository.GetSubmissionValue(sub.SubmissionID);
-
+  
 
             //get the submission value
-            if (sub != null)
+            if (sub != null )
             {
+
                 foreach (var point in UserPoints)
                 {
                     //var listofvalues = new Dictionary<string,ValueViewModel>();
@@ -344,12 +406,16 @@ namespace Daily_Metting.Controllers
                         };
                         Attainementslist.Add(attainement.Project_name, att);
                     }
+
                     return View(new SubmissionViewModel(valueslist, PointCategoryList, Attainementslist,ProjectList,true));
+                    //return View(new SubmissionViewModel { Values = valueslist, PointCategoryList = PointCategoryList, AttainamentsList = Attainementslist, ProjectList = ProjectList, Is_CS_PP = true ,IsMissed=false});
 
                 }
                 else
                 {
                     return View(new SubmissionViewModel(valueslist, PointCategoryList,false));
+                    //return View(new SubmissionViewModel { Values = valueslist, PointCategoryList = PointCategoryList, Is_CS_PP = true, IsMissed = false });
+
 
                 }
             }
@@ -363,6 +429,7 @@ namespace Daily_Metting.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateSubmission(SubmissionViewModel _submissionViewModel)
         {
+
             //get the user
             var user = await _userManager.GetUserAsync(User);
             //Verify User departement 
@@ -756,27 +823,37 @@ namespace Daily_Metting.Controllers
 
             // Get the time today at 10:45 AM
             DateTime targetTime = new DateTime(currentTime.Year, currentTime.Month, currentTime.Day, 11, 15, 0);
+            DateTime MissingTime = new DateTime(currentTime.Year, currentTime.Month, currentTime.Day, 14, 00, 0);
+
 
             // Compare the current time with the target time
-            if (currentTime > targetTime)
+            if (currentTime >= targetTime && currentTime < MissingTime)
             {
                 submission_status = "Late";
             }
-            else
+            else if (currentTime < targetTime)
             {
                 submission_status = "On time";
             }
-
-            //Step1:Add Submission First
-            var submission = new Submission
+            else
+                submission_status = "Missed";
+            
+            if (submission_status != "Missed")
             {
-                User = user, // Set the user property here
-                submission_time = DateTime.Now, // Set the date property here
-                status = submission_status,
-            };
 
-            _submissionRepository.AddSubmission(submission);
-            return submission;
+                //Step1:Add Submission First
+                var submission = new Submission
+                {
+                    User = user, // Set the user property here
+                    submission_time = DateTime.Now, // Set the date property here
+                    status = submission_status,
+                };
+
+                _submissionRepository.AddSubmission(submission);
+
+                return submission;
+            }
+            return null;
 
         }
 
@@ -886,6 +963,77 @@ namespace Daily_Metting.Controllers
 
             return RedirectToAction(nameof(MemberController.Index), "Member");
         }
+
+        public async Task<IActionResult> Profile()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            return View(user);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Update_User()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                var userToUpdate = new UpdateUserViewModel { Id = user.Id, Name = user.Name, Username = user.UserName, Departement = user.Departement};
+                return View(userToUpdate);
+            }
+            return RedirectToAction(nameof(AdminController.TeamMembers), "Admin");
+
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Update_User(UpdateUserViewModel updateuserVM)
+        {
+            var user = await _userManager.FindByIdAsync(updateuserVM.Id);
+
+            //var user = _userRepository.GetByUsername(updateuserVM.Username);
+            if (user != null)
+            {
+                _userRepository.UpdateUser(updateuserVM);
+            }
+            return RedirectToAction(nameof(MemberController.Profile), "Member");
+
+        }
+
+
+        [HttpGet]
+        public IActionResult ChangePassword() 
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+
+                return View(model);
+            }
+
+            await _signInManager.RefreshSignInAsync(user);
+            return RedirectToAction(nameof(Index));
+        }
+
 
     }
 

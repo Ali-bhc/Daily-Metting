@@ -6,9 +6,13 @@
    
     <h3>@ViewBag.Message</h3>
 
-    @if(Model.IsSubmited)
+    @if(Model.IsSubmited==true && Model.IsMissed==false)
     {
-    <a asp-controller="member" asp-action="UpdateSubmission" class="my-4">Update your Submission </a>
+        <a asp-controller="member" asp-action="UpdateSubmission" class="my-4">Update your Submission </a>
+    }
+    else if(Model.IsSubmited==false && Model.IsMissed == true)
+    {
+        <a asp-controller="member" asp-action="Index" class="my-4">Go Back To Home Page ! </a>   
     }
     else
     {

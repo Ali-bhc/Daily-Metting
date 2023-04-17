@@ -16,6 +16,7 @@ namespace Daily_Metting.Repositories
         int GetStatusCountByUser(string status,User user);
 
         List<Submission> GetYesterdaySubmissions();
+        List<Submission> GetTodaySubmissions();
 
     }
 }

@@ -29,7 +29,8 @@ namespace Daily_Metting.Controllers
         {
             //try
             //{
-            
+            try
+            {
                 if (ModelState.IsValid)
                 {
                     var user = await _userManager.FindByEmailAsync(model.Email);
@@ -53,7 +54,11 @@ namespace Daily_Metting.Controllers
                         ViewBag.Error = "invalid incredentials";
                     }
                 }
-         
+            }
+            catch
+            {
+                return View();
+            }
             
             return View(model);
             

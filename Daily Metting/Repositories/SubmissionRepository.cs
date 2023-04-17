@@ -92,5 +92,14 @@ namespace Daily_Metting.Repositories
                 .ToList();
             return submissions;
         }
+       
+        public List<Submission> GetTodaySubmissions()
+        {
+            var today = DateTime.Today.Date;
+            var submissions = _dailyMeetingDbContext.Submissions
+                .Where(s => s.submission_time < DateTime.Now && s.submission_time >= today).Include(s => s.User)
+                .ToList();
+            return submissions;
+        }
     }
 }

@@ -8,6 +8,7 @@ namespace Daily_Metting.ViewModels
         public Dictionary <string, ValueViewModel>? Values { get; set; }
         public Dictionary<string, IEnumerable<Point>> PointCategoryList = new Dictionary<string, IEnumerable<Point>>();
         public bool IsSubmited { get; set; }
+        public bool IsMissed { get; set; }=false;
         public bool Is_CS_PP { get; set; }
         //public IFormFile file { get; set; }
         //public List<Attainement> Attainements { get; set; }
@@ -21,9 +22,10 @@ namespace Daily_Metting.ViewModels
 
        
 
-        public SubmissionViewModel(bool isSubmited)
+        public SubmissionViewModel(bool isSubmited, bool isMissed)
         {
             IsSubmited = isSubmited;
+            IsMissed = isMissed;
         }
 
         public SubmissionViewModel(Dictionary<string, IEnumerable<Point>> pointCategoryList, bool isSubmited, bool is_CS_PP) 

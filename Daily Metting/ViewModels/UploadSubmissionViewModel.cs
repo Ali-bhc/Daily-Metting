@@ -10,6 +10,7 @@ namespace Daily_Metting.ViewModels
         public IFormFile File { get; set; }
 
         public bool IsSubmitted { get; set; } = false;
+        public bool IsMissed { get; set; } = false;
         public string User { get; set; } = "";
         public string ValidationMessage { get; set; } = "";
 
@@ -22,7 +23,13 @@ namespace Daily_Metting.ViewModels
         {
         }
 
-        public UploadSubmissionViewModel(bool isSubmitted,string user)
+        public UploadSubmissionViewModel(bool isSubmitted, string user, bool isMissed)
+        {
+            IsSubmitted = isSubmitted;
+            User = user;
+            IsMissed = isMissed;
+        }
+        public UploadSubmissionViewModel(bool isSubmitted, string user)
         {
             IsSubmitted = isSubmitted;
             User = user;

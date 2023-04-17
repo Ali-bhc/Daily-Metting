@@ -45,39 +45,68 @@ namespace Daily_Metting.Services
 
         private void DoWork(object state)
         {
-            if (DateTime.Today.DayOfWeek != DayOfWeek.Saturday && DateTime.Today.DayOfWeek != DayOfWeek.Sunday)
+            
+
+            DateTime start = new DateTime(2023, 4, 20);
+            DateTime end = new DateTime(2023, 5, 2);
+            var dates = new List<DateTime>();
+
+            for (var dt = start; dt <= end; dt = dt.AddDays(1))
             {
-                using var scope = _serviceScopeFactory.CreateScope();
-                var dbContext = scope.ServiceProvider.GetRequiredService<DailyMeetingDbContext>();
-                ISubmissionRepository _submissionRepository = new SubmissionRepository(dbContext);
-                IUserRepository _userRepository = new UserRepository(dbContext);
+                dates.Add(dt);
+            }
 
-                //var yesterday = DateTime.Today.AddDays(-1);
-                var submissions = _submissionRepository.GetYesterdaySubmissions();
-                var userSubmissions = submissions.GroupBy(s => s.User.Id).ToDictionary(g => g.Key, g => g.ToList());
-                //_userRepository.updateUserMissedsubmission(userSubmissions);
-                foreach (var user in _userRepository.GetMembers())
+            if (!dates.Contains(DateTime.Today.Date))
+            {
+
+                if (DateTime.Today.DayOfWeek != DayOfWeek.Saturday && DateTime.Today.DayOfWeek != DayOfWeek.Sunday)
                 {
-                    if (!userSubmissions.ContainsKey(user.Id))
-                    {
-                        user.MissedSubmissions = user.MissedSubmissions + 1;
-                    }
-                }
 
-                // Save changes to the database
-                dbContext.SaveChanges();
+                    using var scope = _serviceScopeFactory.CreateScope();
+                    var dbContext = scope.ServiceProvider.GetRequiredService<DailyMeetingDbContext>();
+                    ISubmissionRepository _submissionRepository = new SubmissionRepository(dbContext);
+                    IUserRepository _userRepository = new UserRepository(dbContext);
+
+                    //var yesterday = DateTime.Today.AddDays(-1);
+                    //var submissions = _submissionRepository.GetYesterdaySubmissions();
+                    var submissions = _submissionRepository.GetTodaySubmissions();
+                    var userSubmissions = submissions.GroupBy(s => s.User.Id).ToDictionary(g => g.Key, g => g.ToList());
+                    //_userRepository.updateUserMissedsubmission(userSubmissions);
+                    foreach (var user in _userRepository.GetMembers())
+                    {
+                        if (!userSubmissions.ContainsKey(user.Id))
+                        {
+                            user.MissedSubmissions = user.MissedSubmissions + 1;
+                        }
+                    }
+
+                    // Save changes to the database
+                    dbContext.SaveChanges();
+                }
             }
         }
 
         private TimeSpan GetInitialDelay()
         {
-            var now1 = DateTime.Now;
+            var now = DateTime.Now;
             //var now1 = new DateTime(2023, 03, 13, 23, 59, 20);
+            //var Target = new DateTime(now.Year, now.Month, now.Day, 14, 01, 0, DateTimeKind.Utc);
+            DateTime targetTime = new DateTime(now.Year, now.Month, now.Day, 14, 00, 00);
+            DateTime nextRunTime;
 
-            var nextRunTime = new DateTime(now1.Year, now1.Month, now1.Day, 0, 0, 0, DateTimeKind.Utc).AddDays(1);
-           // var nextRunTime = new DateTime(now1.Year, now1.Month, now1.Day, 0, 0, 0, DateTimeKind.Utc).AddDays(1);
+            if (now<=targetTime)
+            {
+                nextRunTime = targetTime;
+            }
+            else
+            {
+                nextRunTime = new DateTime(now.Year, now.Month, now.Day, 14, 00, 0, DateTimeKind.Utc).AddDays(1);
+            }
+
+            //var nextRunTime = new DateTime(now.Year, now.Month, now.Day, 14, 01, 0, DateTimeKind.Utc);
+            // var nextRunTime = new DateTime(now1.Year, now1.Month, now1.Day, 0, 0, 0, DateTimeKind.Utc).AddDays(1);
             //var nextRunTime = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0, DateTimeKind.Utc).AddDays(1);
-            var test = nextRunTime - now1;
+            var test = nextRunTime - now;
             return test;
         }
     }

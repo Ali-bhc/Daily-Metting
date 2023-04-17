@@ -31,9 +31,9 @@ namespace Daily_Metting.DAO
 
                     //Quality
                     new Point { Point_Name = "Customer Claims", WH_Acces = false, CS_PP_Acces = true, Procurement_Acces = false, HasMultipleValues = false, Category = Categories["Quality"] },
-                    new Point { Point_Name = "Blocked FG(€)", WH_Acces = false, CS_PP_Acces = true, Procurement_Acces = false, HasMultipleValues = true, Category = Categories["Quality"] },
+                    new Point { Point_Name = "Blocked FG (€)", WH_Acces = false, CS_PP_Acces = true, Procurement_Acces = false, HasMultipleValues = true, Category = Categories["Quality"] },
                     new Point { Point_Name = "Supplier Claims",WH_Acces=false,CS_PP_Acces=false,Procurement_Acces=true, HasMultipleValues = false, Category = Categories["Quality"] },
-                    new Point { Point_Name = "Blocked RM(€)", WH_Acces = false, CS_PP_Acces = false, Procurement_Acces = true, HasMultipleValues = true, Category = Categories["Quality"] },
+                    new Point { Point_Name = "Blocked RM (€)", WH_Acces = false, CS_PP_Acces = false, Procurement_Acces = true, HasMultipleValues = true, Category = Categories["Quality"] },
                     new Point { Point_Name = "Expiration Status", WH_Acces = false, CS_PP_Acces = false, Procurement_Acces = true, HasMultipleValues = true, Category = Categories["Quality"] },
 
                     //Delivery

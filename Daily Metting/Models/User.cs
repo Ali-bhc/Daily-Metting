@@ -17,6 +17,7 @@ namespace Daily_Metting.Models
         public int MissedSubmissions { get; set; } = 0;
         public List<Submission>? Submissions { get; set; }
         public List<Absence>? Absences { get; set; }
+        public bool IsActive { get; set; } = true;
 
 
 

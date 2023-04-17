@@ -1,0 +1,57 @@
+﻿@model UpdateUserViewModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" asp-controller="Member" asp-action="Update_User">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for=@Model.Name class="control-label"></label>
+                <input asp-for=@Model.Name class="form-control" />
+                <span asp-validation-for=@Model.Name class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for=@Model.Username class="control-label"></label>
+                <input asp-for=@Model.Username class="form-control" />
+                <span asp-validation-for=@Model.Username class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                <label asp-for=@Model.Email class="control-label"></label>
+                <input asp-for=@Model.Email class="form-control" />
+                <span asp-validation-for=@Model.Email class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                    <label for="Department">Department</label>
+                    <select asp-for=@Model.Departement class="form-control" id="Departement">
+                        <option value="">Choose a departement</option>
+                        <option value="WH">Warehouse</option>
+                        <option value="CS_PP">CS_PP</option>
+                        <option value="Procurement">Procurement</option>
+                    </select>
+                    <span asp-validation-for="Departement" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="IsTrue">Is Active :</label>
+                <div class="form-check">
+                    @Html.RadioButtonFor(m => m.IsActive, true, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="trueRadioButton">True</label>
+                </div>
+                <div class="form-check">
+                    @Html.RadioButtonFor(m => m.IsActive, false, new { @class = "form-check-input" })
+                    <label class="form-check-label" for="falseRadioButton">False</label>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

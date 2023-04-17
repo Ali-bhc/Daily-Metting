@@ -49,6 +49,17 @@
                     <span asp-validation-for="Departement" class="text-danger"></span>
                 </div>
                 <div class="form-group">
+                <label for="IsTrue">Is Admin :</label>
+                <div class="form-check">
+                        @Html.RadioButtonFor(m => m.IsAdmin, true, new { @class = "form-check-input" })
+                        <label class="form-check-label" for="trueRadioButton">Admin</label>
+                </div>
+                <div class="form-check">
+                        @Html.RadioButtonFor(m => m.IsAdmin, false, new { @class = "form-check-input" })
+                        <label class="form-check-label" for="falseRadioButton">Member</label>
+                </div>
+            </div>
+                @*<div class="form-group">
                     <label for="role">Role</label>
                     <div class="form-check">
                         <input asp-for="IsAdmin" type="checkbox" name="role" id="admin" class="form-check-input" value="true">
@@ -58,7 +69,7 @@
                         <input asp-for="IsAdmin" type="checkbox" name="role" id="member" class="form-check-input" value="false">
                         <label for="member" class="form-check-label">Member</label>
                     </div>
-                </div>
+                </div>*@
                 <div class="form-group text-center">
                     <button type="submit" class="btn btn-primary btn-block">Register</button>
                 </div>
