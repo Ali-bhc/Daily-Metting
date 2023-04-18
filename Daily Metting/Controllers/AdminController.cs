@@ -41,12 +41,13 @@ namespace Daily_Metting.Controllers
         private readonly IWebHostEnvironment _env;
 
 
-        public AdminController(UserManager<User> userManager, IUserRepository userRepository,
+        public AdminController(UserManager<User> userManager, IUserRepository userRepository, SignInManager<User>? signInManager,
             IAbsencesRepository absencesRepository, ISubmissionRepository submissionRepository,
             IValueRepository valueRepository, ICategoryRepository categoryRepository,
             IPointRepository pointRepository, IAttainementRepository attainementRepository,IAPURepository aPURepository,
             IWebHostEnvironment env)
         {
+            _signInManager = signInManager;
             _userManager = userManager;
             _userRepository = userRepository;
             _absencesRepository = absencesRepository;
