@@ -50,26 +50,5 @@ namespace Daily_Metting.Repositories
         {
             return _dailyMeetingDbContext.Users.Where(u => u.Id == user.Id).Select(u => u.MissedSubmissions).FirstOrDefault();
         }
-
-        public async void UpdateUser(UpdateUserViewModel updateUserViewModel)
-        {
-            var user = _dailyMeetingDbContext.Users.Where(u=>u.Id == updateUserViewModel.Id).FirstOrDefault();
-            if (user != null)
-            {
-                user.Name= updateUserViewModel.Name;
-                user.UserName = updateUserViewModel.Username;
-                user.Departement = updateUserViewModel.Departement;
-                //user.Email = updateUserViewModel.Email;
-                user.IsActive= updateUserViewModel.IsActive;
-            }
-            _dailyMeetingDbContext.Users.Update(user);
-            _dailyMeetingDbContext.SaveChanges();
-        }
-
-        public List<User> GetTeamMembers()
-        {
-            return _dailyMeetingDbContext.Users.Where(u => u.IsAdmin == false).ToList();
-        }
-
     }
 }
