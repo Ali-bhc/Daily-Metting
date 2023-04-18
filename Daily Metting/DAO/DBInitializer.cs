@@ -34,11 +34,13 @@ namespace Daily_Metting.DAO
                     new Point { Point_Name = "Blocked FG (€)", WH_Acces = false, CS_PP_Acces = true, Procurement_Acces = false, HasMultipleValues = true, Category = Categories["Quality"] },
                     new Point { Point_Name = "Supplier Claims",WH_Acces=false,CS_PP_Acces=false,Procurement_Acces=true, HasMultipleValues = false, Category = Categories["Quality"] },
                     new Point { Point_Name = "Blocked RM (€)", WH_Acces = false, CS_PP_Acces = false, Procurement_Acces = true, HasMultipleValues = true, Category = Categories["Quality"] },
+                    new Point { Point_Name = "RM Stock", WH_Acces = false, CS_PP_Acces = false, Procurement_Acces = true, HasMultipleValues = false, Category = Categories["Quality"] },
+                    new Point { Point_Name = "RM Finish good", WH_Acces = false, CS_PP_Acces = false, Procurement_Acces = true, HasMultipleValues = false, Category = Categories["Quality"] },
+                    new Point { Point_Name = "RM Global Stock", WH_Acces = false, CS_PP_Acces = false, Procurement_Acces = true, HasMultipleValues = false, Category = Categories["Quality"] },
                     new Point { Point_Name = "Expiration Status", WH_Acces = false, CS_PP_Acces = false, Procurement_Acces = true, HasMultipleValues = true, Category = Categories["Quality"] },
 
                     //Delivery
                     new Point { Point_Name = "Customer Escallation", WH_Acces = false, CS_PP_Acces = true, Procurement_Acces = false, HasMultipleValues = false, Category = Categories["Delivery"] },
-                    new Point { Point_Name = "Attaiement", WH_Acces = false, CS_PP_Acces = true, Procurement_Acces = false, HasMultipleValues = false, Category = Categories["Delivery"] },
                     new Point { Point_Name = "PP related Line Stoppage", WH_Acces = false, CS_PP_Acces = true, Procurement_Acces = false, HasMultipleValues = false, Category = Categories["Delivery"] },
                     new Point { Point_Name = "Current Wk Criticals List", WH_Acces = false, CS_PP_Acces = false, Procurement_Acces = true, HasMultipleValues = true, Category = Categories["Delivery"] },
                     new Point { Point_Name = "Wk+1 Criticals List", WH_Acces = false, CS_PP_Acces = false, Procurement_Acces = true , HasMultipleValues = true, Category = Categories["Delivery"] },
