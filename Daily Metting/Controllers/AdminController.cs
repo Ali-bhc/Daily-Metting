@@ -578,29 +578,5 @@ namespace Daily_Metting.Controllers
         }
 
 
-
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
-            if (!result.Succeeded)
-            {
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
-
-                return View(model);
-            }
-
-            await _signInManager.RefreshSignInAsync(user);
-            return RedirectToAction(nameof(Index));
-        }
-
-
-
     }
 }
