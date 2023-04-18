@@ -694,19 +694,40 @@ namespace Daily_Metting.Controllers
         public void UploadValuesFile(IExcelDataReader reader,Submission submission)
         {
             int counter1 = 0;
+            string description_value=string.Empty;
+            string comment_value = string.Empty;
             while (reader.Read())
             {
 
                 if (counter1 > 0)
                 {
-                    //Console.WriteLine(reader.GetString(1));
+                    Console.WriteLine(reader.GetFieldType(3));
+
+                    if (reader.GetFieldType(3) == typeof(Double))
+                    {
+                        description_value = reader.GetDouble(3).ToString(); // convert number to string
+                    }
+                    else
+                    {
+                        description_value = reader.GetString(3);
+                    }
+                    if (reader.GetFieldType(4) == typeof(Double))
+                    {
+                        comment_value = reader.GetDouble(4).ToString(); // convert number to string
+                    }
+                    else
+                    {
+                        comment_value = reader.GetString(4);
+                    }
+
                     //Map Excel data to database model
                     var value = new Value()
                     {
                         Point = _pointRepository.GetByName(reader.GetString(1)),
                         Value_point = (int)reader.GetDouble(2),
-                        description = reader.GetString(3),
-                        comment = reader.GetString(4),
+                        //description = (string)reader.GetValue(3),
+                        description = description_value,
+                        comment = comment_value,
                         Submission = submission
                     };
                     // Save model to database
