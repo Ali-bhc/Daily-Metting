@@ -4,7 +4,7 @@ namespace Daily_Metting.ViewModels
 {
     public class AbsenceViewModel
     {
-        public string status { get; set; }
+        public string status { get; set; } = "present";
         public string username { get; set; }
 
         public AbsenceViewModel(string status, string user)

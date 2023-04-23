@@ -17,7 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<DailyMeetingDbContext>(op => {
-    string ConnexionString = "Server=(localdb)\\mssqllocaldb;Database=DailyMeetingDB100;" +
+    string ConnexionString = "Server=(localdb)\\mssqllocaldb;Database=DailyMeetingDB200;" +
     "Trusted_Connection=True;MultipleActiveResultSets=true";
     op.UseSqlServer(ConnexionString);
     });
@@ -65,7 +65,7 @@ builder.Services.AddScoped<IAPURepository, APURepository>();
 
 builder.Services.AddControllersWithViews();
 
-//please for adding migration you should Comment this block of code(Add-Admin);
+//please for adding migration you should Comment this block of code(Add - Admin);
 //Add Admin
 var roleManager = builder.Services.BuildServiceProvider().GetRequiredService<RoleManager<IdentityRole>>();
 var userManager = builder.Services.BuildServiceProvider().GetRequiredService<UserManager<User>>();

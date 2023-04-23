@@ -701,7 +701,7 @@ namespace Daily_Metting.Controllers
 
                 if (counter1 > 0)
                 {
-                    Console.WriteLine(reader.GetFieldType(3));
+                    //Console.WriteLine(reader.GetFieldType(3));
 
                     if (reader.GetFieldType(3) == typeof(Double))
                     {
