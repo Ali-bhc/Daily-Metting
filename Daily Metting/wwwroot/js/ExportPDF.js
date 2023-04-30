@@ -7,45 +7,51 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
 ];
 
 
-
-var pdfdate = document.getElementById('date');
-
+// Today's Pdf Date
+var pdfdate = document.getElementById('pdfDate');
 var datepdf = new Date();
-
 let year = datepdf.getFullYear();
 let month = monthNames[datepdf.getMonth()];
-//Console.log(month);
 let day = datepdf.getDate();
+
+let pdfMonth = (datepdf.getMonth() + 1).toString().padStart(2, '0');
+//pdfdate.value = day + '/' + pdfMonth + '/' + year;
+
+
+//get today's date
 var currentDate = "" + month + " " + day + ", " + year;
 
-
-document.getElementById('pdfDate').value = day + '/' + month + '/' + year;
-
-//pdfdate.value = "" + month + " " + day + ", " + year;
-$('#date').change(function () {
+// Event if i select a date 
+	$('#date').change(function () {
+	//get selected date
 	var selectedDate = $('#date').val();
-	//Console.log("selected date : " + selectedDate);
-	pdfdate.value = selectedDate;
-	var date = new Date(pdfdate.value);
-
+	console.log("selected date : " + selectedDate);
+	var date = new Date(selectedDate);
 	year = date.getFullYear();
 	month = monthNames[date.getMonth()];
-	//Console.log(month);
 	day = date.getDate();
 
-	document.getElementById('pdfDate').value = day + '/' + month + '/' + year;
-	//Console.log(document.getElementById('pdfDate').value);
-	currentDate = "" + month + " " + day + ", " + year;
+	//let pdfMonth = datepdf.getMonth() + 1;
+	let pdfMonth = (date.getMonth() + 1).toString().padStart(2, '0');
 
+	pdfdate.value = day + '/' + pdfMonth + '/' + year;
+
+	console.log("pdf date:" + pdfdate.value);
+
+	//get selected date 
+		currentDate = "" + month + " " + day + ", " + year;
+		console.log("current date : sel :"+currentDate);
 
 	// Validate the selected date
 	var today = new Date();
 	var selected = new Date(selectedDate);
+	
+
+
 	if (selected > today) {
 		alert('Please select a date that is not greater than today.');
 		return;
 	}
-	//Console.log(selected);
 	$.ajax({
 		url: '/Admin/Index',
 		type: 'Get',
@@ -173,6 +179,7 @@ $("#btnSubmit").click(function () {
 	let Result = MyView.replaceAll("/img/Icons", ImgFolderUrl);
 	let View = Result.replaceAll(" Icon.svg", "%20Icon.svg");
 	$("input[name='ExportData']").val(View);
+	//$("input[name='pdfDate']").val(pdfdate.value);
 });
 
 

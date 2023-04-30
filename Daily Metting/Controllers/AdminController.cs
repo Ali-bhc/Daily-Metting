@@ -19,6 +19,8 @@ using iText.IO.Font.Constants;
 using iText.Kernel.Colors;
 using iText.Kernel.Font;
 using iText.IO.Image;
+using Microsoft.AspNetCore.Http;
+using System.Globalization;
 
 namespace Daily_Metting.Controllers
 {
@@ -103,7 +105,7 @@ namespace Daily_Metting.Controllers
                 foreach (var ap in apus)
                 {
                     var AttainementListAverage = new List<Attainement>();
-                    foreach (var att in _attainementRepository.GetProjectList(ap))
+                    foreach (var att in _attainementRepository.GetProjectList(ap,date))
                     {
                         AttainementListAverage.Add(_attainementRepository.GetAttainementsAverage(att, date));
                     }
@@ -271,6 +273,7 @@ namespace Daily_Metting.Controllers
 
         public async Task<IActionResult> SubmissionDetails(int id)
         {
+
             Submission sub = _submissionRepository.GetUserSubmissionById(id);
             var SubmissionsValues = _valueRepository.GetSubmissionValue(id);
             sub.Values = SubmissionsValues;
@@ -298,25 +301,28 @@ namespace Daily_Metting.Controllers
             ViewBag.User = sub.User.UserName;
             SubmissionDetailsViewModel submissionDetailsViewModel = new SubmissionDetailsViewModel(ValuesPoint, PointCategoryList);
 
-            
 
 
-            if (_attainementRepository.isAttainementsExist(sub.submission_time))
+            if (sub.User.Departement == "CS_PP")
             {
-                var apus = _apuRepository.AllApu;
-                foreach (var ap in apus)
+                if (_attainementRepository.isAttainementsExist(sub.submission_time))
                 {
-                    var AttainementList = new List<Attainement>();
-                    foreach (var att in _attainementRepository.GetProjectList(ap))
+                    var apus = _apuRepository.AllApu;
+                    foreach (var ap in apus)
                     {
-                        AttainementList.Add(_attainementRepository.GetAttainementsAverage(att, sub.submission_time));
+                        //var AttainementList = new List<Attainement>();
+                        //foreach (var att in _attainementRepository.GetProjectList(ap))
+                        //{
+                        //    AttainementList.Add(_attainementRepository.GetAttainementsAverage(att, sub.submission_time));
+                        //}
+                        var AttainementList = _attainementRepository.GetAttainementsBySubmission_Apu(sub, ap);
+
+                        AttainementApuList.Add(ap.APU_Name, AttainementList);
                     }
-                    AttainementApuList.Add(ap.APU_Name, AttainementList);
+
+                    submissionDetailsViewModel.ListofAttainement = AttainementApuList;
                 }
-
-               submissionDetailsViewModel.ListofAttainement= AttainementApuList;
             }
-
             return View(submissionDetailsViewModel);
 
         }
@@ -370,7 +376,14 @@ namespace Daily_Metting.Controllers
 
 
         [HttpPost]
-        public IActionResult GeneratePDF(string ExportData,DateTime pdfDate) {
+        public IActionResult GeneratePDF(string ExportData,string pdfDate) {
+            DateTime date = DateTime.Today.Date;
+            if(pdfDate != null)
+            {
+               date = DateTime.ParseExact(pdfDate, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+            }
+
+
             if (string.IsNullOrEmpty(ExportData))
             {
                 return BadRequest("HTML content cannot be null or empty.");
@@ -401,8 +414,8 @@ namespace Daily_Metting.Controllers
                 pdfDoc.Close();
                 pdfBytes = memoryStream.ToArray();
             }
-            return File(pdfBytes, "application/pdf", "Meeting Report ("+pdfDate.ToString("M")+").pdf");
-           // return File(pdfBytes, "application/pdf", "Meeting Report ("+DateTime.Today.Date.ToString("M")+").pdf");
+            return File(pdfBytes, "application/pdf", "Meeting Report ("+date.ToString("M")+").pdf");
+           //return File(pdfBytes, "application/pdf", "Meeting Report ("+DateTime.Today.Date.ToString("M")+").pdf");
 
         }
 
@@ -448,13 +461,15 @@ namespace Daily_Metting.Controllers
                 }
 
             }
+            
             if (_attainementRepository.isAttainementsExist(date))
             {
                 var apus = _apuRepository.AllApu;
                 foreach (var ap in apus)
                 {
                     var AttainementListAverage = new List<Attainement>();
-                    foreach (var att in _attainementRepository.GetProjectList(ap))
+                    //var testlist = _attainementRepository.GetProjectList(ap,date);
+                    foreach (var att in _attainementRepository.GetProjectList(ap,date))
                     {
                         AttainementListAverage.Add(_attainementRepository.GetAttainementsAverage(att, date));
                     }

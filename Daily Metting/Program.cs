@@ -17,7 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<DailyMeetingDbContext>(op => {
-    string ConnexionString = "Server=(localdb)\\mssqllocaldb;Database=DailyMeetingDB;" +
+    string ConnexionString = "Server=(localdb)\\mssqllocaldb;Database=DailyMeetingDB1999;" +
     "Trusted_Connection=True;MultipleActiveResultSets=true";
     op.UseSqlServer(ConnexionString);
     });
@@ -91,6 +91,31 @@ if (await userManager.FindByNameAsync("admin") == null)
     if (result.Succeeded)
     {
         await userManager.AddToRoleAsync(user, "Admin");
+    }
+}
+
+//Add Member
+if (!await roleManager.RoleExistsAsync("Member"))
+{
+    await roleManager.CreateAsync(new IdentityRole("Member"));
+}
+
+
+if (await userManager.FindByNameAsync("CS_PP") == null)
+{
+    var user = new User
+    {
+        UserName = "CS_PP",
+        Email = "CS_PP@example.com",
+        IsAdmin = true,
+        Departement = "CS_PP",
+        Name = "CS_PP test"
+    };
+
+    var result = await userManager.CreateAsync(user, "Admin123!");
+    if (result.Succeeded)
+    {
+        await userManager.AddToRoleAsync(user, "Member");
     }
 }
 

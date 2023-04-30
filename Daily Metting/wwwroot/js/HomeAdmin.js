@@ -59,19 +59,23 @@
                 let result = (cell.innerText).slice(0, -1);
                 const value = parseInt(result);
 
-                if (value > 100) {
+                if (value >= 100) {
                     cell.style.backgroundColor = '#9fff80';
                 }
                 else {
-                    if (value > 90) {
+                    if (value >= 90) {
                         cell.style.backgroundColor = '#ffff99';
                     }
-                    else {
+                    else if (value >= 0) {
                         cell.style.backgroundColor = '#ff6666';
                     }
+                    else
+                        cell.style = "";
                 }
+                
             }
         }
     }
+    
 
 })

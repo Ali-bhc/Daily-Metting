@@ -13,11 +13,10 @@
 
 <div class="wrapper">
     <div class="tabs-wrapper">
-        <span class="left scroller-btn">hi</span>
         <ul id="scroller" class="nav nav-tabs">
     @foreach (var cat in Model.PointCategoryList.Keys)
     {
-        <li><a data-toggle="tab" href=#@cat>@cat</a></li>
+         <li><a data-toggle="tab" href=#@(cat+"-tab")>@cat</a></li>
     }
 
     @if (Model.Is_CS_PP)
@@ -26,7 +25,6 @@
     }
         
         </ul>
-        <span id="right" class="right scroller-btn">></span>
     </div>
     <div class="tab-content">
         
@@ -34,7 +32,7 @@
         {
             @if (cat.Equals("Safety"))
             {
-              <div id="Safety" class="tab-pane fade in active">
+              <div id="Safety-tab" class="tab-pane fade in active">
 
                 @foreach (var point in Model.PointCategoryList[cat])
                 {
@@ -52,12 +50,11 @@
             }
             else
             {
-                <div id=@cat class="tab-pane fade">    
-            
+            <div id=@(cat+"-tab") class="tab-pane fade">
+
             @if (Model.PointCategoryList[cat].Count() == 0)
             {
                 <p> You have not the ability for submit this Category</p>
-
             }
             else
             {

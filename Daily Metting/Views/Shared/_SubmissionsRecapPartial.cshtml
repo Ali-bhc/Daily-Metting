@@ -58,12 +58,49 @@
                 <tr class="thead-dark">
                     <th colspan="10" class="text-center">Attainement</th>
                 </tr>
+                <tr>
+                    <td class="text-center">APU</td>
+                    <td>Project Name</td>
+                    <td>Attainements OTIF</td>
+                    <td>Attainements MIX</td>
+                    <td>Productivity</td>
+                    <td>Downtime</td>
+                    <td>Scrap</td>
+                    <td colspan="3">Comments</td>
+                </tr>
                 @foreach (var apu in Model.ListofAttainementAverages.Keys)
                 {
-                    @if (Model.ListofAttainementAverages[apu].Count > 0)
+
+                    <tr>
+                        <td class="align-middle text-center border-bottom-dark" rowspan=@(Model.ListofAttainementAverages[apu].Count)>@apu</td>
+                        <td>@Model.ListofAttainementAverages[apu][0].Project_name</td>
+                        <td>@Model.ListofAttainementAverages[apu][0].Attainement_OTIF %</td>
+                        <td>@Model.ListofAttainementAverages[apu][0].Attainement_Mix %</td>
+                        <td>@Model.ListofAttainementAverages[apu][0].Productivity %</td>
+                        <td>@Model.ListofAttainementAverages[apu][0].Downtime %</td>
+                        <td>@Model.ListofAttainementAverages[apu][0].Scrap %</td>
+                        <td colspan="3" class="small">@Html.Raw(Model.ListofAttainementAverages[apu][0].Comment.Replace("\n", "<br />"))</td>
+                    </tr>
+                    @foreach (var attainement in Model.ListofAttainementAverages[apu])
+                    {
+                        if (attainement != Model.ListofAttainementAverages[apu][0])
+                        {
+                            <tr>
+                                <td>@attainement.Project_name</td>
+                            <td>@attainement.Attainement_OTIF %</td>
+                            <td>@attainement.Attainement_Mix %</td>
+                            <td>@attainement.Productivity %</td>
+                            <td>@attainement.Downtime %</td>
+                            <td>@attainement.Scrap %</td>
+                            <td colspan="3" class="small">@Html.Raw(attainement.Comment.Replace("\n", "<br />"))</td>
+                        </tr>
+                        }
+                    }
+
+                    @*@if (Model.ListofAttainementAverages[apu].Count > 0)
                     {
                         <tr>
-                            <td class="text-center" rowspan=@(Model.ListofAttainementAverages[apu].Count+1)>@apu</td>
+                            <td class="align-middle text-center border-bottom-dark" rowspan=@(Model.ListofAttainementAverages[apu].Count+1)>@apu</td>
                             <td>Project Name</td>
                             <td>Attainements OTIF</td>
                             <td>Attainements MIX</td>
@@ -89,7 +126,7 @@
                             </tr>
                         }
 
-                    }
+                    }*@
 
                 }
 

@@ -32,12 +32,21 @@ namespace Daily_Metting.Repositories
 
         public List<Attainement> GetAttainementsBySubmission(Submission submission)
         {
-            return _dailyMeetingDbContext.Attainements.Where(a => a.Submission == submission).ToList();
+            var AttainementsList = _dailyMeetingDbContext.Attainements.Where(a => a.Submission == submission).ToList();
+            foreach (var att in AttainementsList)
+            {
+                att.Attainement_OTIF = Convert.ToDouble((att.Attainement_OTIF * 100).ToString("0.00"));
+                att.Attainement_Mix = Convert.ToDouble((att.Attainement_Mix * 100).ToString("0.00"));
+                att.Productivity = Convert.ToDouble((att.Productivity * 100).ToString("0.00"));
+                att.Downtime = Convert.ToDouble((att.Downtime * 100).ToString("0.00"));
+                att.Scrap = Convert.ToDouble((att.Scrap * 100).ToString("0.00"));
+            }
+            return AttainementsList;
         }
 
-        public List<string> GetProjectList(APU aPU)
+        public List<string> GetProjectList(APU aPU,DateTime date)
         {
-            var AttainementList = _dailyMeetingDbContext.Attainements.Select(a => a.Project_name).Distinct().ToList();
+            var AttainementList = _dailyMeetingDbContext.Attainements.Where(a=>a.APU==aPU  && EF.Functions.DateDiffDay(a.Submission.submission_time, date)==0).Select(a => a.Project_name).Distinct().ToList();
             if (AttainementList == null)
             {
                 AttainementList = new List<string> {"Victor Battery", "PT Battery", "Drive unit", "HMI", "DUPTaped", "DUP Sheated", "Cobs", "Minus / plus", "Victor Bike", "SCM", "PT Chargingsocket", "PT Splitter", "Speed", "Light" };
@@ -48,7 +57,7 @@ namespace Daily_Metting.Repositories
 
         public Attainement GetAttainementsAverage(string project_name, DateTime date)
         {
-            
+            //Console.WriteLine(project_name);
             var attainement_otif_average = _dailyMeetingDbContext.Attainements.
                 Where(a=> EF.Functions.DateDiffDay(a.Submission.submission_time, date) == 0 && a.Project_name==project_name)
                 .Select(a=>a.Attainement_OTIF).Average();
@@ -98,6 +107,20 @@ namespace Daily_Metting.Repositories
         public List<Attainement> GetAttainementBySubmission(int submissionId)
         {
             return _dailyMeetingDbContext.Attainements.Where(a=>a.Submission.SubmissionID == submissionId).ToList();
+        }
+        
+        public List<Attainement> GetAttainementsBySubmission_Apu(Submission submission, APU aPU) 
+        {
+            var AttainemenList = _dailyMeetingDbContext.Attainements.Where(a => a.Submission == submission && a.APU == aPU).ToList();
+            foreach (var att in AttainemenList)
+            {
+                att.Attainement_OTIF = Convert.ToDouble((att.Attainement_OTIF * 100).ToString("0.00"));
+                att.Attainement_Mix = Convert.ToDouble((att.Attainement_Mix * 100).ToString("0.00"));
+                att.Productivity = Convert.ToDouble((att.Attainement_Mix * 100).ToString("0.00"));
+                att.Downtime = Convert.ToDouble((att.Attainement_Mix * 100).ToString("0.00"));
+                att.Scrap = Convert.ToDouble((att.Attainement_Mix * 100).ToString("0.00"));
+            }
+            return _dailyMeetingDbContext.Attainements.Where(a => a.Submission == submission && a.APU==aPU).ToList();
         }
     }
 }

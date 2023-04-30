@@ -132,7 +132,6 @@ namespace Daily_Metting.Controllers
         {
             //get the user
             var user = await _userManager.GetUserAsync(User);
-            string submission_status;
             bool Is_CS_PP_User = user.Departement == "CS_PP" ? true : false;
 
             if (FileValidation(file.File.FileName, user.Departement))
@@ -199,7 +198,7 @@ namespace Daily_Metting.Controllers
                     Apus = _apuRepository.AllApu;
                     foreach (var apu in Apus)
                     {
-                        ProjectList.Add(apu.APU_Name, _attainementRepository.GetProjectList(apu));
+                        ProjectList.Add(apu.APU_Name, _attainementRepository.GetProjectList(apu,DateTime.Today.Date));
                     }
                     SubmissionViewModel _submissionViewModel = new SubmissionViewModel(PointCategoryList,ProjectList, false,true);
                     return View(_submissionViewModel);
@@ -254,7 +253,7 @@ namespace Daily_Metting.Controllers
                 var ProjectList = new Dictionary<string,List<string>>();
                 foreach (var apu in Apus)
                 {
-                    ProjectList.Add(apu.APU_Name, _attainementRepository.GetProjectList(apu));
+                    ProjectList.Add(apu.APU_Name, _attainementRepository.GetProjectList(apu,submission.submission_time.Date));
                 }
                 foreach(var apu in ProjectList.Keys)
                 {
@@ -327,18 +326,19 @@ namespace Daily_Metting.Controllers
                     var Apus = _apuRepository.AllApu;
                     foreach (var apu in Apus)
                     {
-                        ProjectList.Add(apu.APU_Name, _attainementRepository.GetProjectList(apu));
+                        ProjectList.Add(apu.APU_Name, _attainementRepository.GetProjectList(apu,sub.submission_time.Date));
                     }
                     foreach (var attainement in _attainementRepository.GetAttainementsBySubmission(sub))
                     {
+
                         var att = new AttainementsViewModel
                         {
                             Project_name = attainement.Project_name,
-                            Attainement_OTIF = attainement.Attainement_OTIF*100,
-                            Attainement_Mix = attainement.Attainement_Mix*100,
-                            Downtime = attainement.Downtime*100 ,
-                            Scrap = attainement.Scrap * 100,
-                            Productivity = attainement.Productivity * 100,
+                            Attainement_OTIF = attainement.Attainement_OTIF,
+                            Attainement_Mix = attainement.Attainement_Mix,
+                            Downtime = attainement.Downtime ,
+                            Scrap = attainement.Scrap,
+                            Productivity = attainement.Productivity,
                             Comment = attainement.Comment,
                             ApuName = attainement.APU.APU_Name
                         };
@@ -413,7 +413,7 @@ namespace Daily_Metting.Controllers
                 var ProjectList = new Dictionary<string, List<string>>();
                 foreach (var apu in Apus)
                 {
-                    ProjectList.Add(apu.APU_Name, _attainementRepository.GetProjectList(apu));
+                    ProjectList.Add(apu.APU_Name, _attainementRepository.GetProjectList(apu,submission.submission_time.Date));
                 }
                 foreach (var apu in ProjectList.Keys)
                 {
@@ -464,7 +464,7 @@ namespace Daily_Metting.Controllers
 
         public async Task<IActionResult> SubmissionDetails(int id)
         {
-            //var user = await _userManager.GetUserAsync(User);
+            var user = await _userManager.GetUserAsync(User);
             //Submission sub = _submissionRepository.GetUserSubmissionById(id);
             //var SubmissionsValues = _valueRepository.GetSubmissionValue(id);
             //sub.Values = SubmissionsValues;
@@ -513,22 +513,26 @@ namespace Daily_Metting.Controllers
             SubmissionDetailsViewModel submissionDetailsViewModel = new SubmissionDetailsViewModel(ValuesPoint, PointCategoryList);
 
 
-
-
-            if (_attainementRepository.isAttainementsExist(sub.submission_time))
+            if (user.Departement == "CS_PP")
             {
-                var apus = _apuRepository.AllApu;
-                foreach (var ap in apus)
-                {
-                    var AttainementList = new List<Attainement>();
-                    foreach (var att in _attainementRepository.GetProjectList(ap))
-                    {
-                        AttainementList.Add(_attainementRepository.GetAttainementsAverage(att, sub.submission_time));
-                    }
-                    AttainementApuList.Add(ap.APU_Name, AttainementList);
-                }
 
-                submissionDetailsViewModel.ListofAttainement = AttainementApuList;
+                if (_attainementRepository.isAttainementsExist(sub.submission_time))
+                {
+                    var apus = _apuRepository.AllApu;
+                    foreach (var ap in apus)
+                    {
+                        //var AttainementList = new List<Attainement>();
+                        var AttainementList = _attainementRepository.GetAttainementsBySubmission_Apu(sub,ap);
+
+                        //foreach (var att in _attainementRepository.GetProjectList(ap))
+                        //{
+                        //    AttainementList.Add(_attainementRepository.GetAttainementsAverage(att, sub.submission_time));
+                        //}
+                        AttainementApuList.Add(ap.APU_Name, AttainementList);
+                    }
+
+                    submissionDetailsViewModel.ListofAttainement = AttainementApuList;
+                }
             }
 
             return View(submissionDetailsViewModel);
@@ -556,55 +560,51 @@ namespace Daily_Metting.Controllers
             {
                 if (FileValidation(file.File.FileName, user.Departement))
                 {
-                    var submission = GetCurrentSubmission(user);
+                   
+                    //var submission = GetCurrentSubmission(user);
                     using (var stream = file.File.OpenReadStream())
                     {
-                        using (var reader = ExcelReaderFactory.CreateReader(stream))
+                        using (var reader1 = ExcelReaderFactory.CreateReader(stream))
                         {
-                            if (DataValidation(reader))
+                            //if (DataValidation(reader1))
+                            //{
+                            //get the submission
+                            var sub = _submissionRepository.GetSubmissionByUser_Date(DateTime.Now.Date, user);
+
+                            var submission1 = new Submission
                             {
-                                //get the submission
-                                var sub = _submissionRepository.GetSubmissionByUser_Date(DateTime.Now.Date, user);
+                                User = user, // Set the user property here
+                                submission_time = sub.submission_time, // Set the date property here
+                                status = sub.status
 
-                                //delete old values
-                                _valueRepository.DeleteValuesBySubmission(sub);
-
-                                //delete old Attainements
-                                _attainementRepository.DeleteAttainementsBySubmission(sub);
-
-                                //delete submission
-                                _submissionRepository.DeleteSubmission(sub);
+                            };
+                            _submissionRepository.AddSubmission(submission1);
 
 
+                            //delete old values
+                            _valueRepository.DeleteValuesBySubmission(sub);
 
-                                var submission1 = new Submission
-                                {
-                                    User = user, // Set the user property here
-                                    submission_time = sub.submission_time, // Set the date property here
-                                    status = sub.status
+                            //delete old Attainements
+                            _attainementRepository.DeleteAttainementsBySubmission(sub);
 
-                                };
-
-                                _submissionRepository.AddSubmission(submission1);
+                            //delete submission
+                            _submissionRepository.DeleteSubmission(sub);
 
 
-                                //var submission = GetCurrentSubmission(user);
-                                //using (var stream = file.File.OpenReadStream())
-                                //{
-                                //    using (var reader = ExcelReaderFactory.CreateReader(stream))
-                                //    {
-                                UploadValuesFile(reader, submission);
-                                if (Is_CS_PP_User)
-                                {
-                                    reader.NextResult();
-                                    UploadAttainementFile(reader, submission);
-                                }
-                            }
-                            else
+                            UploadValuesFile(reader1, submission1);
+                            if (Is_CS_PP_User)
                             {
-                                var uploadViewModel = new UploadSubmissionViewModel(true, user.Departement, "the file has been modified");
-                                return View(uploadViewModel);
+                                reader1.NextResult();
+                                UploadAttainementFile(reader1, submission1);
                             }
+                        
+
+                            //}
+                            //else
+                            //{
+                            //    var uploadViewModel = new UploadSubmissionViewModel(true, user.Departement, "the file has been modified");
+                            //    return View(uploadViewModel);
+                            //}
                         }
 
                     }
@@ -683,7 +683,6 @@ namespace Daily_Metting.Controllers
 
         }
 
-
         public void UploadAttainementFile(IExcelDataReader reader, Submission submission)
         {
             var apu = new APU();
@@ -692,7 +691,7 @@ namespace Daily_Metting.Controllers
             {
                 if (counter2 > 0)
                 {
-                    Console.WriteLine(reader.GetDouble(4));
+                    Console.WriteLine(reader.GetString(0));
                     //if (!reader.GetString(0).Equals(null))
                     if (reader.GetString(0) != null)
                     {
@@ -828,7 +827,8 @@ namespace Daily_Metting.Controllers
                 foreach (var ap in apus)
                 {
                     var AttainementListAverage = new List<Attainement>();
-                    foreach (var att in _attainementRepository.GetProjectList(ap))
+                    var testList = _attainementRepository.GetProjectList(ap,date);
+                    foreach (var att in testList)
                     {
                         AttainementListAverage.Add(_attainementRepository.GetAttainementsAverage(att, date));
                     }
@@ -847,15 +847,14 @@ namespace Daily_Metting.Controllers
 
 
             return homeViewModel;
-        }
-        
+        }        
         
         public async Task<IActionResult> Attendance()
         {
             //chack the existance of Attendance in absence table
             var abs = _absencesRepository.GetAbsences(DateTime.Today);
             AttendanceViewModel _attendanceViewModel = new AttendanceViewModel();
-            if (abs.Count() != 0)
+            if (abs.Count() == 0)
             {
                 ViewBag.Message = "the attendance sheet";
                 List<User> Users;
@@ -874,7 +873,6 @@ namespace Daily_Metting.Controllers
         }
 
 
-
         [HttpPost]
         public IActionResult Attendance(AttendanceViewModel attendanceViewModel)
         {
@@ -885,7 +883,7 @@ namespace Daily_Metting.Controllers
                 _absencesRepository.AddAbsence(new Absence { Status = absent.status, User = user, date = DateTime.Today });
             }
 
-            return RedirectToAction(nameof(AdminController.Index), "Admin");
+            return RedirectToAction(nameof(MemberController.Index), "Member");
         }
 
     }

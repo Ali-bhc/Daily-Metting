@@ -11,8 +11,8 @@
             <tr>
                 <th>Points</th>
                 <th>Values</th>
+                <th colspan="4">Comment</th>
                 <th colspan="3">Description</th>
-                <th colspan="3">Comment</th>
             </tr>
         </thead>
 
@@ -57,39 +57,48 @@
                     <tr class="thead-dark">
                         <th colspan="11" class="text-center">Attainement</th>
                     </tr>
-
+                    <tr>
+                        <td class="text-center">APU</td>
+                        <td>Project Name</td>
+                        <td>Attainements OTIF</td>
+                        <td>Attainements MIX</td>
+                        <td>Productivity</td>
+                        <td>Downtime</td>
+                        <td>Scrap</td>
+                        <td colspan="3">Comments</td>
+                    </tr>
                     @foreach (var apu in Model.ListofAttainement.Keys)
                     {
-                        @if (Model.ListofAttainement[apu].Count() > 0)
+
+                        <tr>
+                            <td class="align-middle text-center border-bottom-dark" rowspan=@Model.ListofAttainement[apu].Count()>@apu</td>
+
+                            <td>@Model.ListofAttainement[apu].ElementAt(0).Project_name</td>
+                            <td>@Model.ListofAttainement[apu].ElementAt(0).Attainement_OTIF %</td>
+                            <td>@Model.ListofAttainement[apu].ElementAt(0).Attainement_Mix %</td>
+                            <td>@Model.ListofAttainement[apu].ElementAt(0).Productivity %</td>
+                            <td>@Model.ListofAttainement[apu].ElementAt(0).Downtime %</td>
+                            <td>@Model.ListofAttainement[apu].ElementAt(0).Scrap %</td>
+                            <td colspan="3" class="small">@Html.Raw(Model.ListofAttainement[apu].ElementAt(0).Comment)</td>
+                        </tr>
+                        @for (int i = 1; i < Model.ListofAttainement[apu].Count(); i++)
                         {
                             <tr>
-                                <td class="align-middle text-center" rowspan=@(Model.ListofAttainement[apu].Count()+1)>@apu</td>
-                                <td>Project Name</td>
-                                <td>Attainements OTIF</td>
-                                <td>Attainements MIX</td>
-                                <td>Productivity</td>
-                                <td>Downtime</td>
-                                <td>Scrap</td>
-                                <td>Comments</td>
+                                <td>@Model.ListofAttainement[apu].ElementAt(i).Project_name</td>
+                                <td>@Model.ListofAttainement[apu].ElementAt(i).Attainement_OTIF %</td>
+                                <td>@Model.ListofAttainement[apu].ElementAt(i).Attainement_Mix %</td>
+                                <td>@Model.ListofAttainement[apu].ElementAt(i).Productivity %</td>
+                                <td>@Model.ListofAttainement[apu].ElementAt(i).Downtime %</td>
+                                <td>@Model.ListofAttainement[apu].ElementAt(i).Scrap %</td>
+                                <td colspan="3" class="small">@Html.Raw(Model.ListofAttainement[apu].ElementAt(i).Comment)</td>
                             </tr>
-                            @foreach (var attainement in Model.ListofAttainement[apu])
-                            {
-                                <tr>
-                                    <td rowspan=1>
-                                        @attainement.Project_name %
-
-                                    </td>
-                                    <td rowspan=1>@attainement.Attainement_OTIF %</td>
-                                    <td rowspan=1>@attainement.Attainement_Mix %</td>
-                                    <td rowspan=1>@attainement.Productivity %</td>
-                                    <td rowspan=1>@attainement.Downtime %</td>
-                                    <td rowspan=1>@attainement.Scrap %</td>
-                                    <td rowspan=1 class="small">@Html.Raw(attainement.Comment.Replace("\n", "<br />"))</td>
-                                </tr>
-                            }
                         }
 
+
+                       
+
                     }
+
                 </tbody>
             }
 
