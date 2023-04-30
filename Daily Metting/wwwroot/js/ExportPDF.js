@@ -8,7 +8,7 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
 
 
 
-var pdfdate = document.getElementById('pdfDate');
+var pdfdate = document.getElementById('date');
 
 var datepdf = new Date();
 
