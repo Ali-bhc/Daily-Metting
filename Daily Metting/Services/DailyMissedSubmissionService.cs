@@ -91,7 +91,7 @@ namespace Daily_Metting.Services
             var now = DateTime.Now;
             //var now1 = new DateTime(2023, 03, 13, 23, 59, 20);
             //var Target = new DateTime(now.Year, now.Month, now.Day, 14, 01, 0, DateTimeKind.Utc);
-            DateTime targetTime = new DateTime(now.Year, now.Month, now.Day, 14, 00, 00);
+            DateTime targetTime = new DateTime(now.Year, now.Month, now.Day, 23, 59, 00);
             DateTime nextRunTime;
 
             if (now<=targetTime)
@@ -100,7 +100,7 @@ namespace Daily_Metting.Services
             }
             else
             {
-                nextRunTime = new DateTime(now.Year, now.Month, now.Day, 14, 00, 0, DateTimeKind.Utc).AddDays(1);
+                nextRunTime = new DateTime(now.Year, now.Month, now.Day, 23, 59, 0, DateTimeKind.Utc).AddDays(1);
             }
 
             //var nextRunTime = new DateTime(now.Year, now.Month, now.Day, 14, 01, 0, DateTimeKind.Utc);

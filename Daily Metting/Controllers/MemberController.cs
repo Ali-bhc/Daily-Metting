@@ -6,6 +6,7 @@ using iText.Html2pdf;
 using iText.Kernel.Geom;
 using iText.Kernel.Pdf;
 using iText.Layout;
+//using iText.StyledXmlParser.Jsoup.Nodes;
 //using iTextSharp.text.log;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -120,8 +121,8 @@ namespace Daily_Metting.Controllers
             DateTime currentTime = DateTime.Now;
 
             // Get the time today at 10:45 AM
-            DateTime targetTime = new DateTime(currentTime.Year, currentTime.Month, currentTime.Day, 11, 15, 0);
-            DateTime MissingTime = new DateTime(currentTime.Year, currentTime.Month, currentTime.Day, 14, 00, 0);
+            DateTime targetTime = new DateTime(currentTime.Year, currentTime.Month, currentTime.Day, 10, 30, 0);
+            DateTime MissingTime = new DateTime(currentTime.Year, currentTime.Month, currentTime.Day, 23, 00, 0);
 
 
             // Compare the current time with the target time
@@ -459,11 +460,6 @@ namespace Daily_Metting.Controllers
             {
 
                 var valueslist = new Dictionary<string,ValueViewModel>();
-                //foreach (var val in values)
-                //{
-                //    var pt = _pointRepository.GetByID(val.Point.PointID);
-                //    listofvalues.Add("point",new ValueViewModel { Value_point = val.Value_point, description = val.description, comment = val.comment, PointID = pt.PointID });
-                //}
                 var pt = _pointRepository.GetByID(_submissionViewModel.Values[key].PointID);
                 _valueRepository.AddSubmissionValue(new Value {
                     Value_point = _submissionViewModel.Values[key].Value_point, 
@@ -719,12 +715,12 @@ namespace Daily_Metting.Controllers
                     {
                         comment_value = reader.GetString(4);
                     }
-
+                    var pointVal = (reader.GetValue(2) == null || reader.GetValue(2).ToString() == "") ? 0 : Convert.ToInt32(reader.GetValue(2));
                     //Map Excel data to database model
                     var value = new Value()
                     {
                         Point = _pointRepository.GetByName(reader.GetString(1)),
-                        Value_point = (int)reader.GetDouble(2),
+                        Value_point = pointVal,
                         //description = (string)reader.GetValue(3),
                         description = description_value,
                         comment = comment_value,
@@ -801,6 +797,15 @@ namespace Daily_Metting.Controllers
                         }
                     }
 
+                    APU ap = apu;
+                    var Project_name = reader.GetString(3);
+                    var Attainement_OTIF = (double)reader.GetDouble(4);
+                    var Attainement_Mix = (double)reader.GetDouble(5);
+                    var Productivity = (double)reader.GetDouble(6);
+                    var Downtime = (double)reader.GetDouble(7);
+                    var Scrap = (double)reader.GetDouble(8);
+                    var Comment = reader.GetString(9);
+                    var Submission = submission;
                     // Map Excel data to database model
                     var model = new Attainement()
                     {

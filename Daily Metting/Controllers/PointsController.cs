@@ -85,12 +85,23 @@ namespace Daily_Metting.Controllers
                 return NotFound();
             }
 
-            var point = await _context.Points.FindAsync(id);
+            var point = await _context.Points.Include(p => p.Category).FirstOrDefaultAsync(p => p.PointID == id);
+            var categories = _context.Categories.ToList();
+            var pointVM = new PointEditViewModel {PointID=point.PointID, Point_Name = point.Point_Name, CategoryID = point.Category.CategoryID, categories = categories, WH_Acces = point.WH_Acces, CS_PP_Acces = point.CS_PP_Acces, Procurement_Acces = point.Procurement_Acces, HasMultipleValues = point.HasMultipleValues };
             if (point == null)
             {
                 return NotFound();
             }
-            return View(point);
+
+            if (point.Category == null) // Check if Category is null
+            {
+                point.Category = new Category(); // Initialize with new Category
+            }
+
+            //var test  = new SelectList(_context.Categories, "CategoryID", "Category_Name", point.Category.CategoryID); // assuming the Category class has a CategoryName property
+            //ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "Category_Name", point.Category.CategoryID); // assuming the Category class has a CategoryName property
+
+            return View(pointVM);
         }
 
         // POST: Points/Edit/5
@@ -98,17 +109,33 @@ namespace Daily_Metting.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("PointID,Point_Name,WH_Acces,CS_PP_Acces,Procurement_Acces,HasMultipleValues")] Point point)
+        public async Task<IActionResult> Edit([Bind("PointID,Point_Name,WH_Acces,CS_PP_Acces,Procurement_Acces,HasMultipleValues,CategoryID")] PointEditViewModel pointVM)
         {
-           
-                try
+            try
+            {
+                // Read CategoryID from form values
+                var category = await _context.Categories.FindAsync(pointVM.CategoryID);
+
+                if (category == null)
                 {
-                    _context.Update(point);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+
+                var point = _context.Points.Where(p=>p.PointID== pointVM.PointID).FirstOrDefault();
+                // Set the Point's Category to the found Category
+                point.Point_Name=pointVM.Point_Name;
+                point.CS_PP_Acces = pointVM.CS_PP_Acces;
+                point.Procurement_Acces = pointVM.Procurement_Acces;
+                point.WH_Acces = pointVM.WH_Acces;
+                point.HasMultipleValues = pointVM.HasMultipleValues;
+                point.Category = category;
+                _context.Update(point);
+                await _context.SaveChangesAsync();
+
+            }
+            catch (DbUpdateConcurrencyException)
                 {
-                    if (!PointExists(point.PointID))
+                    if (!PointExists(pointVM.PointID))
                     {
                         return NotFound();
                     }
@@ -116,9 +143,10 @@ namespace Daily_Metting.Controllers
                     {
                         throw;
                     }
-                }
-                return RedirectToAction(nameof(Index));
-            
+            }
+            return RedirectToAction(nameof(Index));
+
+
         }
 
         // GET: Points/Delete/5
@@ -135,6 +163,8 @@ namespace Daily_Metting.Controllers
             {
                 return NotFound();
             }
+
+
 
             return View(point);
         }
