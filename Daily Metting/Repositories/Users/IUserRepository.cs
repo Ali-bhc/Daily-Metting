@@ -1,7 +1,7 @@
 ﻿using Daily_Metting.Models;
 using Daily_Metting.ViewModels;
 
-namespace Daily_Metting.Repositories
+namespace Daily_Metting.Repositories.Users
 {
     public interface IUserRepository
     {

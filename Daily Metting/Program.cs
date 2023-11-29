@@ -1,4 +1,4 @@
-using Daily_Metting.DAO;
+using Daily_Metting.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Daily_Metting.Models;
@@ -7,10 +7,19 @@ using System.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Microsoft.AspNetCore.Authorization;
-using Daily_Metting.Repositories;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Daily_Metting.Services;
 using Microsoft.AspNetCore.Http.Features;
+using Daily_Metting.Repositories.Absences;
+using Daily_Metting.Repositories.Apus;
+using Daily_Metting.Repositories.Attainements;
+using Daily_Metting.Repositories.Categories;
+using Daily_Metting.Repositories.Points;
+using Daily_Metting.Repositories.Submissions;
+using Daily_Metting.Repositories.Users;
+using Daily_Metting.Repositories.Values;
+using Daily_Metting.Data;
+using Daily_Metting.Repositories.Absences;
 
 var builder = WebApplication.CreateBuilder(args);
 

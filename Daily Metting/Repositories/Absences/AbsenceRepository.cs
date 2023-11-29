@@ -1,10 +1,10 @@
-﻿using Daily_Metting.DAO;
+﻿using Daily_Metting.Data;
 using Daily_Metting.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Daily_Metting.Repositories
+namespace Daily_Metting.Repositories.Absences
 {
-    public class AbsenceRepository:IAbsencesRepository
+    public class AbsenceRepository : IAbsencesRepository
     {
         private readonly DailyMeetingDbContext _dailyMeetingDbContext;
         public AbsenceRepository(DailyMeetingDbContext dailyMeetingDbContext)
@@ -20,22 +20,22 @@ namespace Daily_Metting.Repositories
             _dailyMeetingDbContext.SaveChanges();
         }
 
-        
+
         public List<Absence> GetAbsences(DateTime date)
         {
             return _dailyMeetingDbContext.Absences.Where(a => EF.Functions.DateDiffDay(a.date, date) == 0).Include(a => a.User).ToList();
-            
+
         }
 
         public int GetAbcencesCountByStatus_User(string status, User user)
         {
-            return _dailyMeetingDbContext.Absences.Where(a => a.Status == status && a.User==user).Count();
+            return _dailyMeetingDbContext.Absences.Where(a => a.Status == status && a.User == user).Count();
         }
 
 
         public void UpdateAbsences(User user, DateTime date, string abs_status)
         {
-            var abs = _dailyMeetingDbContext.Absences.Where(a=>a.User==user && EF.Functions.DateDiffDay(a.date, date) == 0).FirstOrDefault();
+            var abs = _dailyMeetingDbContext.Absences.Where(a => a.User == user && EF.Functions.DateDiffDay(a.date, date) == 0).FirstOrDefault();
             if (abs != null)
             {
                 if (abs.Status != abs_status)

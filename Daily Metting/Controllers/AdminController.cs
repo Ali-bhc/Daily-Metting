@@ -1,5 +1,4 @@
 ﻿using Daily_Metting.Models;
-using Daily_Metting.Repositories;
 using Daily_Metting.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -22,6 +21,14 @@ using iText.IO.Image;
 using Microsoft.AspNetCore.Http;
 using System.Globalization;
 using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
+using Daily_Metting.Repositories.Absences;
+using Daily_Metting.Repositories.Apus;
+using Daily_Metting.Repositories.Attainements;
+using Daily_Metting.Repositories.Categories;
+using Daily_Metting.Repositories.Points;
+using Daily_Metting.Repositories.Submissions;
+using Daily_Metting.Repositories.Users;
+using Daily_Metting.Repositories.Values;
 
 namespace Daily_Metting.Controllers
 {

@@ -1,6 +1,6 @@
 ﻿using Daily_Metting.Models;
 
-namespace Daily_Metting.Repositories
+namespace Daily_Metting.Repositories.Submissions
 {
     public interface ISubmissionRepository
     {
@@ -9,11 +9,11 @@ namespace Daily_Metting.Repositories
         Submission GetSubmissionByUser_Date(DateTime date, User user);
         void DeleteSubmission(Submission submission);
         List<Submission> GetUserSubmission(User user);
-        List<Submission> GetUserSubmissionByPage(int page,int pagesize,User user);
-        List<Submission> GetAllSubmissionByPage(int page,int pagesize);
+        List<Submission> GetUserSubmissionByPage(int page, int pagesize, User user);
+        List<Submission> GetAllSubmissionByPage(int page, int pagesize);
         Submission GetUserSubmissionById(int subId);
         List<Submission> GetSubmissionsByDate(DateTime date);
-        int GetStatusCountByUser(string status,User user);
+        int GetStatusCountByUser(string status, User user);
 
         List<Submission> GetYesterdaySubmissions();
         List<Submission> GetTodaySubmissions();

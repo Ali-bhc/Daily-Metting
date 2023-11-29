@@ -1,10 +1,10 @@
-﻿using Daily_Metting.DAO;
+﻿using Daily_Metting.Data;
 using Daily_Metting.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Daily_Metting.Repositories
+namespace Daily_Metting.Repositories.Points
 {
-    public class PointRepository:IPointRepository
+    public class PointRepository : IPointRepository
     {
         private readonly DailyMeetingDbContext _dailyMeetingDbContext;
 
@@ -14,17 +14,18 @@ namespace Daily_Metting.Repositories
         }
 
         public IEnumerable<Point> AllPoints => _dailyMeetingDbContext.Points.OrderBy(p => p.Point_Name);
-        
-        public Point GetByID(int pointID) {
+
+        public Point GetByID(int pointID)
+        {
             return _dailyMeetingDbContext.Points.Where(p => p.PointID == pointID).FirstOrDefault();
         }
 
         public List<Point> GetPointsByCategory(int category_id)
         {
-            return _dailyMeetingDbContext.Points.Where(p=>p.Category.CategoryID == category_id).ToList();
+            return _dailyMeetingDbContext.Points.Where(p => p.Category.CategoryID == category_id).ToList();
         }
 
-        public IEnumerable<Point> GetPointsByDepartement_Category(string Departement,string category_name)
+        public IEnumerable<Point> GetPointsByDepartement_Category(string Departement, string category_name)
         {
             if (!string.IsNullOrEmpty(category_name))
             {

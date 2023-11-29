@@ -1,11 +1,11 @@
-﻿using Daily_Metting.DAO;
-using Daily_Metting.Models;
+﻿using Daily_Metting.Models;
 using Daily_Metting.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using System.Drawing.Printing;
+using Daily_Metting.Data;
 
-namespace Daily_Metting.Repositories
+namespace Daily_Metting.Repositories.Submissions
 {
     public class SubmissionRepository : ISubmissionRepository
     {
@@ -16,18 +16,19 @@ namespace Daily_Metting.Repositories
         }
 
 
-        public IEnumerable<Submission> AllSubmission => _dailyMeetingDbContext.Submissions.OrderBy(p=> p.submission_time);
+        public IEnumerable<Submission> AllSubmission => _dailyMeetingDbContext.Submissions.OrderBy(p => p.submission_time);
 
 
         public void AddSubmission(Submission submission)
         {
             _dailyMeetingDbContext.Submissions.Add(submission);
-            _dailyMeetingDbContext.SaveChanges();       
+            _dailyMeetingDbContext.SaveChanges();
         }
 
         public void DeleteSubmission(Submission submission)
         {
             _dailyMeetingDbContext.Submissions.Remove(submission);
+            _dailyMeetingDbContext.SaveChanges();
         }
 
 
@@ -42,10 +43,10 @@ namespace Daily_Metting.Repositories
             return submissions;
         }
 
-        
+
         public Submission GetSubmissionByUser_Date(DateTime date, User user)
         {
-           return _dailyMeetingDbContext.Submissions.Where(s => EF.Functions.DateDiffDay(s.submission_time, date) == 0 && s.User == user ).Include(s => s.User).FirstOrDefault();
+            return _dailyMeetingDbContext.Submissions.Where(s => EF.Functions.DateDiffDay(s.submission_time, date) == 0 && s.User == user).Include(s => s.User).FirstOrDefault();
         }
 
         public List<Submission> GetSubmissionsByDate(DateTime date)
@@ -55,7 +56,7 @@ namespace Daily_Metting.Repositories
 
         public List<Submission> GetUserSubmission(User user)
         {
-            return _dailyMeetingDbContext.Submissions.Where(s=>s.User==user).ToList();
+            return _dailyMeetingDbContext.Submissions.Where(s => s.User == user).ToList();
         }
 
 
@@ -63,7 +64,7 @@ namespace Daily_Metting.Repositories
 
         public Submission GetUserSubmissionById(int subId)
         {
-            return _dailyMeetingDbContext.Submissions.Where(s=>s.SubmissionID == subId).Include(s => s.User).FirstOrDefault();
+            return _dailyMeetingDbContext.Submissions.Where(s => s.SubmissionID == subId).Include(s => s.User).FirstOrDefault();
         }
 
 
@@ -81,18 +82,18 @@ namespace Daily_Metting.Repositories
 
         public int GetStatusCountByUser(string status, User user)
         {
-            return _dailyMeetingDbContext.Submissions.Where(s=>s.User==user && s.status==status).Count();
+            return _dailyMeetingDbContext.Submissions.Where(s => s.User == user && s.status == status).Count();
         }
 
         public List<Submission> GetYesterdaySubmissions()
         {
             var yesterday = DateTime.Today.AddDays(-1);
             var submissions = _dailyMeetingDbContext.Submissions
-                .Where(s => s.submission_time < DateTime.Today && s.submission_time >= yesterday).Include(s=>s.User)
+                .Where(s => s.submission_time < DateTime.Today && s.submission_time >= yesterday).Include(s => s.User)
                 .ToList();
             return submissions;
         }
-       
+
         public List<Submission> GetTodaySubmissions()
         {
             var today = DateTime.Today.Date;

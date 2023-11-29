@@ -1,6 +1,6 @@
 ﻿using Daily_Metting.Models;
 
-namespace Daily_Metting.DAO
+namespace Daily_Metting.Data
 {
     public class DBInitializer
     {

@@ -1,6 +1,6 @@
 ﻿using Daily_Metting.Models;
 
-namespace Daily_Metting.Repositories
+namespace Daily_Metting.Repositories.Absences
 {
     public interface IAbsencesRepository
     {
@@ -8,6 +8,6 @@ namespace Daily_Metting.Repositories
         void AddAbsence(Absence submission);
         List<Absence> GetAbsences(DateTime date);
         int GetAbcencesCountByStatus_User(string Status, User user);
-        void UpdateAbsences(User user , DateTime date , string status);
+        void UpdateAbsences(User user, DateTime date, string status);
     }
 }

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Daily_Metting.DAO
+namespace Daily_Metting.Data
 {
     public class DailyMeetingDbContext : IdentityDbContext
     {

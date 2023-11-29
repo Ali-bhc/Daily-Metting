@@ -1,5 +1,12 @@
-﻿using Daily_Metting.Models;
-using Daily_Metting.Repositories;
+﻿using Daily_Metting.Repositories.Absences;
+using Daily_Metting.Repositories.Apus;
+using Daily_Metting.Repositories.Attainements;
+using Daily_Metting.Repositories.Categories;
+using Daily_Metting.Repositories.Points;
+using Daily_Metting.Repositories.Submissions;
+using Daily_Metting.Repositories.Users;
+using Daily_Metting.Repositories.Values;
+using Daily_Metting.Models;
 using Daily_Metting.ViewModels;
 using ExcelDataReader;
 using iText.Html2pdf;
@@ -910,7 +917,7 @@ namespace Daily_Metting.Controllers
                     ListOfSumOfValuesOfPoints.Add(item.Point_Name, _valueRepository.GetSumOfValuesByPoints_SubmissionDate(item.PointID, date));
                     CommentsConcatenation.Add(item.Point_Name, _valueRepository.GetCommentsConcatenations(item, date));
                     DescriptionsConcatenation.Add(item.Point_Name, _valueRepository.GetDescriptionsConcatenations(item, date));
-                    if (_valueRepository.GetSumOfValuesByPoints_SubmissionDate(item.PointID, date) >= _valueRepository.GetSumOfValuesByPoints_SubmissionDate(item.PointID, date.AddDays(-1)))
+                    if (_valueRepository.GetSumOfValuesByPoints_SubmissionDate(item.PointID, date) > _valueRepository.GetSumOfValuesByPoints_SubmissionDate(item.PointID, date.AddDays(-1)))
                     {
                         augmentation_Status.Add(item.Point_Name, "Up");
                     }

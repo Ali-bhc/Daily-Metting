@@ -1,4 +1,4 @@
-﻿using Daily_Metting.DAO;
+﻿using Daily_Metting.Data;
 using Daily_Metting.Models;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
@@ -6,7 +6,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Xml.Linq;
 
-namespace Daily_Metting.Repositories
+namespace Daily_Metting.Repositories.Values
 {
 
     public class ValueRepository : IValueRepository
@@ -26,7 +26,7 @@ namespace Daily_Metting.Repositories
 
         public void DeleteValuesBySubmission(Submission submission)
         {
-            var valuesToDelete = _dailyMeetingDbContext.Values.Where(v=>v.Submission == submission);
+            var valuesToDelete = _dailyMeetingDbContext.Values.Where(v => v.Submission == submission);
             _dailyMeetingDbContext.Values.RemoveRange(valuesToDelete);
             _dailyMeetingDbContext.SaveChanges();
         }
@@ -34,12 +34,12 @@ namespace Daily_Metting.Repositories
         public List<Value> GetSubmissionValue(int submissionID)
         {
 
-            return _dailyMeetingDbContext.Values.Where(s=>s.Submission.SubmissionID == submissionID).ToList();
+            return _dailyMeetingDbContext.Values.Where(s => s.Submission.SubmissionID == submissionID).ToList();
         }
 
         public Value GetValueBySubmissionPoint(int submissionId, Point point)
         {
-            Value value = _dailyMeetingDbContext.Values.Where(v=>v.Submission.SubmissionID==submissionId && v.Point == point).FirstOrDefault();
+            Value value = _dailyMeetingDbContext.Values.Where(v => v.Submission.SubmissionID == submissionId && v.Point == point).FirstOrDefault();
             return value;
         }
 
@@ -55,10 +55,11 @@ namespace Daily_Metting.Repositories
                     val.description = val.description;
                     val.comment = val.comment;
 
-                   
+
                 }
-                else { 
-                    _dailyMeetingDbContext.Values.Add(value); 
+                else
+                {
+                    _dailyMeetingDbContext.Values.Add(value);
                 }
                 // Save the changes to the database
                 _dailyMeetingDbContext.SaveChanges();
@@ -66,10 +67,10 @@ namespace Daily_Metting.Repositories
 
         }
 
-        public List<Value> GetValuesByPoint_SubmissionDate(int pointId , DateTime submission_time)
+        public List<Value> GetValuesByPoint_SubmissionDate(int pointId, DateTime submission_time)
         {
             var values = _dailyMeetingDbContext.Values.Where(v => v.Point.PointID == pointId && v.Submission.submission_time.Date == submission_time)
-                .Include(v=>v.Submission.User).OrderBy(v=>v.Submission.User).ToList();
+                .Include(v => v.Submission.User).OrderBy(v => v.Submission.User).ToList();
             return values;
         }
 
@@ -81,7 +82,7 @@ namespace Daily_Metting.Repositories
         //}
 
 
-        public int GetSumOfValuesByPoints_SubmissionDate(int pointId, DateTime submission_time) 
+        public int GetSumOfValuesByPoints_SubmissionDate(int pointId, DateTime submission_time)
         {
             int sumOfValues = 0;
             var valuesList = (int)_dailyMeetingDbContext.Values
@@ -98,13 +99,13 @@ namespace Daily_Metting.Repositories
 
         public List<string> GetCommentsConcatenations(Point point, DateTime submission_time)
         {
-            List<string> commentspointList=new List<string>();
-            
-                var PointsComments = _dailyMeetingDbContext.Values
-                    .Where(v => v.Point.PointID == point.PointID && v.Submission.submission_time.Date == submission_time)
-                    .Select(v => v.comment).ToList();
-                string Comments = string.Join(Environment.NewLine, PointsComments);
-                commentspointList.Add(Comments);
+            List<string> commentspointList = new List<string>();
+
+            var PointsComments = _dailyMeetingDbContext.Values
+                .Where(v => v.Point.PointID == point.PointID && v.Submission.submission_time.Date == submission_time)
+                .Select(v => v.comment).ToList();
+            string Comments = string.Join(Environment.NewLine, PointsComments);
+            commentspointList.Add(Comments);
 
             return commentspointList;
         }

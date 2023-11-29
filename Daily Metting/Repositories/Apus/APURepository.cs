@@ -1,9 +1,9 @@
-﻿using Daily_Metting.DAO;
+﻿using Daily_Metting.Data;
 using Daily_Metting.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Xml;
 
-namespace Daily_Metting.Repositories
+namespace Daily_Metting.Repositories.Apus
 {
     public class APURepository : IAPURepository
     {
@@ -25,7 +25,7 @@ namespace Daily_Metting.Repositories
             return _dailyMeetingDbContext.APUs.Where(a => a.APU_Name == name).FirstOrDefault();
         }
 
-        public void UpdateAPU(int APU_ID , double Attainement_min , double Attainement_Max)
+        public void UpdateAPU(int APU_ID, double Attainement_min, double Attainement_Max)
         {
             var aPU = _dailyMeetingDbContext.APUs.Find(APU_ID);
             if (aPU != null)

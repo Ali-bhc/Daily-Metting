@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Daily_Metting.DAO;
+using Daily_Metting.Repositories;
 using Daily_Metting.Models;
 using Microsoft.AspNetCore.Authorization;
 using Daily_Metting.ViewModels;
+using Daily_Metting.Data;
 
 namespace Daily_Metting.Controllers
 {

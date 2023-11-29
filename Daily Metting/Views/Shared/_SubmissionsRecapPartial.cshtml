@@ -22,6 +22,7 @@
 
             @if (Model.pointCategoryList[cat].Count > 0)
             {
+
                 <tr>
                     <td id="@cat" class="text-center" colspan="10"><img style="width:30px;" src="~/img/Icons/@cat Icon.svg" id="Icon">@cat</td>
                 </tr>
@@ -32,6 +33,25 @@
                         <td>@Model.ListOfSumOfValuesOfPoints[point.Point_Name]</td>
                         <td colspan=3>@Html.Raw(Model.DescriptionssConcatenation[point.Point_Name][0].Replace("\n", "<br />"))</td>
                         <td colspan=3>@Html.Raw(Model.CommentsConcatenation[point.Point_Name][0].Replace("\n", "<br />"))</td>
+                        @if (cat == "Delivery" && (point.Point_Name == "Cycle Count RM" || point.Point_Name == "Cycle Count WIP" || point.Point_Name == "Cycle Count FG"))
+                        {
+                            @if (Model.AugmentationStatus[point.Point_Name] == "Up")
+                            {
+                                <td style="text-align:center;background-color:#9fff80; width:50px" rowspan=1>
+                                    <i class="fa fa-arrow-up" style="font-size:18px"></i>
+                                </td>
+                            }
+                            else if (Model.AugmentationStatus[point.Point_Name] == "Down")
+                            {
+                                <td style="text-align:center;background-color:#ff6666; width:50px" rowspan=1><i class="fa fa-arrow-up" style="font-size:18px"></i> </td>
+                            }
+                            else
+                            {
+                                <td style="text-align:center;background-color:#ffff99; width:50px" rowspan=1><i class="fa fa-arrow-right" style="font-size:18px"></i> </td>
+                            }
+                        }
+                        else
+                        {
                         @if (Model.AugmentationStatus[point.Point_Name] == "Up")
                         {
                             <td style="text-align:center;background-color:#ff6666; width:50px" rowspan=1>
@@ -46,6 +66,8 @@
                         {
                             <td style="text-align:center;background-color:#ffff99; width:50px" rowspan=1><i class="fa fa-arrow-right" style="font-size:18px"></i> </td>
                         }
+                        }
+                        
                     </tr>
 
                 }

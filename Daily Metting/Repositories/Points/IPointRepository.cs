@@ -1,6 +1,6 @@
 ﻿using Daily_Metting.Models;
 
-namespace Daily_Metting.Repositories
+namespace Daily_Metting.Repositories.Points
 {
     public interface IPointRepository
     {

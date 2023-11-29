@@ -1,10 +1,10 @@
-﻿using Daily_Metting.DAO;
+﻿using Daily_Metting.Data;
 using Daily_Metting.Models;
 using Daily_Metting.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
-namespace Daily_Metting.Repositories
+namespace Daily_Metting.Repositories.Users
 {
     public class UserRepository : IUserRepository
     {
@@ -35,7 +35,7 @@ namespace Daily_Metting.Repositories
 
         public void updateUserMissedsubmission(Dictionary<string, List<Submission>> users_submissions)
         {
-            foreach (var user in this.GetMembers())
+            foreach (var user in GetMembers())
             {
                 if (!users_submissions.ContainsKey(user.Id))
                 {
